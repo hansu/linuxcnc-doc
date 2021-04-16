@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Thu Apr  8 16:37:32 2021 -->
+<!-- CreationDate: Fri Apr 16 16:05:11 2021 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,6 +27,9 @@
 <a href="#PINS">PINS</a><br>
 <a href="#PARAMETERS">PARAMETERS</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
 
 <hr>
 
@@ -37,28 +40,29 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">iocontrol -
-accepts NML I/O commands, interacts with HAL in
-userspace</p>
+interacts with HAL or G-code in userspace</p>
 
 <h2>SYNOPSIS
 <a name="SYNOPSIS"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>loadusr io
-[-ini</b> <i>inifile</i><b>]</b></p>
-
 <p style="margin-left:11%; margin-top: 1em"><b>[EMCIO] <br>
-EMCIO = iov2</b></p>
+EMCIO = io</b></p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">These pins are
-created by the userspace IO controller, usually found in
-$LINUXCNC_HOME/bin/io</p>
+<p style="margin-left:11%; margin-top: 1em">I/O control
+handles I/O tasks like coolant, toolchange, e-stop and lube.
+The signals are turned on and off in userspace with G-code
+or in the case of e-stop in hal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+pins are created by the userspace IO controller, usually
+found in $LINUXCNC_HOME/bin/io</p>
 
 <p style="margin-left:11%; margin-top: 1em">The signals are
 turned on and off in userspace - if you have strict timing
@@ -191,6 +195,33 @@ tool change (M6).</p>
 <p style="margin-left:11%; margin-top: 1em"><a href="io.1.html"><b>io</b>(1),</a>
 <a href="iov2.1.html"><b>iov2</b>(1),</a>
 <a href="../man9/motion.9.html"><b>motion</b>(9)</a></p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs at
+<a href="https://github.com/LinuxCNC/linuxcnc/issues">https://github.com/LinuxCNC/linuxcnc/issues</a></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Derived from a
+work by Fred Proctor &amp; Will Shackleford.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2004 the LinuxCNC project. <br>
+This is free software; see the source for copying
+conditions. There is NO warranty; not even for
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 <hr>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Apr 17 08:34:11 2021 -->
+<!-- CreationDate: Sat Feb  6 17:36:46 2021 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,21 +24,6 @@
 <a href="#NAME">NAME</a><br>
 <a href="#SYNOPSIS">SYNOPSIS</a><br>
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
-<a href="#trivkins - generalized trivial kinematics">trivkins - generalized trivial kinematics</a><br>
-<a href="#corexykins - CoreXY Kinematics">corexykins - CoreXY Kinematics</a><br>
-<a href="#genhexkins - Hexapod Kinematics">genhexkins - Hexapod Kinematics</a><br>
-<a href="#genserkins - generalized serial kinematics">genserkins - generalized serial kinematics</a><br>
-<a href="#maxkins - 5-axis kinematics example">maxkins - 5-axis kinematics example</a><br>
-<a href="#pentakins - Pentapod Kinematics">pentakins - Pentapod Kinematics</a><br>
-<a href="#pumakins - kinematics for puma typed robots">pumakins - kinematics for puma typed robots</a><br>
-<a href="#rosekins - kinematics for a rose engine using">rosekins - kinematics for a rose engine using</a><br>
-<a href="#rotarydeltakins - kinematics for a rotary delta machine">rotarydeltakins - kinematics for a rotary delta machine</a><br>
-<a href="#rotatekins - Rotated Kinematics">rotatekins - Rotated Kinematics</a><br>
-<a href="#scarakins - kinematics for SCARA-type robots">scarakins - kinematics for SCARA-type robots</a><br>
-<a href="#tripodkins - Tripod Kinematics">tripodkins - Tripod Kinematics</a><br>
-<a href="#xyzac-trt-kins - 5 Axis mill (Table Rotary/Tilting)">xyzac-trt-kins - 5 Axis mill (Table Rotary/Tilting)</a><br>
-<a href="#xyzbc-trt-kins - 5 Axis mill (Table Rotary/Tilting)">xyzbc-trt-kins - 5 Axis mill (Table Rotary/Tilting)</a><br>
-<a href="#5axiskins - 5 Axis bridge mill">5axiskins - 5 Axis bridge mill</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 
 <hr>
@@ -115,14 +100,11 @@ exporting HAL pins and functions, these components provide
 the forward and inverse kinematics definitions for
 LinuxCNC.</p>
 
-<h3>trivkins - generalized trivial kinematics
-<a name="trivkins - generalized trivial kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Joint numbers
-are assigned sequentialy according to the axis letters
-specified with the <b>coordinates=</b> parameter.</p>
+<p style="margin-left:11%; margin-top: 1em"><b>trivkins -
+generalized trivial kinematics</b> <br>
+Joint numbers are assigned sequentialy according to the axis
+letters specified with the <b>coordinates=</b>
+parameter.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 coordinates= parameter is omitted, joint numbers are
@@ -216,13 +198,9 @@ multiple joints) may be homed at machine startup and
 automatically switch to <b>world</b> mode where
 per-coordinate jogging is available.</p>
 
-<h3>corexykins - CoreXY Kinematics
-<a name="corexykins - CoreXY Kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">X =
-0.5*(JOINT_0 + JOINT_1) <br>
+<p style="margin-left:11%; margin-top: 1em"><b>corexykins -
+CoreXY Kinematics</b> <br>
+X = 0.5*(JOINT_0 + JOINT_1) <br>
 Y = 0.5*(JOINT_0 - JOINT_1) <br>
 Z = JOINT_2 <br>
 [KINS]JOINTS= must specify 3 or more joints (maximum 9) <br>
@@ -230,16 +208,12 @@ If enabled by the number of [KINS]JOINTS= specified,
 JOINT_3,4,5,6,7,8 <br>
 correspond to coordinates A,B,C,U,V,W respectively.</p>
 
-<h3>genhexkins - Hexapod Kinematics
-<a name="genhexkins - Hexapod Kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Gives six
-degrees of freedom in position and orientation (XYZABC). The
-location of base and platform joints is defined by hal
-parameters. The forward kinematics iteration is controlled
-by hal pins. <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>genhexkins -
+Hexapod Kinematics</b> <br>
+Gives six degrees of freedom in position and orientation
+(XYZABC). The location of base and platform joints is
+defined by hal parameters. The forward kinematics iteration
+is controlled by hal pins. <b><br>
 genhexkins.base.</b><i>N</i><b>.x <br>
 genhexkins.base.</b><i>N</i><b>.y <br>
 genhexkins.base.</b><i>N</i><b>.z <br>
@@ -317,14 +291,10 @@ spent for a converged solution during current session.</p>
 along Z to implement RTCP function. To avoid joints jump
 change tool offset only when the platform is not tilted.</p>
 
-<h3>genserkins - generalized serial kinematics
-<a name="genserkins - generalized serial kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Kinematics that
-can model a general serial-link manipulator with up to 6
-angular joints.</p>
+<p style="margin-left:11%; margin-top: 1em"><b>genserkins -
+generalized serial kinematics</b> <br>
+Kinematics that can model a general serial-link manipulator
+with up to 6 angular joints.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The kinematics
 use Denavit-Hartenberg definition for the joint and links.
@@ -341,28 +311,21 @@ genserkins.D-</b><i>N</i></p>
 <p style="margin-left:22%;">Parameters describing the
 <i>N</i>th joint&rsquo;s geometry.</p>
 
-<h3>maxkins - 5-axis kinematics example
-<a name="maxkins - 5-axis kinematics example"></a>
-</h3>
+<p style="margin-left:11%; margin-top: 1em"><b>maxkins -
+5-axis kinematics example</b> <br>
+Kinematics for Chris Radek&rsquo;s tabletop 5 axis mill
+named &rsquo;max&rsquo; with tilting head (B axis) and
+horizintal rotary mounted to the table (C axis). Provides
+UVW motion in the rotated coordinate system. The source
+file, maxkins.c, may be a useful starting point for other
+5-axis systems.</p>
 
-
-<p style="margin-left:11%; margin-top: 1em">Kinematics for
-Chris Radek&rsquo;s tabletop 5 axis mill named
-&rsquo;max&rsquo; with tilting head (B axis) and horizintal
-rotary mounted to the table (C axis). Provides UVW motion in
-the rotated coordinate system. The source file, maxkins.c,
-may be a useful starting point for other 5-axis systems.</p>
-
-<h3>pentakins - Pentapod Kinematics
-<a name="pentakins - Pentapod Kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Gives five
-degrees of freedom in position and orientation (XYZAB). The
-location of base and effector joints is defined by hal
-parameters. The forward kinematics iteration is controlled
-by hal pins. <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>pentakins -
+Pentapod Kinematics</b> <br>
+Gives five degrees of freedom in position and orientation
+(XYZAB). The location of base and effector joints is defined
+by hal parameters. The forward kinematics iteration is
+controlled by hal pins. <b><br>
 pentakins.base.</b><i>N</i><b>.x <br>
 pentakins.base.</b><i>N</i><b>.y <br>
 pentakins.base.</b><i>N</i><b>.z <br>
@@ -409,13 +372,9 @@ spent for a converged solution during current session.</p>
 along Z to implement RTCP function. To avoid joints jump
 change tool offset only when the platform is not tilted.</p>
 
-<h3>pumakins - kinematics for puma typed robots
-<a name="pumakins - kinematics for puma typed robots"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Kinematics for
-a puma-style robot with 6 joints <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>pumakins -
+kinematics for puma typed robots</b> <br>
+Kinematics for a puma-style robot with 6 joints <b><br>
 pumakins.A2 <br>
 pumakins.A3 <br>
 pumakins.D3 <br>
@@ -424,38 +383,23 @@ pumakins.D4</b></p>
 <p style="margin-left:22%;">Describe the geometry of the
 robot</p>
 
-<h3>rosekins - kinematics for a rose engine using
-<a name="rosekins - kinematics for a rose engine using"></a>
-</h3>
+<p style="margin-left:11%; margin-top: 1em"><b>rosekins -
+kinematics for a rose engine using</b> <br>
+a transverse, longitudinal, and rotary joint (3 joints)</p>
 
 
-<p style="margin-left:11%; margin-top: 1em">a transverse,
-longitudinal, and rotary joint (3 joints)</p>
+<p style="margin-left:11%; margin-top: 1em"><b>rotarydeltakins
+- kinematics for a rotary delta machine</b> <br>
+Rotary delta robot (3 Joints)</p>
 
-<h3>rotarydeltakins - kinematics for a rotary delta machine
-<a name="rotarydeltakins - kinematics for a rotary delta machine"></a>
-</h3>
+<p style="margin-left:11%; margin-top: 1em"><b>rotatekins -
+Rotated Kinematics</b> <br>
+The X and Y axes are rotated 45 degrees compared to the
+joints 0 and 1.</p>
 
-
-<p style="margin-left:11%; margin-top: 1em">Rotary delta
-robot (3 Joints)</p>
-
-<h3>rotatekins - Rotated Kinematics
-<a name="rotatekins - Rotated Kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">The X and Y
-axes are rotated 45 degrees compared to the joints 0 and
-1.</p>
-
-<h3>scarakins - kinematics for SCARA-type robots
-<a name="scarakins - kinematics for SCARA-type robots"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>scarakins.D1</b></p>
+<p style="margin-left:11%; margin-top: 1em"><b>scarakins -
+kinematics for SCARA-type robots <br>
+scarakins.D1</b></p>
 
 <p style="margin-left:22%;">Vertical distance from the
 ground plane to the center of the inner arm.</p>
@@ -494,15 +438,11 @@ centerline. Non-zero values should be positive, if negative
 they introduce a 180 degree offset on the value of
 joint[3].</p>
 
-<h3>tripodkins - Tripod Kinematics
-<a name="tripodkins - Tripod Kinematics"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">The joints
-represent the distance of the controlled point from three
-predefined locations (the motors), giving three degrees of
-freedom in position (XYZ) <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>tripodkins -
+Tripod Kinematics</b> <br>
+The joints represent the distance of the controlled point
+from three predefined locations (the motors), giving three
+degrees of freedom in position (XYZ) <b><br>
 tripodkins.Bx <br>
 tripodkins.Cx <br>
 tripodkins.Cy</b></p>
@@ -510,31 +450,21 @@ tripodkins.Cy</b></p>
 <p style="margin-left:22%;">The location of the three
 motors is (0,0), (Bx,0), and (Cx,Cy)</p>
 
-<h3>xyzac-trt-kins - 5 Axis mill (Table Rotary/Tilting)
-<a name="xyzac-trt-kins - 5 Axis mill (Table Rotary/Tilting)"></a>
-</h3>
+
+<p style="margin-left:11%; margin-top: 1em"><b>xyzac-trt-kins
+- 5 Axis mill (Table Rotary/Tilting)</b> <br>
+Tilting table (A) and horizontal rotary mounted tothe table
+(C) (5 Joints)</p>
 
 
-<p style="margin-left:11%; margin-top: 1em">Tilting table
-(A) and horizontal rotary mounted tothe table (C) (5
-Joints)</p>
+<p style="margin-left:11%; margin-top: 1em"><b>xyzbc-trt-kins
+- 5 Axis mill (Table Rotary/Tilting)</b> <br>
+Tilting table (B) and horizontal rotary mounted to table (C
+axis) (5 Joints)</p>
 
-<h3>xyzbc-trt-kins - 5 Axis mill (Table Rotary/Tilting)
-<a name="xyzbc-trt-kins - 5 Axis mill (Table Rotary/Tilting)"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">Tilting table
-(B) and horizontal rotary mounted to table (C axis) (5
-Joints)</p>
-
-<h3>5axiskins - 5 Axis bridge mill
-<a name="5axiskins - 5 Axis bridge mill"></a>
-</h3>
-
-
-<p style="margin-left:11%; margin-top: 1em">XYZBC (5
-Joints)</p>
+<p style="margin-left:11%; margin-top: 1em"><b>5axiskins -
+5 Axis bridge mill</b> <br>
+XYZBC (5 Joints)</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>

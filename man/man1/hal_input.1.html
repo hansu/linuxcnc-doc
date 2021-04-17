@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Apr 17 08:34:07 2021 -->
+<!-- CreationDate: Sat Feb  6 17:36:39 2021 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,11 +27,6 @@
 <a href="#INPUT SPECIFICATION">INPUT SPECIFICATION</a><br>
 <a href="#DEVICE FEATURES SUPPORTED">DEVICE FEATURES SUPPORTED</a><br>
 <a href="#HAL PINS AND PARAMETERS">HAL PINS AND PARAMETERS</a><br>
-<a href="#For buttons">For buttons</a><br>
-<a href="#For keys">For keys</a><br>
-<a href="#For absolute axes">For absolute axes</a><br>
-<a href="#For relative axes">For relative axes</a><br>
-<a href="#For LEDs">For LEDs</a><br>
 <a href="#PERMISSIONS AND UDEV">PERMISSIONS AND UDEV</a><br>
 <a href="#BUGS">BUGS</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
@@ -197,41 +192,27 @@ Subset -K</p></td>
 </h2>
 
 
-<h3>For buttons
-<a name="For buttons"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>input.</b><i>N</i><b>.btn-</b><i>name</i>
-bit out <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>For buttons
+<br>
+input.</b><i>N</i><b>.btn-</b><i>name</i> bit out <b><br>
 input.</b><i>N</i><b>.btn-</b><i>name</i><b>-not</b> bit
 out</p>
 
 <p style="margin-left:22%;">Created for each button on the
 device.</p>
 
-<h3>For keys
-<a name="For keys"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>input.</b><i>N</i><b>.key-</b><i>name</i>
-<b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>For keys
+<br>
+input.</b><i>N</i><b>.key-</b><i>name</i> <b><br>
 input.</b><i>N</i><b>.key-</b><i>name</i><b>-not</b></p>
 
 <p style="margin-left:22%;">Created for each key on the
 device.</p>
 
-<h3>For absolute axes
-<a name="For absolute axes"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>input.</b><i>N</i><b>.abs-</b><i>name</i><b>-counts</b>
-s32 out <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>For absolute
+axes <br>
+input.</b><i>N</i><b>.abs-</b><i>name</i><b>-counts</b> s32
+out <b><br>
 input.</b><i>N</i><b>.abs-</b><i>name</i><b>-position</b>
 float out <b><br>
 input.</b><i>N</i><b>.abs-</b><i>name</i><b>-scale</b>
@@ -260,14 +241,10 @@ values of <b>fuzz</b> and <b>flat</b> are those reported by
 the operating system. The values of <b>min</b> and
 <b>max</b> are those reported by the operating system.</p>
 
-<h3>For relative axes
-<a name="For relative axes"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>input.</b><i>N</i><b>.rel-</b><i>name</i><b>-counts</b>
-s32 out <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>For relative
+axes <br>
+input.</b><i>N</i><b>.rel-</b><i>name</i><b>-counts</b> s32
+out <b><br>
 input.</b><i>N</i><b>.rel-</b><i>name</i><b>-position</b>
 float out <b><br>
 input.</b><i>N</i><b>.rel-</b><i>name</i><b>-reset</b> bit
@@ -299,14 +276,9 @@ correctly. <b>last</b> shows the most recent count value
 returned by the device, and is used in the implementation of
 <b>absolute</b>.</p>
 
-<h3>For LEDs
-<a name="For LEDs"></a>
-</h3>
-
-
-
-<p style="margin-left:11%; margin-top: 1em"><b>input.</b><i>N</i><b>.led-</b><i>name</i>
-bit out <b><br>
+<p style="margin-left:11%; margin-top: 1em"><b>For LEDs
+<br>
+input.</b><i>N</i><b>.led-</b><i>name</i> bit out <b><br>
 input.</b><i>N</i><b>.led-</b><i>name</i><b>-invert</b>
 parameter bit rw</p>
 

@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Thu Apr  8 18:01:35 2021 -->
+<!-- CreationDate: Sat Apr 17 08:34:07 2021 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,6 +27,26 @@
 <a href="#OPTIONS">OPTIONS</a><br>
 <a href="#USAGE">USAGE</a><br>
 <a href="#PINS">PINS</a><br>
+<a href="#abort">abort</a><br>
+<a href="#tool">tool</a><br>
+<a href="#spindle">spindle</a><br>
+<a href="#spindle">spindle</a><br>
+<a href="#program">program</a><br>
+<a href="#mode">mode</a><br>
+<a href="#mdi">mdi</a><br>
+<a href="#mist">mist</a><br>
+<a href="#max-velocity">max-velocity</a><br>
+<a href="#machine">machine</a><br>
+<a href="#lube">lube</a><br>
+<a href="#joint">joint</a><br>
+<a href="#joint">joint</a><br>
+<a href="#axis">axis</a><br>
+<a href="#axis">axis</a><br>
+<a href="#flood">flood</a><br>
+<a href="#feed">feed</a><br>
+<a href="#rapid">rapid</a><br>
+<a href="#estop">estop</a><br>
+<a href="#home">home</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 <a href="#HISTORY">HISTORY</a><br>
 <a href="#BUGS">BUGS</a><br>
@@ -98,14 +118,26 @@ filter first.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>abort <br>
-halui.abort</b> bit in</p>
+<h3>abort
+<a name="abort"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.abort</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for clearing most
 errors</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>tool <br>
-halui.tool.length-offset.a</b> float out</p>
+<h3>tool
+<a name="tool"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.tool.length-offset.a</b>
+float out</p>
 
 <p style="margin-left:22%;">current applied tool length
 offset for the A axis</p>
@@ -177,8 +209,14 @@ out</p>
 
 <p style="margin-left:22%;">current selected tool</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>spindle <br>
-halui.spindle.N.brake-is-on</b> bit out</p>
+<h3>spindle
+<a name="spindle"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.spindle.N.brake-is-on</b>
+bit out</p>
 
 <p style="margin-left:22%;">status pin that tells us if
 brake is on</p>
@@ -255,10 +293,14 @@ in</p>
 <p style="margin-left:22%;">a rising edge on this pin stops
 the spindle</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>spindle
-override <br>
-halui.spindle.N.override.count-enable</b> bit in (default:
-<b>TRUE</b>)</p>
+<h3>spindle
+<a name="spindle"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.spindle.N.override.count-enable</b>
+bit in (default: <b>TRUE</b>)</p>
 
 <p style="margin-left:22%;">When TRUE, modify spindle
 override when counts changes.</p>
@@ -304,8 +346,14 @@ float out</p>
 
 <p style="margin-left:22%;">current FO value</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>program <br>
-halui.program.block-delete.is-on</b> bit out</p>
+<h3>program
+<a name="program"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.program.block-delete.is-on</b>
+bit out</p>
 
 <p style="margin-left:22%;">status pin telling that block
 delete is on</p>
@@ -391,8 +439,14 @@ in</p>
 <p style="margin-left:22%;">pin for stopping a program
 (note: this pin does the same thing as halui.abort)</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>mode <br>
-halui.mode.auto</b> bit in</p>
+<h3>mode
+<a name="mode"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.mode.auto</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for requesting auto
 mode</p>
@@ -447,9 +501,14 @@ in</p>
 <p style="margin-left:22%;">pin for requesting coordinated
 jog mode</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>mdi</b>
-(optional) <b><br>
-halui.mdi-command-XX</b> bit in</p>
+<h3>mdi
+<a name="mdi"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.mdi-command-XX</b>
+bit in</p>
 
 <p style="margin-left:22%;"><b>halui</b> looks for ini
 variables named [HALUI]MDI_COMMAND, and exports a pin for
@@ -459,8 +518,14 @@ digit number starting at 00. If no [HALUI]MDI_COMMAND
 variables are set in the ini file, no halui.mdi-command-XX
 pins will be exported by halui.</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>mist <br>
-halui.mist.is-on</b> bit out</p>
+<h3>mist
+<a name="mist"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.mist.is-on</b>
+bit out</p>
 
 <p style="margin-left:22%;">pin for mist is on</p>
 
@@ -473,11 +538,14 @@ in</p>
 
 <p style="margin-left:22%;">pin for starting mist</p>
 
+<h3>max-velocity
+<a name="max-velocity"></a>
+</h3>
 
-<p style="margin-left:11%; margin-top: 1em"><b>max-velocity
-<br>
-halui.max-velocity.count-enable</b> bit in (default:
-<b>TRUE</b>)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.max-velocity.count-enable</b>
+bit in (default: <b>TRUE</b>)</p>
 
 <p style="margin-left:22%;">When True, modify max velocity
 when halui.max-velocity.counts changes.</p>
@@ -539,8 +607,14 @@ float out</p>
 <p style="margin-left:22%;">Current value for maximum
 velocity, in machine-units per second.</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>machine <br>
-halui.machine.units-per-mm</b> float out</p>
+<h3>machine
+<a name="machine"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.machine.units-per-mm</b>
+float out</p>
 
 <p style="margin-left:22%;">pin for machine units-per-mm
 (inch:1/25.4, mm:1) according to inifile setting:
@@ -561,8 +635,14 @@ in</p>
 
 <p style="margin-left:22%;">pin for setting machine On</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>lube <br>
-halui.lube.is-on</b> bit out</p>
+<h3>lube
+<a name="lube"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.lube.is-on</b>
+bit out</p>
 
 <p style="margin-left:22%;">pin for lube is on</p>
 
@@ -575,9 +655,14 @@ in</p>
 
 <p style="margin-left:22%;">pin for starting lube</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>joint</b>
-(<b>N</b> = joint number (0 ... num_joints-1)) <b><br>
-halui.joint.N.select</b> bit in</p>
+<h3>joint
+<a name="joint"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.joint.N.select</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for selecting joint N</p>
 
@@ -714,12 +799,16 @@ bit in</p>
 <p style="margin-left:22%;">pin for unhoming the selected
 joint</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>joint
-jogging</b> (<b>N</b> = joint number (0 ... num_joints-1))
-<b><br>
-halui.joint.jog-deadband</b> float in pin for setting jog
-analog deadband (jog analog inputs smaller/slower than this
-(in absolute value) are ignored) <b><br>
+<h3>joint
+<a name="joint"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.joint.jog-deadband</b>
+float in pin for setting jog analog deadband (jog analog
+inputs smaller/slower than this (in absolute value) are
+ignored) <b><br>
 halui.joint.jog-speed</b> float in</p>
 
 <p style="margin-left:22%;">pin for setting jog speed for
@@ -806,9 +895,14 @@ velocity</p>
 joint bit in in positive direction at the
 halui.joint.jog-speed velocity</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>axis (L</b>
-= axis letter (xyzabcuvw) <b><br>
-halui.axis.L.select</b> bit in</p>
+<h3>axis
+<a name="axis"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.axis.L.select</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for selecting axis by
 letter</p>
@@ -841,9 +935,14 @@ float out float out</p>
 <p style="margin-left:22%;">Commanded axis position in
 relative coordinates</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>axis
-jogging</b> (<b>L</b> = axis letter (xyzabcuvw) <b><br>
-halui.axis.jog-deadband</b> float in</p>
+<h3>axis
+<a name="axis"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.axis.jog-deadband</b>
+float in</p>
 
 <p style="margin-left:22%;">pin for setting jog analog
 deadband (jog analog inputs smaller/slower than this (in
@@ -942,8 +1041,14 @@ velocity</p>
 axis bit in in positive direction at the
 halui.axis.jog-speed velocity</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>flood <br>
-halui.flood.is-on</b> bit out</p>
+<h3>flood
+<a name="flood"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.flood.is-on</b>
+bit out</p>
 
 <p style="margin-left:22%;">pin for flood is on</p>
 
@@ -957,10 +1062,14 @@ in</p>
 
 <p style="margin-left:22%;">pin for starting flood</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>feed
-override <br>
-halui.feed-override.count-enable</b> bit in (default:
-<b>TRUE</b>)</p>
+<h3>feed
+<a name="feed"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.feed-override.count-enable</b>
+bit in (default: <b>TRUE</b>)</p>
 
 <p style="margin-left:22%;">When TRUE, modify feed override
 when counts changes.</p>
@@ -1006,10 +1115,14 @@ float out</p>
 
 <p style="margin-left:22%;">current Feed Override value</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>rapid
-override <br>
-halui.rapid-override.count-enable</b> bit in (default:
-<b>TRUE</b>)</p>
+<h3>rapid
+<a name="rapid"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.rapid-override.count-enable</b>
+bit in (default: <b>TRUE</b>)</p>
 
 <p style="margin-left:22%;">When TRUE, modify Rapid
 Override when counts changes.</p>
@@ -1056,8 +1169,14 @@ float out</p>
 <p style="margin-left:22%;">current Rapid Override
 value</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>estop <br>
-halui.estop.activate</b> bit in</p>
+<h3>estop
+<a name="estop"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.estop.activate</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for setting Estop (LinuxCNC
 internal) On</p>
@@ -1075,8 +1194,14 @@ in</p>
 <p style="margin-left:22%;">pin for resetting Estop
 (LinuxCNC internal) Off</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>home <br>
-halui.home-all</b> bit in</p>
+<h3>home
+<a name="home"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>halui.home-all</b>
+bit in</p>
 
 <p style="margin-left:22%;">pin for requesting home-all
 (only available when a valid homing sequence is

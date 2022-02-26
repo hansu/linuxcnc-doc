@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>Lancer LinuxCNC</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Lancer LinuxCNC</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>LinuxCNC se lance comme un autre programme Linux:
+depuis un terminal en passant la commande <em>linuxcnc</em>,
+ou depuis le menu <em>Applications</em> → <em>CNC</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sélecteur_de_configuration">1. Sélecteur de configuration</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Le <em>Sélecteur de configuration</em> s&#8217;affichera à chaque fois que vous lancerez
+LinuxCNC depuis le menu <em>Applications</em> → <em>CNC</em> → <em>LinuxCNC</em>. Vos propres
+configurations personnalisées s&#8217;affichent dans le haut de la liste, suivies par
+les différentes configurations fournies en standard.
+Étant donné que chaque exemple de configuration utilise un type différent d'
+interface matérielle, la plupart ne fonctionneront pas sur votre système. Les
+configurations listées dans la catégorie <em>Sim</em> fonctionneront toutes, même sans
+matériel raccordé, ce sont des simulations de machines.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/configuration-selector1_fr.png" alt="Sélecteur de configuration pour LinuxCNC" />
+</div>
+<div class="title">Figure 1. Sélecteur de configuration pour LinuxCNC<a id="cap:Selecteur-de-configuration"></a></div>
+</div>
+<div class="paragraph"><p>Cliquez dans la liste, sur les différentes configurations pour afficher les
+informations les concernant. Double-cliquez sur une configuration ou cliquez <em>OK</em>
+pour démarrer LinuxCNC avec cette configuration. Cochez la case <em>Créer un
+raccourci sur le bureau</em> puis cliquez OK pour ajouter une icône sur le bureau
+d&#8217;Ubuntu. Cette icône vous permettra par la suite de lancer directement
+LinuxCNC avec cette configuration, sans passer par le sélecteur de configuration.</p></div>
+<div class="paragraph"><p>Quand vous choisissez un exemple de configuration dans le sélecteur, un dialogue
+vous demandera si vous voulez en faire une copie dans votre répertoire home.
+Si vous répondez <em>oui</em>, un dossier <em>linuxcnc</em> autorisé en écriture sera créé, il
+contiendra un jeu de fichiers que vous pourrez éditer pour les adapter à vos
+besoins. Si vous répondez <em>non</em>, LinuxCNC démarrera mais pourra se comporter de
+façon étrange, par exemple, les décalages d&#8217;origine pièce entrés avec la commande
+<em>Toucher</em> ne seront pas pris en compte, ce comportement est lié à ce moment, à
+l&#8217;absence de répertoire autorisé en écriture sans lequel les paramètres ne
+peuvent être enregistrés.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/copy-configuration_fr.png" alt="Dialogue de copie de la configuration" />
+</div>
+<div class="title">Figure 2. Dialogue de copie de la configuration</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_l_8217_interface_utilisateur_graphique_axis">2. L&#8217;interface utilisateur graphique Axis</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>L&#8217;interface AXIS est une des interfaces parmi lesquelles vous avez à
+choisir. Elle peut être configurée pour lui ajouter un panneau de
+commandes virtuel personnalisé en fonction des besoins. AXIS est
+l&#8217;interface utilisateur par défaut et est activement développée.
+C&#8217;est aussi la plus populaire.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="../user/images/axis_25_fr.png" alt="Interface Axis" />
+</div>
+<div class="title">Figure 3. Interface Axis<a id="cap:Interface-Axis"></a></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_les_étapes_suivantes_de_la_configuration">3. Les étapes suivantes de la configuration</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Après avoir trouvé l&#8217;exemple de configuration qui utilise
+le même matériel que votre machine, et en avoir enregistré une copie dans votre
+répertoire personnel, vous pouvez la personnaliser en fonction des besoins
+spécifiques à votre machine. Consultez le <em>Manuel de l&#8217;intégrateur</em> pour tous
+les détails de configuration.</p></div>
+<div class="paragraph"><p>Si vous souhaitez créer une configuration personnalisée, vous pouvez utiliser
+pour cela, un des assistants graphiques de configuration, <em>StepConf</em> ou <em>PncConf</em>
+selon votre type de machine.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

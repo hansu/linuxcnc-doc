@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Fri Apr 16 16:14:52 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:39 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,6 +25,8 @@
 <a href="#SYNOPSIS">SYNOPSIS</a><br>
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
 <a href="#Pins">Pins</a><br>
+<a href="#Basic pins">Basic pins</a><br>
+<a href="#Additional IO v2 pins">Additional IO v2 pins</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 <a href="#REPORTING BUGS">REPORTING BUGS</a><br>
 <a href="#AUTHOR">AUTHOR</a><br>
@@ -70,9 +72,13 @@ communication with the toolchanger.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>Basic pins
-<br>
-iocontrol.0.coolant-flood</b></p>
+<h3>Basic pins
+<a name="Basic pins"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>iocontrol.0.coolant-flood</b></p>
 
 <p style="margin-left:22%;">(Bit, Out) TRUE when flood
 coolant is requested</p>
@@ -160,9 +166,96 @@ internal estop condition exists</p>
 <p style="margin-left:22%;">(Bit, Out) TRUE when the user
 has requested that estop be cleared</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>Additional
-IO v2 pins <br>
-iocontrol.0.emc-abort</b></p>
+<h3>Additional IO v2 pins
+<a name="Additional IO v2 pins"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>iocontrol.0.coolant-flood</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when flood
+coolant is requested</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.coolant-mist</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when mist
+coolant is requested</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.emc-enable-in</b></p>
+
+<p style="margin-left:22%;">(Bit, In) Should be driven
+FALSE when an external estop condition exists.</p>
+
+<p style="margin-left:11%;"><b>iocontrol.0.lube</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when lube is
+requested. This pin gets driven True when the controller
+comes out of E-stop, and when the &quot;Lube On&quot;
+command gets sent to the controller. It gets driven False
+when the controller goes into E-stop, and when the
+&quot;Lube Off&quot; command gets sent to the
+controller.</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.lube_level</b></p>
+
+<p style="margin-left:22%;">(Bit, In) Should be driven
+FALSE when lubrication tank is empty.</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-change</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when a tool
+change is requested</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-changed</b></p>
+
+<p style="margin-left:22%;">(Bit, In) Should be driven TRUE
+when a tool change is completed.</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-number</b></p>
+
+<p style="margin-left:22%;">(s32, Out) Current tool
+number</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-prep-number</b></p>
+
+<p style="margin-left:22%;">(s32, Out) The number of the
+next tool, from the RS274NGC T-word</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-prep-pocket</b></p>
+
+<p style="margin-left:22%;">(s32, Out) This is the pocket
+number (location in the tool storage mechanism) of the tool
+requested by the most recent T-word.</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-prepare</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when a
+T<i>n</i> tool prepare is requested</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.tool-prepared</b></p>
+
+<p style="margin-left:22%;">(Bit, In) Should be driven TRUE
+when a tool prepare is completed.</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.user-enable-out</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) FALSE when an
+internal estop condition exists</p>
+
+
+<p style="margin-left:11%;"><b>iocontrol.0.emc-abort</b></p>
 
 <p style="margin-left:22%;">(BIT,OUT) Signals
 emc-originated abort to toolchanger.</p>
@@ -201,7 +294,7 @@ for start-change.</p>
 <p style="margin-left:11%;"><b>iocontrol.0.toolchanger-fault</b></p>
 
 <p style="margin-left:22%;">(BIT,IN) Toolchanger signals
-fault. This line is contionuously monitored. A fault toogles
+fault. This line is contionuously monitored. A fault toggles
 a flag in iocontrol which is reflected in the
 toolchanger-faulted pin.</p>
 
@@ -237,12 +330,16 @@ condition. Deasserts toolchanger-faulted if
 toolchanger-notify is line False. Usage. UI - e.g. clear
 fault condition button.</p>
 
+
+<p style="margin-left:11%;"><b>iocontrol.0.user-request-enable</b></p>
+
+<p style="margin-left:22%;">(Bit, Out) TRUE when the user
+has requested that estop be cleared</p>
+
 <p style="margin-left:11%;"><b>iocontrol.0.state</b></p>
 
 <p style="margin-left:22%;">(S32,OUT) Debugging pin
 reflecting internal state</p>
-
-<p style="margin-left:22%; margin-top: 1em"><br></p>
 
 <p style="margin-left:11%; margin-top: 1em">See
 <a href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?ToolchangerProtocolProposal">http://wiki.linuxcnc.org/cgi-bin/wiki.pl?ToolchangerProtocolProposal</a>

@@ -105,12 +105,12 @@ available when a tool is loaded with <em>Tn M6</em>.</p></div>
 <div class="sectionbody">
 <div class="paragraph"><p>The <em>Tool Table</em> is a text file that contains information about each
 tool. The file is located in the same directory as your configuration
-and is called <em>tool.tbl</em>. The tools might be in a tool changer or just
-changed manually. The file can be edited with a text editor or be
-updated using G10 L1. See the <a href="../lathe/lathe-user.html#sec:lathe-tool-table">Lathe Tool Table</a>
-Section for an example of the lathe tool table format.
-The maximum number of entries in the tool table is 1000.
-The maximum tool and pocket number is 99999.</p></div>
+and is called <em>tool.tbl</em> by default.  A file name may be specified
+with the ini file [EMCIO]TOOL_TABLE setting.  The tools might be in a
+tool changer or just changed manually.  The file can be edited with a
+text editor or be updated using G10 L1. See the
+<a href="../lathe/lathe-user.html#sec:lathe-tool-table">Lathe Tool Table</a> Section for an example of
+the lathe tool table format.  The maximum pocket number is 1000.</p></div>
 <div class="paragraph"><p>The <a href="../gui/tooledit.html#cha:tooledit-gui">Tool Editor</a> or a text editor can be used to edit the
 tool table. If you use a text editor make sure you reload the tool table in
 the GUI.</p></div>
@@ -160,10 +160,6 @@ cellspacing="0" cellpadding="4">
 </tr>
 </thead>
 <tbody>
-<tr>
-<td align="left" valign="top"><p class="table">;</p></td>
-<td colspan="15" align="center" valign="top"><p class="table">(no data after opening semicolon)</p></td>
-</tr>
 <tr>
 <td align="left" valign="top"><p class="table">T1</p></td>
 <td align="left" valign="top"><p class="table">P17</p></td>
@@ -225,17 +221,13 @@ cellspacing="0" cellpadding="4">
 <div class="ulist"><ul>
 <li>
 <p>
-; - opening semicolon, no data
+T - tool number (tool numbers must be unique)
 </p>
 </li>
 <li>
 <p>
-T - tool number, 0-99999 (tool numbers must be unique)
-</p>
-</li>
-<li>
-<p>
-P - pocket number, 1-99999 (pocket numbers must be unique)
+P - pocket number, 1-1000 (pocket numbers must be unique, Pocket 0
+   represents the spindle)
 </p>
 </li>
 <li>
@@ -269,19 +261,6 @@ Q - tool orientation (lathe only) - integer, 0-9
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>The file consists of one opening semicolon on the first line,
-followed by up to a maximum of 1000 tool entries.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">Although tool numbers up to 99999 are allowed, the number of entries in the
-tool table, at the moment, is still limited to a maximum of 1000 tools for
-technical reasons. The LinuxCNC developers plan to remove that limitation
-eventually. If you have a very large tool changer, please be patient.</td>
-</tr></table>
-</div>
 <div class="paragraph"><p>Earlier versions of LinuxCNC had two different tool table formats for
 mills and lathes, but since the 2.4.x release, one tool table format
 is used for all machines. Just ignore the parts of the tool table
@@ -350,21 +329,176 @@ type of description is OK. This column is for the benefit of human
 readers only. The comment must be preceded by a semicolon.</p></div>
 </div>
 <div class="sect2">
-<h3 id="sec:tool-changers">2.2. Tool Changers</h3>
+<h3 id="sec:tool-io">2.2. Tool IO</h3>
+<div class="paragraph"><p>The userspace program specified by <strong>[EMCIO]EMCIO = io</strong> is conventionally
+used for tool changer management (and other io functions for enabling
+LinuxCNC and the control of coolant/lube hardware).  The hal pins used for
+tool management are prefixed with <strong>iocontrol.0.</strong></p></div>
+<div class="paragraph"><p>A gcode <strong>TN</strong> command asserts the hal output pin <strong>iocontrol.0.tool-prepare</strong>.
+The hal input pin, <strong>iocontrol.0.tool-prepared</strong>, must be set by external
+hal logic to complete tool preparation leading to a subsequent reset of
+the tool-prepare pin.</p></div>
+<div class="paragraph"><p>A gcode <strong>M6</strong> command asserts the hal output pin <strong>iocontrol.0.tool-change</strong>.
+The related hal input pin, <strong>iocontrol.0.tool-prepared</strong>, must be set by
+external hal logic to indicate completion of the tool change leading
+to a subsequent reset of the tool-change pin.</p></div>
+<div class="paragraph"><p>Tooldata is accessed by an ordered index (idx) that depends on the
+type of toolchanger specified by <strong>[EMCIO]RANDOM_TOOLCHANGER=type</strong>.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+For <strong>RANDOM_TOOLCHANGER = 0</strong>, (0 is default and specifies a non-random
+toolchanger) idx is a number indicating the sequence in which tooldata was loaded.
+</p>
+</li>
+<li>
+<p>
+For <strong>RANDOM_TOOLCHANGER = 1</strong>, idx is the <strong>current</strong> pocket number
+for the toolnumber specified by the gcode select tool command <strong>Tn</strong>.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>The io program provides hal output pins to facilitate toolchanger management:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-number</strong>
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-index</strong>
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-pocket</strong>
+</p>
+</li>
+</ol></div>
+<div class="sect3">
+<h4 id="_io_for_non_random_toolchanger">2.2.1. IO for non-random toolchanger</h4>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Tool number N==0 indicates no tool
+</p>
+</li>
+<li>
+<p>
+The pocket number for a tool is fixed when tooldata is loaded
+</p>
+</li>
+<li>
+<p>
+At gcode <strong>TN</strong> (N != 0) command:
+</p>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-index</strong>  = idx (index based on tooldata load sequence)
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-number</strong> = N
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-pocket</strong> = the fixed pocketno for N
+</p>
+</li>
+</ol></div>
+</li>
+<li>
+<p>
+At gcode <strong>T0</strong> (N == 0 remove) command:
+</p>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-index</strong>  = 0
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-number</strong> = 0
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-pocket</strong> = 0
+</p>
+</li>
+</ol></div>
+</li>
+</ol></div>
+</div>
+<div class="sect3">
+<h4 id="_io_for_random_toolchanger">2.2.2. IO for random toolchanger</h4>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Tool number N==0 is <strong>not special</strong>
+</p>
+</li>
+<li>
+<p>
+Pocket number 0 is <strong>special</strong> as it indicates the <strong>spindle</strong>
+</p>
+</li>
+<li>
+<p>
+The <strong>current</strong> pocket number for tool N is the tooldata index (idx) for tool N
+</p>
+</li>
+<li>
+<p>
+At gcode command <strong>TN</strong>:
+</p>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-index</strong>  = pocket number for tool N
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-number</strong> = N
+</p>
+</li>
+<li>
+<p>
+<strong>iocontrol.0.tool-prep-pocket</strong> = pocket number for tool N
+</p>
+</li>
+</ol></div>
+</li>
+</ol></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sec:tool-changers">2.3. Tool Changers</h3>
 <div class="paragraph"><p>LinuxCNC supports three types of tool changers: <em>manual</em>, <em>random location</em>
-and <em>fixed location</em>. Information about configuring a LinuxCNC tool changer
+and <em>non-random or fixed location</em>. Information about configuring a LinuxCNC tool changer
 is in the <a href="../config/ini-config.html#sec:emcio-section">EMCIO Section</a> of the INI chapter.</p></div>
 <div class="paragraph"><div class="title">Manual Tool Changer</div><p>Manual tool changer (you change the tool by hand) is treated like a
-fixed location tool changer and the P number is ignored. Using the
-manual tool changer only makes sense if you have tool holders that
-remain with the tool (Cat, NMTB, Kwik Switch etc.) when changed thus
-preserving the location of the tool to the spindle. Machines with R-8
-or router collet type tool holders do not preserve the location of the
-tool and the manual tool changer should not be used.</p></div>
+fixed location tool changer.  Manual toolchanges can be aided by
+a hal configuration that employs the userspace program
+<strong>hal_manualtoolchange</strong> and is typically specified in an ini file
+with ini statements:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[HAL]
+...
+HALFILE = axis_manualtoolchange.hal
+...</code></pre>
+</div></div>
 <div class="paragraph"><div class="title">Fixed Location Tool Changers</div><p>Fixed location tool changers always return the tools to a
 fixed position in the tool changer. This would also include
 designs like lathe turrets. When LinuxCNC is configured for a fixed
-location tool changer the <em>P</em> number is ignored (but read, preserved
+location tool changer the <em>P</em> number is not used internally (but read, preserved
 and rewritten) by LinuxCNC, so you can use P for any bookkeeping number you
 want.</p></div>
 <div class="paragraph"><div class="title">Random Location Tool Changers</div><p>Random location tool changers swap the tool in the spindle with the
@@ -426,7 +560,7 @@ entry move.</p></div>
 the XY plane. Portions of the contour may be skipped by retracting the
 Z axis above the part and by extending the Z-axis at the next start
 point.</p></div>
-<div class="paragraph"><div class="title">Rapid Moves</div><p>Rapid moves may be programed while compensation is turned on.</p></div>
+<div class="paragraph"><div class="title">Rapid Moves</div><p>Rapid moves may be programmed while compensation is turned on.</p></div>
 <div class="ulist"><div class="title">Good Practices</div><ul>
 <li>
 <p>
@@ -457,7 +591,7 @@ Start a program with G40 to make sure compensation is off.
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -93,7 +93,7 @@ the following in your .hal file, making sure you pick the
 pin that is connected to your control device.</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>net spindle-enable spindle.N.on =&gt; parport.0.pin-14-out</code></pre>
+<pre><code>net spindle-enable spindle.0.on =&gt; parport.0.pin-14-out</code></pre>
 </div></div>
 <div class="paragraph"><p></p></div>
 </div>
@@ -232,7 +232,7 @@ B quadrature input.]<br /></span></p></div>
 <div class="listingblock">
 <div class="content">
 <pre><code># add the encoder to HAL and attach it to threads.
-loadrt encoder num_chan=1
+loadrt encoder num_chan=4
 addf encoder.update-counters base-thread
 addf encoder.capture-position servo-thread
 
@@ -245,7 +245,7 @@ setp encoder.3.counter-mode true
 # connect the HAL encoder outputs to LinuxCNC.
 net spindle-position encoder.3.position =&gt; spindle.0.revs
 net spindle-velocity encoder.3.velocity =&gt; spindle.0.speed-in
-net spindle-index-enable encoder.3.index-enable &lt;=&gt; spindle.N.index-enable
+net spindle-index-enable encoder.3.index-enable &lt;=&gt; spindle.0.index-enable
 
 # connect the HAL encoder inputs to the real encoder.
 net spindle-phase-a encoder.3.phase-A &lt;= parport.0.pin-10-in
@@ -299,7 +299,7 @@ setp near.0.scale 1.01</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:42 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:44 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -65,6 +65,11 @@ hal_pin_s32_new(const char *<i>name</i>, hal_pin_dir_t
 <i>comp_id</i>)</p> </table>
 
 <p style="margin-left:22%; margin-top: 1em">int
+hal_pin_port_new(const char *<i>name</i>, hal_pin_dir_t
+<i>dir</i>, hal_port_t ** <i>data_ptr_addr</i>, int
+<i>comp_id</i>)</p> </table>
+
+<p style="margin-left:22%; margin-top: 1em">int
 hal_pin_bit_newf(hal_pin_dir_t <i>dir</i>, hal_bit_t **
 <i>data_ptr_addr</i>, int <i>comp_id</i>, const char
 *<i>fmt</i>, <i>...</i>)</p></table>
@@ -81,6 +86,11 @@ hal_pin_u32_newf(hal_pin_dir_t <i>dir</i>, hal_u32_t **
 
 <p style="margin-left:22%; margin-top: 1em">int
 hal_pin_s32_newf(hal_pin_dir_t <i>dir</i>, hal_s32_t **
+<i>data_ptr_addr</i>, int <i>comp_id</i>, const char
+*<i>fmt</i>, <i>...</i>)</p></table>
+
+<p style="margin-left:22%; margin-top: 1em">int
+hal_pin_port_newf(hal_pin_dir_t <i>dir</i>, hal_port_t **
 <i>data_ptr_addr</i>, int <i>comp_id</i>, const char
 *<i>fmt</i>, <i>...</i>)</p></table>
 

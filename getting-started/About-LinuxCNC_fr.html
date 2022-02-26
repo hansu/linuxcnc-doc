@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>À propos du logiciel LinuxCNC</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>À propos du logiciel LinuxCNC</h1>
+<div id="toc">
+  <div id="toctitle">Table des matières</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_à_propos_du_logiciel_linuxcnc">1. À propos du logiciel LinuxCNC</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+LinuxCNC est un logiciel de contrôle de machines-outils telles que fraiseuses,
+    tours, robots etc.
+</p>
+</li>
+<li>
+<p>
+LinuxCNC est un logiciel libre avec code source ouvert. Les versions actuelles
+    de LinuxCNC sont entièrement sous licence GNU Lesser General Public et de GNU
+    General Public License (GPL et LGPL)
+</p>
+</li>
+<li>
+<p>
+LinuxCNC propose:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Une installation facile à partir d&#8217;un CD live.
+</p>
+</li>
+<li>
+<p>
+Un assistant de configuration simple à utiliser pour créer rapidement une
+    configuration spécifique à la machine.
+</p>
+</li>
+<li>
+<p>
+Une interface graphique (plusieurs interfaces au choix).
+</p>
+</li>
+<li>
+<p>
+Un outil de création d&#8217;interface graphique (GladeVCP).
+</p>
+</li>
+<li>
+<p>
+Un interpréteur de G-code (RS-274NGC, langage de programmation des
+    machines-outils).
+</p>
+</li>
+<li>
+<p>
+Un système prédictif de planification de trajectoire.
+</p>
+</li>
+<li>
+<p>
+La gestion du fonctionnement de l'électronique machine de bas niveau, tels
+    que les capteurs et les moteurs.
+</p>
+</li>
+<li>
+<p>
+Un logiciel d&#8217;automate programmable pour schémas à contacts (Ladder).
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Il ne fournit pas directement de logiciel de dessin ni de générateur de G-code,
+    mais il en existe de nombreux, faciles à mettre en œuvre.
+</p>
+</li>
+<li>
+<p>
+Il peut piloter simultanément jusqu'à 9 axes et supporte une très grande
+    variété d&#8217;interfaces.
+</p>
+</li>
+<li>
+<p>
+Le contrôleur peut fonctionner avec de vrais servomoteurs (analogiques ou PWM)
+    en boucle fermée, ou avec des <em>step-servos</em> ou encore, des moteurs pas à pas
+    en boucle ouverte.
+</p>
+</li>
+<li>
+<p>
+Le contrôleur de mouvement assure: les compensations de rayon et/ou de
+    longueur d&#8217;outil, le suivi de trajectoire d&#8217;usinage avec tolérance spécifiée,
+    le filetage sur tour, le taraudage rigide, les mouvements avec axes
+    synchronisés, la vitesse d&#8217;avance adaptative, la correction de vitesse par
+    l&#8217;opérateur, le contrôle de vitesse constante etc.
+</p>
+</li>
+<li>
+<p>
+Il supporte les systèmes à mouvements non cartésiens grâce aux modules de
+    cinématique personnalisée.
+    Les architectures disponibles incluent les hexapodes (plate-forme de Stewart
+    et concepts similaires) et les systèmes à articulations rotatives pour
+    assurer les mouvements de robots tels que PUMA ou SCARA.
+</p>
+</li>
+<li>
+<p>
+LinuxCNC fonctionne sous Linux en utilisant ses extensions temps réel RTAI.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_le_système_d_8217_exploitation">2. Le système d&#8217;exploitation</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La distribution Ubuntu a été choisie car elle s&#8217;intègre parfaitement dans les
+vues Open Source de LinuxCNC:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Ubuntu sera toujours gratuit, et il n&#8217;y a aucun frais supplémentaire pour la
+    version  <em>"Enterprise Edition"</em>,
+    nous rendons nos travaux disponibles pour  tout le monde dans les mêmes
+    conditions de gratuité.
+</p>
+</li>
+<li>
+<p>
+LinuxCNC est jumelé avec les versions LTS d&#8217;Ubuntu qui apportent le soutien et
+    les correctifs de sécurité de l'équipe Ubuntu pour 3 à 5 ans.
+</p>
+</li>
+<li>
+<p>
+Ubuntu utilise les meilleurs outils de traductions et d&#8217;accessibilité
+    à l&#8217;infrastructure, que la communauté du logiciel libre a à offrir, pour
+    rendre Ubuntu accessible à un maximum de personnes.
+</p>
+</li>
+<li>
+<p>
+La communauté Ubuntu a entièrement souscrit aux principes du développement de
+    logiciels libres, nous encourageons tout le monde à utiliser des logiciels
+    open source, à les améliorer et à les transmettre.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_trouver_de_l_8217_aide_a_id_sec_trouver_aide_a">3. Trouver de l&#8217;aide<a id="sec:Trouver-aide"></a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_les_salons_irc">3.1. Les salons IRC</h3>
+<div class="paragraph"><p>IRC signifie Internet Relay Chat.
+Il s&#8217;agit d&#8217;une connexion en direct avec d&#8217;autres utilisateurs LinuxCNC.
+Le canal LinuxCNC sur IRC est: #linuxcnc sur freenode.net.</p></div>
+<div class="paragraph"><p>La manière la plus simple d&#8217;aller sur IRC est d&#8217;utiliser
+le client embarqué sur cette page:
+<a href="http://webchat.freenode.net/?channels=linuxcnc">http://webchat.freenode.net/?channels=linuxcnc</a></p></div>
+<div class="paragraph"><p>Un peu d'éthique sur le canal IRC:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Posez des questions précises&#8230; Évitez le "quelqu&#8217;un peut m&#8217;aider?",
+   ce type de questions, <em>ne fonctionnera pas</em>.
+</p>
+</li>
+<li>
+<p>
+Si vous êtes vraiment nouveau dans tout cela, réfléchissez à votre question
+    avant de la poser. Assurez-vous de donner suffisamment d&#8217;informations pour
+    que quelqu&#8217;un puisse résoudre votre problème.
+</p>
+</li>
+<li>
+<p>
+Faites preuve de patience quand vous attendez une réponse, il faut parfois
+    du temps pour formuler une réponse. Tout les participants peuvent être
+    occupés, à travailler par exemple :-) ou à autre chose.
+</p>
+</li>
+<li>
+<p>
+Configurez votre compte IRC avec un pseudo unique afin que les participants
+    sachent qui vous êtes. Si vous utilisez le client java, utilisez le même
+    pseudo à chaque fois que vous  vous connecter, cela aidera les participants
+    à se rappeler qui vous êtes, ainsi, si vous êtes déjà venu avant, beaucoup
+    se souviendront des discussions passées, ce qui fait gagner du temps à tout
+    le monde.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_partage_de_fichiers_sur_irc">3.2. Partage de fichiers sur IRC</h3>
+<div class="paragraph"><p>La façon la plus courante de partager des fichiers sur IRC est de charger le
+fichier sur un des services suivants ou service similaire, puis collez le lien
+vers le fichier, sur l&#8217;IRC:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Pour le texte
+</dt>
+<dd>
+<p>
+     <a href="http://pastebin.com/">http://pastebin.com/</a>, <a href="http://pastie.org/">http://pastie.org/</a>, <a href="https://gist.github.com/">https://gist.github.com/</a>
+</p>
+</dd>
+<dt class="hdlist1">
+Pour les photos
+</dt>
+<dd>
+<p>
+     <a href="http://imagebin.org/">http://imagebin.org/</a>, <a href="http://imgur.com/">http://imgur.com/</a>, <a href="http://bayimg.com/">http://bayimg.com/</a>
+</p>
+</dd>
+<dt class="hdlist1">
+Pour les fichiers
+</dt>
+<dd>
+<p>
+     <a href="https://filedropper.com/">https://filedropper.com/</a>, <a href="http://filefactory.com/">http://filefactory.com/</a>, <a href="http://1fichier.com/">http://1fichier.com/</a>
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_les_listes_de_diffusion">3.3. Les listes de diffusion</h3>
+<div class="paragraph"><p>Une liste de diffusion sur Internet est un moyen de poser des questions,
+tout les abonnés à cette liste pourrons lire et répondre à leur convenance.
+Vous obtiendrez une meilleurs visibilité de vos questions sur une liste
+de diffusion plutôt que sur l&#8217;IRC et vous aurez plus de réponses.
+En quelques mots, vous envoyez un e-mail à la liste et selon comment
+vous avez configuré votre compte, vous aurez les réponses soit,
+regroupées quotidiennement, soit individuellement.</p></div>
+<div class="paragraph"><p>Inscription sur la liste de diffusion des utilisateurs de LinuxCNC sur:
+<a href="https://lists.sourceforge.net/lists/listinfo/linuxcnc-users">https://lists.sourceforge.net/lists/listinfo/linuxcnc-users</a></p></div>
+</div>
+<div class="sect2">
+<h3 id="_le_wiki_de_linuxcnc">3.4. Le Wiki de LinuxCNC</h3>
+<div class="paragraph"><p>Un site Wiki est un site web maintenu et enrichi par les utilisateurs,
+n&#8217;importe qui peut ajouter ou modifier les pages.</p></div>
+<div class="paragraph"><p>Le Wiki de LinuxCNC est également maintenu par les utilisateurs,
+il contient un très grand nombre d&#8217;informations et d&#8217;astuces sur:
+<a href="http://wiki.linuxcnc.org/">http://wiki.linuxcnc.org/</a></p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Dernière mise à jour
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

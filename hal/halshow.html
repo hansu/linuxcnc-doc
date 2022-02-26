@@ -64,8 +64,9 @@ Notes:
 and used a file named my.halshow in the current directory:</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>$ halshow  --fformat ".5f" ./my.halshow</code></pre>
+<pre><code>$ halshow  --fformat "%.5f" ./my.halshow</code></pre>
 </div></div>
+<div class="paragraph"><p>For more information regarding the format, please refer to <a href="https://www.tcl.tk/man/tcl8.6.11/TclCmd/format.html">https://www.tcl.tk/man/tcl8.6.11/TclCmd/format.html</a></p></div>
 </div>
 </div>
 <div class="sect1">
@@ -103,11 +104,23 @@ previously set watches, you cannot erase just one watch.)</p></div>
 <div class="paragraph"><p>Clicking on the node name, the word "Components" for example, will
 show you (under the "Show" tab) all that HAL knows about the contents
 of that node. Figure <a href="halshow.html#cap:halshow-layout">[cap:halshow-layout]</a> shows a list exactly like
-you will see if you click the "Components" name while you are running a
-standard m5i20 servo card. The information display is exactly like
+you will see if you click the "Components" name.
+The information display is exactly like
 those shown in traditional text based HAL analysis tools. The advantage
 here is that we have mouse click access, access that can be as broad or
 as focused as you need.</p></div>
+<div class="ulist"><div class="title"><span class="yellow-background">New in 2.9</span></div><ul>
+<li>
+<p>
+Selected text from the Show tab can be copied by right-click or CTRL-C.
+</p>
+</li>
+<li>
+<p>
+The command entry provides now a bash-like history (only for the session) for executed commands.
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>If we take a closer look at the tree display we can see that the six
 major parts of a HAL can all be expanded at least one level. As these
 levels are expanded you can get more focused with the reply when you
@@ -282,17 +295,68 @@ available in this area. That is where the HAL Watch Area is of value.</p></div>
 <div class="sect1">
 <h2 id="_watch_tab">4. Watch Tab</h2>
 <div class="sectionbody">
+<div class="ulist"><div class="title"><span class="yellow-background">New in 2.9</span></div><ul>
+<li>
+<p>
+Buttons for pin/signal/parameter manipulation
+</p>
+</li>
+<li>
+<p>
+Right-click menu to
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Copy name
+</p>
+</li>
+<li>
+<p>
+Set value
+</p>
+</li>
+<li>
+<p>
+Unlink pin
+</p>
+</li>
+<li>
+<p>
+Remove Delete from view
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Menu entries for
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Add signals/pins/parameters by name
+</p>
+</li>
+<li>
+<p>
+Set watch interval
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
 <div class="paragraph"><p>Clicking the watch tab produces a blank canvas. You can add signals and pins
 to this canvas and watch their values.<span class="footnote"><br />[The refresh rate of the watch
 display is much lower than Halmeter or Halscope. If you need good resolution
-of the timing of signals those tools are much more effective.]<br /></span> You can add
-signals or pins when the watch tab is displayed by clicking on the name of it.
-The following figure shows this canvas with several "bit" type signals. These
-signals include enable-out for the first three axes and two of the three
-iocontrol "estop" signals. Notice that the axes are not enabled even though the
-estop signals say that LinuxCNC is not in estop. A quick look at TkLinuxCNC
-shows that the condition of LinuxCNC is ESTOP RESET. The amp enables do not
-turn true until the machine has been turned on.</p></div>
+of the timing of signals use these tools or set the interval in the Watch menu.]<br /></span>
+You can add signals or pins when the watch tab is displayed by clicking on the
+name of it in the tree view.
+The following figure shows this canvas with several pins.
+The pins and signals that are writable have buttons for manipulation on the right
+side. Pins that are linked to a signal have disabled buttons. To set these values,
+the corresponding pin has to be unlinked from the signal. That can be done by
+right-click on the signal name and select "Unlink pin", see <a href="halshow.html#cap:watch-tab-context-menu">[cap:watch-tab-context-menu]</a>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/halshow-4.png" alt="Watch Tab" />
@@ -300,7 +364,7 @@ turn true until the machine has been turned on.</p></div>
 <div class="title">Figure 4. Watch Tab</div>
 </div>
 <div class="paragraph"><p>Watch displays bit type (binary) values using colored circles
-representing LEDs. They show as dark brown when a bit signal or pin is
+representing LEDs. They show as dark red when a bit signal or pin is
 false, and as light yellow whenever that signal is true. If you select
 a pin or signal that is not a bit type (binary) signal, watch will show
 it as a numerical value.</p></div>
@@ -310,6 +374,12 @@ Watch&#8217;s refresh rate is a bit slow to see stepper pulses, but you can
 use it for these if you move an axis very slowly or in very small
 increments of distance. If you&#8217;ve used IO_Show in LinuxCNC, the watch page
 in halshow can be set up to watch a parport much as IO_Show did.</p></div>
+<div class="imageblock" id="cap:watch-tab-context-menu" style="text-align:center;">
+<div class="content">
+<img src="images/halshow-5.png" alt="Watch Tab context menu" />
+</div>
+<div class="title">Figure 5. Watch Tab context menu</div>
+</div>
 </div>
 </div>
 </div>
@@ -317,7 +387,7 @@ in halshow can be set up to watch a parport much as IO_Show did.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2022-02-19 19:48:43 CET
 </div>
 </div>
 </body>

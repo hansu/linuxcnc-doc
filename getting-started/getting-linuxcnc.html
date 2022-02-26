@@ -84,12 +84,21 @@ Image.</p></div>
 <div class="sect2">
 <h3 id="_normal_download">1.1. Normal Download</h3>
 <div class="paragraph"><p>For x86 PCs Download the Live/Install CD by clicking here:</p></div>
-<div class="paragraph"><p><a href="http://www.linuxcnc.org/iso/linuxcnc-2.8.0-buster.iso">http://www.linuxcnc.org/iso/linuxcnc-2.8.0-buster.iso</a></p></div>
+<div class="paragraph"><p><a href="http://www.linuxcnc.org/iso/linuxcnc-2.8.2-buster.iso">http://www.linuxcnc.org/iso/linuxcnc-2.8.2-buster.iso</a></p></div>
 <div class="paragraph"><p>For the Raspberry Pi a complete SD card image is available here:</p></div>
-<div class="paragraph"><p><a href="http://www.linuxcnc.org/iso/linuxcnc-2.8.0-pi4.zip">http://www.linuxcnc.org/iso/linuxcnc-2.8.0-pi4.zip</a></p></div>
+<div class="paragraph"><p><a href="http://www.linuxcnc.org/iso/linuxcnc-2.8.1-pi4.zip">http://www.linuxcnc.org/iso/linuxcnc-2.8.1-pi4.zip</a> (this will auto-update
+to 2.8.2 )</p></div>
 <div class="paragraph"><p>This can be installed using the normal Pi
 <a href="https://www.raspberrypi.org/documentation/installation/installing-images/README.md">install process</a>
 including with the Raspberry Pi Imager app.</p></div>
+<div class="paragraph"><p>This SD image is reported not to work with the Raspberry Pi4 8GB model.
+Note also that this version of the SD image limits available memory to
+3GB as this is necessary to persuade it to run with both WiFi and USB
+working  on some versions of the Pi. You can experiment with removing
+this limit by editing the config-rt.txt file in the boot directory. If
+you can&#8217;t boot after the change then the file can be edited back by
+mounting the SD card in a a different computer (maybe even a Pi with a
+USB card reader)</p></div>
 </div>
 <div class="sect2">
 <h3 id="_download_using_zsync">1.2. Download using zsync</h3>
@@ -114,12 +123,12 @@ Then run this command to download the iso to your computer
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>zsync http://www.linuxcnc.org/iso/linuxcnc-2.8.0-buster.iso.zsync</code></pre>
+<pre><code>http://www.linuxcnc.org/iso/linuxcnc-2.8.2-buster.iso</code></pre>
 </div></div>
 <div class="paragraph"><p>or</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>zsync http://www.linuxcnc.org/iso/linuxcnc-2.8.0-pi4.zip.zsync</code></pre>
+<pre><code>zsync http://www.linuxcnc.org/iso/linuxcnc-2.8.1-pi4.zip.zsync</code></pre>
 </div></div>
 </li>
 </ol></div>
@@ -137,12 +146,12 @@ After downloading, verify the checksum of the image to ensure integrity.
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>md5sum linuxcnc-2.8.0-buster.iso</code></pre>
+<pre><code>md5sum linuxcnc-2.8.2-buster.iso</code></pre>
 </div></div>
 <div class="paragraph"><p>or</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>sha256sum linuxcnc-2.8.0-buster.iso</code></pre>
+<pre><code>sha256sum linuxcnc-2.8.2-buster.iso</code></pre>
 </div></div>
 </li>
 <li>
@@ -151,8 +160,8 @@ Then compare to these checksums
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>md5sum: 41b71c4956c0c89033a99a590ebaefec
-sha256sum: a542092aa9f399d3ad50bbb2f0f4dd63ad9332c23d8387f6061bdd186d1df3b0</code></pre>
+<pre><code>md5sum: 4496eae88a1d66f457205d0d5b69c3c2
+sha256sum: 94a6dc7ef12fbdc0bafd9259ce36797a8b3410ad22e73c4ab57b8e937a924e1a</code></pre>
 </div></div>
 </li>
 </ol></div>
@@ -193,7 +202,7 @@ Use the <code>dd</code> command to write the image to your USB storage device.
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>dd if=linuxcnc-2.8.0-buster.iso of=/dev/sde</code></pre>
+<pre><code>dd if=linuxcnc-2.8.2-buster.iso of=/dev/sde</code></pre>
 </div></div>
 </li>
 </ol></div>
@@ -215,7 +224,7 @@ Insert the USB and note the name of the new disk that appears, eg
 </li>
 <li>
 <p>
-unmount the USB. The number found above should be substitued in place
+unmount the USB. The number found above should be substituted in place
   of the N
 </p>
 <div class="listingblock">
@@ -226,7 +235,7 @@ unmount the USB. The number found above should be substitued in place
 <li>
 <p>
 Transfer the data with dd, as for Linux above. Note that the disk name
-  has an added "r" at the begining
+  has an added "r" at the beginning
 </p>
 <div class="listingblock">
 <div class="content">
@@ -322,7 +331,7 @@ the computer from the Live/Install Image and choose the Live boot option.</p></d
 <div class="title">Note</div>
 </td>
 <td class="content">If the system does not boot from the DVD or USB stick it might be
-necesary to change the boot order in the PC BIOS.</td>
+necessary to change the boot order in the PC BIOS.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Once the computer has booted up you can try out LinuxCNC without installing
@@ -543,7 +552,7 @@ project developers.</td>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-Install Debian Buster (Debian 10), amd64 verison.
+Install Debian Buster (Debian 10), amd64 version.
 You can download the installer here:
   <a href="https://www.debian.org/releases/buster/">https://www.debian.org/releases/buster/</a>
 </p>
@@ -613,7 +622,7 @@ Add the LinuxCNC Archive Signing Key to your apt keyring by running
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-key 3cb9fd148f374fef</code></pre>
+<pre><code>sudo apt-key adv --keyserver hkp://keys.openpgp.org --recv-key 3cb9fd148f374fef</code></pre>
 </div></div>
 </li>
 <li>
@@ -622,7 +631,8 @@ Add the apt repository:
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rtpreempt | sudo tee -a /etc/apt/sources.list.d/linuxcnc.list</code></pre>
+<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rtpreempt | sudo tee /etc/apt/sources.list.d/linuxcnc.list
+ echo deb-src http://linuxcnc.org/ buster base 2.8-rtpreempt | sudo tee -a /etc/apt/sources.list.d/linuxcnc.list</code></pre>
 </div></div>
 </li>
 <li>
@@ -641,6 +651,15 @@ Install uspace (a reboot may be required prior to installing uspace)
 <div class="listingblock">
 <div class="content">
 <pre><code>sudo apt-get install linuxcnc-uspace</code></pre>
+</div></div>
+</li>
+<li>
+<p>
+Optionally you can install mesaflash if you are using a Mesa card.
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>sudo apt install mesaflash</code></pre>
 </div></div>
 </li>
 </ol></div>
@@ -672,7 +691,7 @@ Add the LinuxCNC Archive Signing Key to your apt keyring (Not
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-key 3cb9fd148f374fef</code></pre>
+<pre><code>sudo apt-key adv --keyserver hkp://keys.openpgp.org --recv-key 3cb9fd148f374fef</code></pre>
 </div></div>
 </li>
 <li>
@@ -681,7 +700,8 @@ Add the apt repository:
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rt | sudo tee -a /etc/apt/sources.list.d/linuxcnc.list</code></pre>
+<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rt | sudo tee /etc/apt/sources.list.d/linuxcnc.list
+ echo deb-src http://linuxcnc.org/ buster base 2.8-rt | sudo tee -a /etc/apt/sources.list.d/linuxcnc.list</code></pre>
 </div></div>
 </li>
 <li>
@@ -695,25 +715,7 @@ Update the package list from linuxcnc.org
 </li>
 <li>
 <p>
-Install the RTAI kernel
-</p>
-<div class="listingblock">
-<div class="content">
-<pre><code>sudo apt-get install linux-image-4.14.174-rtai-amd64</code></pre>
-</div></div>
-</li>
-<li>
-<p>
-Install the RTAI application layer
-</p>
-<div class="listingblock">
-<div class="content">
-<pre><code>sudo apt-get install rtai-modules-4.14.174</code></pre>
-</div></div>
-</li>
-<li>
-<p>
-Install linuxcnc (a reboot may be required prior to installing)
+Install the new realtime kernel, RTAI and the rtai version of linuxcnc
 </p>
 <div class="listingblock">
 <div class="content">
@@ -721,6 +723,7 @@ Install linuxcnc (a reboot may be required prior to installing)
 </div></div>
 </li>
 </ol></div>
+<div class="paragraph"><p>Reboot the machine, ensuring that the system boots from the new 4.19.195-rtai kernel.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_installing_on_raspbian_10">7.3. Installing on Raspbian 10</h3>
@@ -742,7 +745,7 @@ Add the LinuxCNC Archive Signing Key to your apt keyring
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-key 3cb9fd148f374fef</code></pre>
+<pre><code>sudo apt-key adv --keyserver hkp://keys.openpgp.org --recv-key 3cb9fd148f374fef</code></pre>
 </div></div>
 </li>
 <li>
@@ -751,7 +754,7 @@ Add the apt repository:
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rtpreempt | sudo tee -a /etc/apt/sources.list.d/linuxcnc.list</code></pre>
+<pre><code> echo deb http://linuxcnc.org/ buster base 2.8-rtpreempt | sudo tee /etc/apt/sources.list.d/linuxcnc.list</code></pre>
 </div></div>
 </li>
 <li>
@@ -792,7 +795,7 @@ Install Ubuntu Precise 12.04 x86 (32-bit). Any flavor should
   work (regular Ubuntu, Xubuntu, Lubuntu, etc). 64-bit (AMD64)
   is currently not supported. You can download the installer here:
   <a href="http://releases.ubuntu.com/precise/">http://releases.ubuntu.com/precise/</a>
-  Note the warnings that this release is out of support. But is is a way
+  Note the warnings that this release is out of support. But it is a way
   to install LinuxCNC with a well-tested RTAI kernel.
 </p>
 </li>
@@ -813,7 +816,7 @@ Add the LinuxCNC Archive Signing Key to your apt keyring by running
 </p>
 <div class="listingblock">
 <div class="content">
-<pre><code>sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-key 3cb9fd148f374fef</code></pre>
+<pre><code>sudo apt-key adv --keyserver hkp://keys.openpgp.org --recv-key 3cb9fd148f374fef</code></pre>
 </div></div>
 </li>
 <li>
@@ -881,7 +884,7 @@ Run
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

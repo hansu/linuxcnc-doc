@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>Configuration requise</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Configuration requise</h1>
+<div id="toc">
+  <div id="toctitle">Table des matières</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="cha:Configuration-requise">1. Configuration minimale</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La configuration minimale pour faire tourner LinuxCNC sous Debian / Ubuntu varie
+selon l&#8217;usage envisagé. Les moteurs pas à pas en général exigent, pour
+générer leurs trains d&#8217;impulsions de pas, des machines plus rapides que
+les systèmes à servomoteurs. Il est possible de tester le logiciel à
+partir du Live-CD avant de l&#8217;installer sur un ordinateur. Garder à
+l&#8217;esprit que les valeurs retournées par le test de latence (Latency
+Test), sont plus importantes que la vitesse du microprocesseur pour la génération
+logicielle des pas. Plus d&#8217;informations à ce propos dans la section
+relative au <a href="../install/Latency_Test_fr.html#cha:test-de-latence">test de latence</a>.
+De surcroît, LinuxCNC a besoin d'être exécuté sur un noyau modifié. Voir <a href="System_Requirements_fr.html#Noyau_et_version_requise">Noyau et version requise</a></p></div>
+<div class="paragraph"><p>Des informations additionnelles sont disponibles sur le
+<a href="http://wiki.linuxcnc.org/cgi-bin/emcinfo.pl?Hardware_Requirements">wiki de linuxcnc.org.</a></p></div>
+<div class="paragraph"><p>LinuxCNC et Debian doivent fonctionner raisonnablement bien sur la
+configuration matérielle minimale suivante. Ces valeurs ne sont pas des
+valeurs minimales absolues mais donneront des performances acceptables
+pour la plupart des systèmes à moteurs pas à pas.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Microprocesseur x86 cadencé à 700 MHz (x86 à 1.2 GHz recommandé), Raspberry Pi 4
+   ou mieux.
+</p>
+</li>
+<li>
+<p>
+Pour faire tourner LinuxCNC 2.8 et Debian Buster à partir du Live-CD,
+   le système doit être compatible x64.
+</p>
+</li>
+<li>
+<p>
+512 Mio de RAM (512 Mio ou plus de 1 Gio recommandé)
+</p>
+</li>
+<li>
+<p>
+8 GB d&#8217;espace disque
+</p>
+</li>
+<li>
+<p>
+Carte graphique avec une résolution minimale de 1024x768, qui n&#8217;utilise pas
+   les drivers Nvidia ou ATI fglrx propriétaire.
+   Les cartes graphique intégrées fontionnent généralement bien.
+</p>
+</li>
+<li>
+<p>
+Une connection Internet ou réseau (optionnelle mais très pratique pour
+   les mises à jour et communiquer avec la communauté LinuxCNC)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Le matériel minimum requis évolue avec les distributions de Linux.
+Pensez à regarder sur le site de <a href="https://www.debian.org/releases/stable/amd64/ch02.fr.html">Debian</a>
+pour le Live-CD que vous utilisé. Du matériel plus ancien peut bénéficier d&#8217;une
+version plus ancienne du Live-CD</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Noyau_et_version_requise">2. Noyau et version requise</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>LinuxCNC a besoin d&#8217;un noyau modifié pour une utilisation en temps réel
+afin pouvoir contrôler des machines. Il peut aussi être exécuter sur un noyau
+standard en mode simulation pour vérifier le G-code, tester des fichiers de config
+et apprendre le système.</p></div>
+<div class="paragraph"><p>Pour utiliser un noyaux temps réel, deux versions de LinuxCNC sont disponible:
+Les noms des paquets sont: "linuxcnc" et "linuxcnc-uspace"</p></div>
+<div class="paragraph"><p>Les options temps réel du noyau sont: "preempt-rt", "RTAI" et "Xenomai"</p></div>
+<div class="paragraph"><p>Pour savoir la version de votre noyau, utiliser la commande suivante dans un terminal:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>uname -a</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>=== Preempt-RT avec linuxcnc-uspace</code></pre>
+</div></div>
+<div class="paragraph"><p>Preempt-RT est le plus récent des systèmes temps réel, il est aussi
+le plus proche du noyau principal. Preempt-RT est disponible déjà compilé dans les
+dépots. Faite une recherche avec "Preempt-RT", puis installé le paquet.
+Preempt-RT posséde généralement le meilleur support de driver et est la seule façon de
+faire fonctionner les cartes MESA en ethernet. Preempt-RT posséde la pire latence,
+mais des exceptions existent.</p></div>
+<div class="sect2">
+<h3 id="_rtai_avec_linuxcnc">2.1. RTAI avec linuxcnc</h3>
+<div class="paragraph"><p>RTAI était l&#8217;option temps réel la plus utilisée. Il donne généralement les meilleurs
+performances en latence, mais offre un support des périphériques plus pauvre
+et moins de choix sur les résolutions d'écrans. Un noyau RTAI est disponible dans les
+dépots de LinuxCNC. Si vous avez installé depuis un Live-CD, passer sur le noyau
+LinuxCNC est décrit dans [Installer-RTAI].</p></div>
+</div>
+<div class="sect2">
+<h3 id="_xenomai_avec_linuxcnc_uspace">2.2. Xenomai avec linuxcnc-uspace</h3>
+<div class="paragraph"><p>Xenomai est aussi supporté, mais vous devez trouvé ou crée le noyau,
+puis compiler LinuxCNC depuis sa source pour pouvoir l&#8217;utiliser.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_rtai_avec_linuxcnc_uspace">2.3. RTAI avec linuxcnc-uspace</h3>
+<div class="paragraph"><p>Il est aussi possible d&#8217;utiliser LinuxCNC avec RTAI en mode user-space.
+Même chose que pour Xenomai, vous devez compiler a partir des sources.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_problématique_du_matériel">3. Problématique du matériel</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_les_pc_portables">3.1. Les PC portables</h3>
+<div class="paragraph"><p>Les PC portables donnent généralement de piètres performances pour les
+tâches temps réel utilisées pour la génération logicielle de pas.
+Encore une fois, lancer un test de latence sur une grande période de
+temps vous permettra de déterminer si le PC portable envisagé est
+utilisable ou non.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_les_cartes_graphiques">3.2. Les cartes graphiques</h3>
+<div class="paragraph"><p>Si votre installation posséde un écran avec une résolution de
+800 x 600 il est alors probable que Debian n&#8217;ai pas reconnu votre carte
+graphique ou écran. Cela peut être corrigé par une installation des pilotes
+ou par la création / édition d&#8217;un fichier Xorg.conf</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Dernière mise à jour
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

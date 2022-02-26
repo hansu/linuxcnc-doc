@@ -854,8 +854,8 @@ power amplifiers has upper level driver which export pins
 and parameters to HAL. They receive position reference and
 provide encoder feedback via CAN bus.</p></div>
 <div class="paragraph"><p>The frames are standard (11 bit) ID frames, with 4 byte data length.
-Tha baud rate is 1 Mbit.
-The position commad IDs for axis 0..5 are 0x10..0x15.
+The baud rate is 1 Mbit.
+The position command IDs for axis 0..5 are 0x10..0x15.
 The position feedback IDs for axis 0..5 are 0x20..0x25.</p></div>
 <div class="paragraph"><p>These configuration can be changed with the modifivation
 of hal_gm.c and recompiling LinuxCNC.</p></div>
@@ -1390,8 +1390,8 @@ available modules automatically.</p></div>
 <div class="paragraph"><p><strong>Fault handling:</strong></p></div>
 <div class="paragraph"><p>If a module does not answer regularly the GM6-PCI card drops down the module.
 If a module with output do not gets data with correct CRC regularly, the
-module switch to error sate (green LED blinking), and turns all outputs
-to error sate.</p></div>
+module switch to error state (green LED blinking), and turns all outputs
+to error state.</p></div>
 <div class="paragraph"><p><strong>Connecting the nodes:</strong></p></div>
 <div class="paragraph"><p>The modules on the bus have to be connected in serial topology, with
 termination resistors on the end. The start of the topology is the PCI
@@ -1402,7 +1402,7 @@ card, and the end is the last module.</p></div>
 </div>
 <div class="title">Figure 7. Connecting the RS485 nodes to the GM6-PCI card</div>
 </div>
-<div class="paragraph"><p><strong>Adressing:</strong></p></div>
+<div class="paragraph"><p><strong>Addressing:</strong></p></div>
 <div class="paragraph"><p>Each node on the bus has a 4 bit unique address that can be set with a red DIP switch.</p></div>
 <div class="paragraph"><p><strong>Status LED:</strong></p></div>
 <div class="paragraph"><p>A green LED indicates the status of the module:</p></div>
@@ -1816,7 +1816,7 @@ Use other switch pin, or connect only normally open switch to this switch input 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

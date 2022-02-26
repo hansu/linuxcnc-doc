@@ -36,7 +36,7 @@ and (<em>&lt;&gt;</em>) denotes an optional item.</p></div>
 as the <em>L number</em>, and so on for any other letter.</p></div>
 <div class="paragraph"><p>In the G code prototypes the word <em>axes</em> stands for any axis as defined
 in your configuration.</p></div>
-<div class="paragraph"><p>An optional value will be written like this <em>&lt;L-&gt;</em>.</p></div>
+<div class="paragraph"><p>An optional value will be written like this <em>&lt;L- &gt;</em>.</p></div>
 <div class="paragraph"><p>A real value may be:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -130,6 +130,10 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g8">G8</a></p></td>
 <td align="left" valign="top"><p class="table">Radius Mode (lathe)</p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g10-l0">G10 L0</a></p></td>
+<td align="left" valign="top"><p class="table">Reload Tool Table Data</p></td>
 </tr>
 <tr>
 <td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g10-l1">G10 L1</a></p></td>
@@ -230,6 +234,14 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g64">G64</a></p></td>
 <td align="left" valign="top"><p class="table">Path Control Mode with Optional Tolerance</p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g70">G70</a></p></td>
+<td align="left" valign="top"><p class="table">Lathe finishing cycle</p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g71-g72">G71-G72</a></p></td>
+<td align="left" valign="top"><p class="table">Lathe roughing cycle</p></td>
 </tr>
 <tr>
 <td align="center" valign="top"><p class="table"><a href="g-code.html#gcode:g73">G73</a></p></td>
@@ -376,7 +388,7 @@ An axis letter is used that is not configured
 <div class="content">
 <pre><code>G1 axes</code></pre>
 </div></div>
-<div class="paragraph"><p>For linear (straight line) motion at programed <a href="other-code.html#sec:set-feed-rate">feed rate</a>
+<div class="paragraph"><p>For linear (straight line) motion at programmed <a href="other-code.html#sec:set-feed-rate">feed rate</a>
 (for cutting or not), program <em>G1 'axes</em>', where all the axis words are
 optional. The <em>G1</em> is optional if the current motion mode is <em>G1</em>. This will
 produce coordinated motion to the destination point at the current feed
@@ -1021,7 +1033,31 @@ G8 is default at power up.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g10-l1">12. G10 L1 Set Tool Table</h2>
+<h2 id="gcode:g10-l0">12. G10 L0 Reload Tool Table Data</h2>
+<div class="sectionbody">
+<div class="paragraph"><p></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>G10 L0</code></pre>
+</div></div>
+<div class="paragraph"><p>G10 L0 reload all tool table data.  Requires that there is no
+current tool loaded in spindle.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">When using G10 L0, tool parameters (#5401-#5413) will be
+updated immediately and any altered tool diameters will be
+used for subsequent G41,42 cutter radius compensation
+commands. Existing G43 tool length compensation values will
+remain in effect until updated by new G43 commands.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gcode:g10-l1">13. G10 L1 Set Tool Table</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1056,7 +1092,7 @@ G8 is default at power up.</p></div>
 </li>
 </ul></div>
 <div class="paragraph"><p>G10 L1 sets the tool table for the <em>P</em> tool number to the values of the words.</p></div>
-<div class="paragraph"><p>A valid G10 L1 rewrites and reloads the tool table.</p></div>
+<div class="paragraph"><p>A valid G10 L1 rewrites and reloads the tool table for the specified tool.</p></div>
 <div class="listingblock">
 <div class="title">G10 L1 Example Line</div>
 <div class="content">
@@ -1091,7 +1127,7 @@ see the <a href="../lathe/lathe-user.html#lathe-tool-orientation">Lathe Tool Ori
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g10-l2">13. G10 L2 Set Coordinate System</h2>
+<h2 id="gcode:g10-l2">14. G10 L2 Set Coordinate System</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1259,7 +1295,7 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g10-l10">14. G10 L10 Set Tool Table</h2>
+<h2 id="gcode:g10-l10">15. G10 L10 Set Tool Table</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1341,7 +1377,7 @@ The P number is 0
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g10-l11">15. G10 L11 Set Tool Table</h2>
+<h2 id="gcode:g10-l11">16. G10 L11 Set Tool Table</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1409,7 +1445,7 @@ The P number is 0
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g10-l20">16. G10 L20 Set Coordinate System</h2>
+<h2 id="gcode:g10-l20">17. G10 L20 Set Coordinate System</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1447,7 +1483,7 @@ An axis is programmed that is not defined in the configuration.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g17-g19.1">17. G17 - G19.1 Plane Select</h2>
+<h2 id="gcode:g17-g19.1">18. G17 - G19.1 Plane Select</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="paragraph"><p>These codes set the current plane as follows:</p></div>
@@ -1491,7 +1527,7 @@ of each G code file.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g20-g21">18. G20, G21 Units</h2>
+<h2 id="gcode:g20-g21">19. G20, G21 Units</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -1511,7 +1547,7 @@ of each G code file.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g28-g28.1">19. G28, G28.1 Go/Set Predefined Position</h2>
+<h2 id="gcode:g28-g28.1">20. G28, G28.1 Go/Set Predefined Position</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="admonitionblock">
@@ -1566,7 +1602,7 @@ Cutter Compensation is turned on
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g30-g30.1">20. G30, G30.1 Go/Set Predefined Position</h2>
+<h2 id="gcode:g30-g30.1">21. G30, G30.1 Go/Set Predefined Position</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="admonitionblock">
@@ -1631,7 +1667,7 @@ Cutter Compensation is turned on
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g33">21. G33 Spindle Synchronized Motion</h2>
+<h2 id="gcode:g33">22. G33 Spindle Synchronized Motion</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1722,7 +1758,7 @@ The requested linear motion exceeds machine velocity limits
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g33.1">22. G33.1 Rigid Tapping</h2>
+<h2 id="gcode:g33.1">23. G33.1 Rigid Tapping</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1849,7 +1885,7 @@ The requested linear motion exceeds machine velocity limits
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g38">23. G38.n Straight Probe</h2>
+<h2 id="gcode:g38">24. G38.n Straight Probe</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -1952,7 +1988,7 @@ the probe is already in the target state
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g40">24. G40 Compensation Off</h2>
+<h2 id="gcode:g40">25. G40 Compensation Off</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -1989,7 +2025,7 @@ The linear move after turning compensation off is less than the tool diameter.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g41-g42">25. G41, G42 Cutter Compensation</h2>
+<h2 id="gcode:g41-g42">26. G41, G42 Cutter Compensation</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2018,10 +2054,10 @@ redundant and need not be supplied), but it may be any valid tool number.</p></d
 <td class="content"><em>G41/G42 D0</em> is a little special.  Its behavior is different on
 random tool changer machines and nonrandom tool changer machines
 (see the <a href="m-code.html#mcode:m6">Tool Change</a> section).  On nonrandom
-tool changer machines, <em>G41/G42 D0</em> applies the TLO of the tool currently
-in the spindle, or a TLO of 0 if no tool is in the spindle.  On random
-tool changer machines, <em>G41/G42 D0</em> applies the TLO of the tool T0 defined
-in the tool table file (or causes an error if T0 is not defined in the
+tool changer machines, <em>G41/G42 D0</em> applies the Tool Length Offset of the tool
+currently in the spindle, or a TLO of 0 if no tool is in the spindle.  On
+random tool changer machines, <em>G41/G42 D0</em> applies the TLO of the tool T0
+defined in the tool table file (or causes an error if T0 is not defined in the
 tool table).</td>
 </tr></table>
 </div>
@@ -2059,7 +2095,7 @@ Cutter compensation is commanded to turn on when it is already on.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g41.1-g42.1">26. G41.1, G42.1 Dynamic Cutter Compensation</h2>
+<h2 id="gcode:g41.1-g42.1">27. G41.1, G42.1 Dynamic Cutter Compensation</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2107,7 +2143,7 @@ Cutter compensation is commanded to turn on when it is already on.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g43">27. G43 Tool Length Offset</h2>
+<h2 id="gcode:g43">28. G43 Tool Length Offset</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2136,8 +2172,8 @@ that axis&#8217;s endpoint is the compensated location.</p></div>
 <td class="content"><em>G43 H0</em> is a little special.  Its behavior is different on random
 tool changer machines and nonrandom tool changer machines (see the
 <a href="tool-compensation.html#sec:tool-changers">Tool Changers</a> section).  On nonrandom tool changer
-machines, <em>G43 H0</em> applies the TLO of the tool currently in the spindle,
-or a TLO of 0 if no tool is in the spindle.  On random tool changer
+machines, <em>G43 H0</em> applies the Tool Length Offset of the tool currently in the
+spindle, or a TLO of 0 if no tool is in the spindle.  On random tool changer
 machines, <em>G43 H0</em> applies the TLO of the tool T0 defined in the tool
 table file (or causes an error if T0 is not defined in the tool table).</td>
 </tr></table>
@@ -2170,7 +2206,7 @@ the H number is not a valid tool number (though note that 0 is a valid
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g43.1">28. G43.1 Dynamic Tool Length Offset</h2>
+<h2 id="gcode:g43.1">29. G43.1 Dynamic Tool Length Offset</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2221,12 +2257,12 @@ motion is commanded on the same line as <em>G43.1</em>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g43.2">29. G43.2 Apply additional Tool Length Offset</h2>
+<h2 id="gcode:g43.2">30. G43.2 Apply additional Tool Length Offset</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>G43.2 H-</code></pre>
+<pre><code>G43.2 H- axes-</code></pre>
 </div></div>
 <div class="ulist"><ul>
 <li>
@@ -2254,12 +2290,17 @@ compensated axis is moved, that axis&#8217;s endpoint is the compensated locatio
 <div class="ulist"><ul>
 <li>
 <p>
-<em>H</em> is unspecified, or
+<em>H</em> is unspecified and no axis offsets are specified
 </p>
 </li>
 <li>
 <p>
-the given tool number does not exist in the tool table
+'H is specified and the given tool number does not exist in the tool table
+</p>
+</li>
+<li>
+<p>
+<em>H</em> is specified and axes are also specified
 </p>
 </li>
 </ul></div>
@@ -2274,7 +2315,7 @@ the given tool number does not exist in the tool table
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g49">30. G49 Cancel Tool Length Compensation</h2>
+<h2 id="gcode:g49">31. G49 Cancel Tool Length Compensation</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -2290,12 +2331,12 @@ used.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g52">31. G52 Local Coordinate System Offset</h2>
+<h2 id="gcode:g52">32. G52 Local Coordinate System Offset</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>G53 axes</code></pre>
+<pre><code>G52 axes</code></pre>
 </div></div>
 <div class="paragraph"><p>G52 is used in a part program as a temporary "local coordinate system offset"
 within the workpiece coordinate system. More information on G52 is in the
@@ -2303,7 +2344,7 @@ within the workpiece coordinate system. More information on G52 is in the
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g53">32. G53 Move in Machine Coordinates</h2>
+<h2 id="gcode:g53">33. G53 Move in Machine Coordinates</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2345,7 +2386,7 @@ or G53 is used while cutter compensation is on.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g54-g59.3">33. G54-G59.3 Select Coordinate System</h2>
+<h2 id="gcode:g54-g59.3">34. G54-G59.3 Select Coordinate System</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -2575,14 +2616,14 @@ systems.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g61">34. G61 Exact Path Mode</h2>
+<h2 id="gcode:g61">35. G61 Exact Path Mode</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>G61</em> - Exact path mode, movement exactly as programed. Moves will slow or
-stop as needed to reach every programed point. If two sequential moves are
+<em>G61</em> - Exact path mode, movement exactly as programmed. Moves will slow or
+stop as needed to reach every programmed point. If two sequential moves are
 exactly co-linear movement will not stop.
 </p>
 </li>
@@ -2590,12 +2631,12 @@ exactly co-linear movement will not stop.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g61.1">35. G61.1 Exact Stop Mode</h2>
+<h2 id="gcode:g61.1">36. G61.1 Exact Stop Mode</h2>
 <div class="sectionbody">
 <div class="ulist"><ul>
 <li>
 <p>
-<em>G61.1</em> - Exact stop mode, movement will stop at the end of each programed
+<em>G61.1</em> - Exact stop mode, movement will stop at the end of each programmed
 segment.
 </p>
 </li>
@@ -2603,7 +2644,7 @@ segment.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g64">36. G64 Path Blending</h2>
+<h2 id="gcode:g64">37. G64 Path Blending</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2671,7 +2712,249 @@ of each G code file.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g73">37. G73 Drilling Cycle with Chip Breaking</h2>
+<h2 id="gcode:g70">38. G70 Lathe finishing cycle</h2>
+<div class="sectionbody">
+<div class="paragraph"><p></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>G70 Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;E-&gt; &lt;P-&gt;</code></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Q</em> - The subroutine number.
+</p>
+</li>
+<li>
+<p>
+<em>X</em> - The starting X position, defaults to the initial position.
+</p>
+</li>
+<li>
+<p>
+<em>Z</em> - The starting Z position, defaults to the initial position.
+</p>
+</li>
+<li>
+<p>
+<em>D</em> - The starting distance of the profile, defaults to 0.
+</p>
+</li>
+<li>
+<p>
+<em>E</em> - The ending distance of the profile, defaults to 0.
+</p>
+</li>
+<li>
+<p>
+<em>P</em> - The number of passes to use, defaults to 1.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The <em>G70</em> cycle is intended to be used after the shape of the profile given
+in the subroutine with number Q has been cut with G71 or G72.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Preliminary motion.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+If Z or X are used a <a href="g-code.html#gcode:g0">rapid move</a> to that position
+   is done. This position is also used between each finishing pass.
+</p>
+</li>
+<li>
+<p>
+Then a <a href="g-code.html#gcode:g0">rapid move</a> to the start of the profile is
+      executed.
+</p>
+</li>
+<li>
+<p>
+The path given in Q- is followed using the <a href="g-code.html#gcode:g1">G1</a> and
+      <a href="g-code.html#gcode:g2-g3">[gcode:g2-g3]</a> commands.
+</p>
+</li>
+<li>
+<p>
+If a next pass is required there is another rapid to the intermediate
+      location, before a rapid is done to the start of the profile.
+</p>
+</li>
+<li>
+<p>
+After the final pass, the tool is left at the end of the profile
+      including E-.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Multiple passes.
+   The distance between the pass and the final profile is (pass-1)*(D-E)/P+E.
+   Where pass the pass number and D,E and P are the D/E/P numbers.
+</p>
+</li>
+<li>
+<p>
+The distance is computed using the starting position of the cycle, with
+   a positive distance towards this point.
+</p>
+</li>
+<li>
+<p>
+Fillet and chamfers in the profile.
+   It is possible to add fillets or chamfers in the profile, see
+   <a href="g-code.html#gcode:g71-g72">[gcode:g71-g72]</a> for more details.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>It is an error if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+There is no subroutine defined with the number given in Q.
+</p>
+</li>
+<li>
+<p>
+The path given in the profile is not monotonic in Z or X.
+</p>
+</li>
+<li>
+<p>
+<a href="g-code.html#gcode:g17-g19.1">[gcode:g17-g19.1]</a> has not been used to select the ZX plane.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gcode:g71-g72">39. G71 G72 Lathe roughing cycle</h2>
+<div class="sectionbody">
+<div class="paragraph"><p></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>G71   Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;
+G71.1 Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;
+G71.2 Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;
+G72   Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;
+G72.1 Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;
+G72.2 Q- &lt;X-&gt; &lt;Z-&gt; &lt;D-&gt; &lt;I-&gt; &lt;R-&gt;</code></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Q</em> - The subroutine number.
+</p>
+</li>
+<li>
+<p>
+<em>X</em> - The starting X position, defaults to the initial position.
+</p>
+</li>
+<li>
+<p>
+<em>Z</em> - The starting Z position, defaults to the initial position.
+</p>
+</li>
+<li>
+<p>
+<em>D</em> - The remaining distance to the profile, defaults to 0.
+</p>
+</li>
+<li>
+<p>
+<em>I</em> - The cutting increment, defaults to 1.
+</p>
+</li>
+<li>
+<p>
+<em>R</em> - The retracting distance, defaults to 0.5.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The G71/G72 cycle is intended to rough cut a profile on a lathe. The G71
+cycles remove layers of the material while traversing in the Z direction.
+The G72 cycles remove material while traversing the X axis, the so called
+facing cycle. The direction of travel is the same as in the path given in
+the subroutine. For the G71 cycle the Z coordinate must be monotonically
+changing, for the G72 this is required for the X axis.</p></div>
+<div class="paragraph"><p>The profile is given in a subroutine with number Q-. This subroutine
+may contain G0, G1, G2 and G3 motion commands. All other commands are
+ignored, including feed and speed settings. The <a href="g-code.html#gcode:g0">[gcode:g0]</a> commands are
+interpreted as <a href="g-code.html#gcode:g1">G1</a> commands. Each motion command may also include
+an optional A- or C- number.  If the number A- is added a fillet with
+the radius given by A will be inserted at the endpoint of that motion, if
+this radius is too large the algorithm will fail with a non-monotonic path
+error. It is also possible to use the C- number, which allows a chamfer to
+be inserted. This chamfer has the same endpoints as a fillet of the same
+dimension would have but a straight line is inserted instead of an arc.</p></div>
+<div class="paragraph"><p>When in absolute mode the U (for X) and W (for Z) can be used as
+incremental displacements.</p></div>
+<div class="paragraph"><p>The G7x.1 cycles do not cut pockets. The G7x.2 cycles only cut after the
+first pocket and continue where G7x.1 stopped. It is advisible to leave
+some additional material to cut before the G7x.2 cycle, so if G7x.1 used
+a D1.0 the G7x.2 can use D0.5 and 0.5mm will be removed while moving
+from one pocket to the next.</p></div>
+<div class="paragraph"><p>The normal G7x cycles cut the entire profile in one cycle.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Preliminary motion.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+If Z or X are used a <a href="g-code.html#gcode:g0">rapid move</a> to that position
+   is done.
+</p>
+</li>
+<li>
+<p>
+After the profile has been cut, the tool stops at the end of the
+   profile, including the distance specified in D.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+The D number is used to  keep a distance from the final profile,
+   to allow material to remain for finishing.
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>It is an error if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+There is no subroutine defined with the number given in Q.
+</p>
+</li>
+<li>
+<p>
+The path given in the profile is not monotonic in Z or X.
+</p>
+</li>
+<li>
+<p>
+<a href="g-code.html#gcode:g17-g19.1">[gcode:g17-g19.1]</a> has not been used to select the ZX plane.
+</p>
+</li>
+<li>
+<p>
+<a href="g-code.html#gcode:g41-g42">[gcode:g41-g42]</a> is active.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gcode:g73">40. G73 Drilling Cycle with Chip Breaking</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -2754,13 +3037,48 @@ the R number is not specified
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g74">38. G74 Left-hand Tapping Cycle, Dwell</h2>
+<h2 id="gcode:g74">41. G74 Left-hand Tapping Cycle, Dwell</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>G74 (X- Y- Z-) or (U- V- W-) R- L- P- $-</code></pre>
+<pre><code>G74 (X- Y- Z-) or (U- V- W-) R- L- P- $- F-</code></pre>
 </div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>R-</em> - Retract position along the Z axis.
+</p>
+</li>
+<li>
+<p>
+<em>L-</em> - Used in incremental mode; number of times to repeat the cycle. See <a href="g-code.html#gcode:g81">G81</a> for examples.
+</p>
+</li>
+<li>
+<p>
+<em>P-</em> - Dwell time (seconds).
+</p>
+</li>
+<li>
+<p>
+<em>$-</em> - Selected spindle.
+</p>
+</li>
+<li>
+<p>
+<em>F-</em> - Feed rate (spindle speed multiplied by distance traveled per revolution (thread pitch)).
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">G74 does not use synchronized motion.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>The <em>G74</em> cycle is intended for tapping with floating chuck and dwell at the bottom of the hole.</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
@@ -2805,12 +3123,12 @@ Restore Feed and Speed override enables to previous state
 </p>
 </li>
 </ol></div>
-<div class="paragraph"><p>The length of the dwell is specified by a <em>P-</em> word in the G74 block. Thread pitch is F divided by S.
-In example S100 F125 gives pitch of 1.25MM per revolution.</p></div>
+<div class="paragraph"><p>The length of the dwell is specified by a <em>P-</em> word in the G74 block. The feed rate <em>F-</em> is spindle speed multiplied by distance per revolution (thread pitch).
+In example S100 with 1.25MM per revolution thread pitch gives a feed of F125.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g76">39. G76 Threading Cycle</h2>
+<h2 id="gcode:g76">42. G76 Threading Cycle</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3010,7 +3328,7 @@ are the cutting moves.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g80-g89">40. Canned Cycles</h2>
+<h2 id="gcode:g80-g89">43. Canned Cycles</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="paragraph"><p>The canned cycles <em>G81</em> through <em>G89</em> and the canned cycle stop <em>G80</em>
@@ -3028,14 +3346,14 @@ active plane is one of the XYZ family, the UVW axis words are not
 allowed. Likewise, when the active plane is one of the UVW family, the
 XYZ axis words are not allowed.</p></div>
 <div class="sect2">
-<h3 id="_common_words">40.1. Common Words</h3>
+<h3 id="_common_words">43.1. Common Words</h3>
 <div class="paragraph"><p>All canned cycles use X, Y, Z, or U, V, W groups depending on the
 plane selected and R words. The R (usually meaning retract) position is
 along the axis perpendicular to the currently selected plane (Z-axis
 for XY-plane, etc.) Some canned cycles use additional arguments.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_sticky_words">40.2. Sticky Words</h3>
+<h3 id="_sticky_words">43.2. Sticky Words</h3>
 <div class="paragraph"><p>For canned cycles, we will call a number <em>sticky</em> if, when the same
 cycle is used on several lines of code in a row, the number must be
 used the first time, but is optional on the rest of the lines. Sticky
@@ -3048,7 +3366,7 @@ distance mode, the X, Y, R, and Z numbers are absolute positions in the
 current coordinate system.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_repeat_cycle">40.3. Repeat Cycle</h3>
+<h3 id="_repeat_cycle">43.3. Repeat Cycle</h3>
 <div class="paragraph"><p>The L number is optional and represents the number of repeats.
 L=0 is not allowed. If the repeat feature is used, it is
 normally used in incremental distance mode, so that the same sequence
@@ -3065,7 +3383,7 @@ L&gt;1 means <em>do the same cycle in the same place several
 times</em>, Omitting the L word is equivalent to specifying L=1.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_retract_mode">40.4. Retract Mode</h3>
+<h3 id="_retract_mode">43.4. Retract Mode</h3>
 <div class="paragraph"><p>The height of the retract move at the end of each repeat (called
 <em>clear Z</em> in the descriptions below) is determined by the setting of
 the retract mode, either to the original Z position (if that is above
@@ -3073,7 +3391,7 @@ the R position and the retract mode is <em>G98</em>, OLD_Z), or otherwise to
 the R position. See the <a href="g-code.html#gcode:g98-g99">G98 G99</a> Section.</p></div>
 </div>
 <div class="sect2">
-<h3 id="gcode:canned-cycle-errors">40.5. Canned Cycle Errors</h3>
+<h3 id="gcode:canned-cycle-errors">43.5. Canned Cycle Errors</h3>
 <div class="paragraph"><p>It is an error if:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -3131,7 +3449,7 @@ or the R number is less than the Z number.
 XY conditions above.</p></div>
 </div>
 <div class="sect2">
-<h3 id="gcode:preliminary-motion">40.6. Preliminary and In-Between Motion</h3>
+<h3 id="gcode:preliminary-motion">43.6. Preliminary and In-Between Motion</h3>
 <div class="paragraph"><p>Preliminary motion is a set of motions that is common to all of the
 milling canned cycles. If the current Z position is below the R position,
 the Z axis does a <a href="g-code.html#gcode:g0">rapid move</a> to the R position. This happens only
@@ -3156,7 +3474,7 @@ The Z-axis make a rapid move to the R position, if it is
 analogous.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_why_use_a_canned_cycle">40.7. Why use a canned cycle?</h3>
+<h3 id="_why_use_a_canned_cycle">43.7. Why use a canned cycle?</h3>
 <div class="paragraph"><p>There are at least two reasons for using canned cycles. The first is
 the economy of code. A single bore would take several lines of code to
 execute.</p></div>
@@ -3224,7 +3542,7 @@ regardless of the start point of the canned cycle.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g80">41. G80 Cancel Canned Cycle</h2>
+<h2 id="gcode:g80">44. G80 Cancel Canned Cycle</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -3310,7 +3628,7 @@ to the canned cycle.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g81">42. G81 Drilling Cycle</h2>
+<h2 id="gcode:g81">45. G81 Drilling Cycle</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3499,7 +3817,7 @@ in the same location again.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g82">43. G82 Drilling Cycle, Dwell</h2>
+<h2 id="gcode:g82">46. G82 Drilling Cycle, Dwell</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3537,7 +3855,7 @@ the dwell is specified by a <em>P-</em> word in the G82 block.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g83">44. G83 Peck Drilling Cycle</h2>
+<h2 id="gcode:g83">47. G83 Peck Drilling Cycle</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3598,13 +3916,48 @@ the Q number is negative or zero.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g84">45. G84 Right-hand Tapping Cycle, Dwell</h2>
+<h2 id="gcode:g84">48. G84 Right-hand Tapping Cycle, Dwell</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>G84 (X- Y- Z-) or (U- V- W-) R- L- P- $-</code></pre>
+<pre><code>G84 (X- Y- Z-) or (U- V- W-) R- L- P- $- F-</code></pre>
 </div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>R-</em> - Retract position along the Z axis.
+</p>
+</li>
+<li>
+<p>
+<em>L-</em> - Used in incremental mode; number of times to repeat the cycle. See <a href="g-code.html#gcode:g81">G81</a> for examples.
+</p>
+</li>
+<li>
+<p>
+<em>P-</em> - Dwell time (seconds).
+</p>
+</li>
+<li>
+<p>
+<em>$-</em> - Selected spindle.
+</p>
+</li>
+<li>
+<p>
+<em>F-</em> - Feed rate (spindle speed multiplied by distance traveled per revolution (thread pitch)).
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">G84 does not use synchronized motion.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>The <em>G84</em> cycle is intended for tapping with floating chuck and dwell at the bottom of the hole.</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
@@ -3625,7 +3978,7 @@ Move the Z-axis at the current feed rate to the Z position.
 </li>
 <li>
 <p>
-Stop the seleted spindle (chosen by the $ parameter)
+Stop the selected spindle (chosen by the $ parameter)
 </p>
 </li>
 <li>
@@ -3649,12 +4002,12 @@ Restore Feed and Speed override enables to previous state
 </p>
 </li>
 </ol></div>
-<div class="paragraph"><p>The length of the dwell is specified by a <em>P-</em> word in the G84 block. Thread pitch is F divided by S.
-In example S100 F125 gives pitch of 1.25MM per revolution.</p></div>
+<div class="paragraph"><p>The length of the dwell is specified by a <em>P-</em> word in the G84 block. The feed rate <em>F-</em> is spindle speed multiplied by distance per revolution (thread pitch).
+In example S100 with 1.25MM per revolution thread pitch gives a feed of F125.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g85">46. G85 Boring Cycle, Feed Out</h2>
+<h2 id="gcode:g85">49. G85 Boring Cycle, Feed Out</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3691,7 +4044,7 @@ Retract at the traverse rate to clear Z.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g86">47. G86 Boring Cycle, Spindle Stop, Rapid Move Out</h2>
+<h2 id="gcode:g86">50. G86 Boring Cycle, Spindle Stop, Rapid Move Out</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3745,21 +4098,21 @@ the spindle is not turning before this cycle is executed.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_g87_back_boring_cycle">48. G87 Back Boring Cycle</h2>
+<h2 id="_g87_back_boring_cycle">51. G87 Back Boring Cycle</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>This code is currently unimplemented in LinuxCNC. It is accepted, but the
 behavior is undefined.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_g88_boring_cycle_spindle_stop_manual_out">49. G88 Boring Cycle, Spindle Stop, Manual Out</h2>
+<h2 id="_g88_boring_cycle_spindle_stop_manual_out">52. G88 Boring Cycle, Spindle Stop, Manual Out</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>This code is currently unimplemented in LinuxCNC. It is accepted, but the
 behavior is undefined.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g89">50. G89 Boring Cycle, Dwell, Feed Out</h2>
+<h2 id="gcode:g89">53. G89 Boring Cycle, Dwell, Feed Out</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3795,7 +4148,7 @@ Retract the Z-axis at the current feed rate to clear Z.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g90-g91">51. G90, G91 Distance Mode</h2>
+<h2 id="gcode:g90-g91">54. G90, G91 Distance Mode</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -3838,7 +4191,7 @@ See <a href="g-code.html#gcode:g0">G0</a> section for more information.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g90.1-g91.1">52. G90.1, G91.1 Arc Distance Mode</h2>
+<h2 id="gcode:g90.1-g91.1">55. G90.1, G91.1 Arc Distance Mode</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -3859,7 +4212,7 @@ See <a href="g-code.html#gcode:g0">G0</a> section for more information.
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g92">53. G92 Coordinate System Offset</h2>
+<h2 id="gcode:g92">56. G92 Coordinate System Offset</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -3927,7 +4280,7 @@ overview of coordinate systems.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g92.1-g92.2">54. G92.1, G92.2 Reset G92 Offsets</h2>
+<h2 id="gcode:g92.1-g92.2">57. G92.1, G92.2 Reset G92 Offsets</h2>
 <div class="sectionbody">
 <div class="ulist"><ul>
 <li>
@@ -3953,7 +4306,7 @@ in G code use either <a href="g-code.html#gcode:g10-l2">G10 L2</a> or <a href="g
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g92.3">55. G92.3 Restore G92 Offsets</h2>
+<h2 id="gcode:g92.3">58. G92.3 Restore G92 Offsets</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -3973,7 +4326,7 @@ the offsets saved in the first program.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g93-g94-g95">56. G93, G94, G95 Feed Rate Mode</h2>
+<h2 id="gcode:g93-g94-g95">59. G93, G94, G95 Feed Rate Mode</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -4028,7 +4381,7 @@ A new feed rate is not specified after switching to G94 or G95
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g96-g97">57. G96, G97 Spindle Control Mode</h2>
+<h2 id="gcode:g96-g97">60. G96, G97 Spindle Control Mode</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="listingblock">
@@ -4094,7 +4447,7 @@ A feed move is specified in G96 mode while the spindle is not turning
 </div>
 </div>
 <div class="sect1">
-<h2 id="gcode:g98-g99">58. G98, G99 Canned Cycle Return Level</h2>
+<h2 id="gcode:g98-g99">61. G98, G99 Canned Cycle Return Level</h2>
 <div class="sectionbody">
 <div class="paragraph"><p></p></div>
 <div class="ulist"><ul>
@@ -4136,7 +4489,7 @@ between G98 and G99 during a series of cycles.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

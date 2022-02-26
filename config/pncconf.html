@@ -270,6 +270,24 @@ allows VCP integrated on the side or in center tab
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p>TkLinuxCNC</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+hi contrast bright blue screen
+</p>
+</li>
+<li>
+<p>
+separate graphics window
+</p>
+</li>
+<li>
+<p>
+no VCP integration
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>TOUCHY</p></div>
 <div class="ulist"><ul>
 <li>
@@ -309,34 +327,16 @@ look can be changed with custom themes
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>MINI</p></div>
+<div class="paragraph"><p>QtPlasmaC</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-standard on OEM Sherline machines
+fully featured plasmac configuration based on the QtVCP infrastructure.
 </p>
 </li>
 <li>
 <p>
-does not use Estop
-</p>
-</li>
-<li>
-<p>
-no VCP integration
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>TkLinuxCNC</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-hi contrast bright blue screen
-</p>
-</li>
-<li>
-<p>
-separate graphics window
+mouse/keyboard operation or touchscreen operation
 </p>
 </li>
 <li>
@@ -449,6 +449,10 @@ There are a list of the current themes on the computer that you can pick from.
 To help some of the text to stand out PNCconf allows you to override the
 Themes&#8217;s defaults. The position and force max options can be used to move Touchy
 to a second monitor if the system is capable.</p></div>
+<div class="paragraph"><p>QtPlasmaC options are specific to QtPlasmac, any common options that are not
+required will be disabled.
+If QtPlasmac is selected then the following screen will be a user button setup
+screen that is specific to QtPlasmaC and VCP options will not be available.</p></div>
 </dd>
 <dt class="hdlist1">
 VCP options
@@ -877,7 +881,7 @@ confirm the directions on the axis is correct. Then test the system by running
 lose steps. While jogging, Keep in mind it can take a while for an axis with low
 acceleration to stop. Limit switches are not functional during this test. You
 can set a pause time so each end of the test movement. This would allow you to
-set up and read a dial indicator to see if you are loosing steps.</p></div>
+set up and read a dial indicator to see if you are losing steps.</p></div>
 <div class="paragraph"><p><strong>Stepper Timing</strong>
 Stepper timing needs to be tailored to the step controller&#8217;s requirements.
 Pncconf supplies some default controller timing or allows custom timing settings
@@ -1514,7 +1518,7 @@ shutdown.hal is for commands to run when LinuxCNC shuts down in a controlled man
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

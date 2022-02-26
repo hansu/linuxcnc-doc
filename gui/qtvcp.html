@@ -116,23 +116,37 @@ But allows important details to be selected rather then be coded in the handler 
 Under the [DISPLAY] heading:</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>DISPLAY = qtvcp &lt;screen_name&gt;
+<pre><code>DISPLAY = qtvcp &lt;options&gt; &lt;screen_name&gt;
   options:
     -d debugging on
     -a set window always on top
     -c HAL component name. Default is to use the UI file name.
-    -g geometry: WIDTHxHEIGHT+XOFFSET+YOFFSET
-    -m maximise window
+    -g geometry: WIDTHxHEIGHT+XOFFSET+YOFFSET example: -g 200x400+0+100
+    -m maximize window
     -f fullscreen the window
     -t theme. Default is system theme
-    -x embed into a X11 window that doesn't supoort embedding.
+    -x embed into a X11 window that doesn't support embedding.
     --push_xid send qtvcp's X11 window id number to standard output; for embedding
+    -u file path of a substitute handler file
+    -o pass a string to qtvcp's handler file under self.w.USEROPTIONS_ list variable. can be multiple -o
+
+    all &lt;options&gt; must be before &lt;screen name&gt;
     &lt;screen_name&gt; is the base name of the .ui and _handler.py files.
     If &lt;screen_name&gt; is missing the default screen will be loaded.</code></pre>
 </div></div>
 <div class="paragraph"><p>Qtvcp assumes the UI file and the handler file use this same base name.<br />
 Qtvcp will search the LinuxCNC configuration file that was launched first for the files, <br />
-then in the system skin folder. the skin folders holds standard screens.<br /></p></div>
+then in the system skin folder. (The skin folders holds standard screens.)<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[DISPLAY]
+CYCLE_TIME = 100
+GRAPHICS_CYCLE_TIME = 100
+HALPIN_CYCLE = 100</code></pre>
+</div></div>
+<div class="paragraph"><p>Adjust the response rate of the GUI updates in milli seconds. Defaults to 100, useable range 50 - 200<br />
+The widgets, graphics and HAL pin update can be set separately.<br />
+If the update time is not set right the screen can become unresponsive or very jerky.<br /></p></div>
 </div>
 <div class="sect2">
 <h3 id="_qtdesigner_ui_file">1.3. QTDesigner UI File</h3>
@@ -181,53 +195,159 @@ to see available themes load qtvcp with -d -t SHOWTHEMES<br /></p></div>
 <div class="paragraph"><p>If present, local UI files in the configuration folder will be loaded instead<br />
 of the stock UI files. Local UI files allow you to use your customized<br />
 designs rather then the default screens.<br />
-qtvcp will look for MYNAME.ui, MYNAME_handler.py and MYNAME.qss in the launched configuration folder.<br />
-You can put these files in a arbitrary named folder - qtvcp will search all folders in your config folder.<br /></p></div>
+QTVCP will look for a folder name MYNAME (in the launched configuration folder that holds the INI file).<br />
+In that folder QTVCP will load any of the available files; MYNAME.ui, MYNAME_handler.py and MYNAME.qss.<br /></p></div>
 </div>
 <div class="sect2">
 <h3 id="_modifying_stock_screens">1.8. Modifying Stock Screens</h3>
-<div class="paragraph"><p>If you wish to modify a stock screen, copy it&#8217;s UI and handler file to your configuration folder.<br /></p></div>
+<div class="paragraph"><p>Ther are three ways to customize a screen/panel.<br /></p></div>
+<div class="paragraph"><div class="title">Minor StyleSheet changes:<br /></div><p>StyleSheets can be used to set Qt properties.<br />
+If a widget uses properties they usually can be modified by stylesheets.<br />
+ie:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>State_LED #name_0f_led{
+qproperty-color: red;
+qproperty-diameter: 20;
+qproperty-flashRate: 150;
+}</code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Minor python code changes:<br /></div><p>A file can be added to add commands to the screen, after the handlerfile is parsed.<br />
+In the INI file under the [DISPLAY] heading add USER_COMMAND_FILE = <em>PATH</em><br />
+<em>PATH</em> can be any valid path, it can use <em>~</em> for home directory or <em>WORKINGDIRECTORY</em> or<br />
+<em>CONFIGDIRECTORY</em> to represent Qtvcp&#8217;s idea of those directories.<br />
+ie:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[DISPLAY]
+USER_COMMAND_FILE = CONFIGDIRECTORY/qtdragon_added_commands</code></pre>
+</div></div>
+<div class="paragraph"><p>If no entry is found in the INI, Qtvcp will look in the default path.<br />
+The default path is in the configuration directory as a hidden file using the screen basename and rc.<br />
+ie: CONFIGDIRECTORY/.qtdragonrc</p></div>
+<div class="paragraph"><p>This file will be read and executed as python code in context of the handler file.<br />
+Only local functions and local attributes can be referenced.<br />
+Global libraries can not be referenced. (usual seen as all capital words with no preceding self.)<br />
+What can be used can vary by screen and development cycle.<br /></p></div>
+<div class="paragraph"><p>valid example:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setWindowTitle</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'My Title Test'</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><div class="title">Full creative control:</div><p>If you wish to modify a stock screen with full control, copy it&#8217;s UI and handler file to your configuration folder.<br />
+There is a QtVCP panel to help with this.<br />
+Open a terminal and type <em>qtvcp copy_dialog</em> and a dialog will show to select the screen and<br />
+destination folder. This will copy all the file - delete the ones you don&#8217;t wish to modify so<br />
+that the original files will be used.<br />
+It you wish to name your screen differently then the builtin screen&#8217;s default name -<br />
+change the basename in the edit box.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_build_a_simple_clean_sheet_custom_screen">2. Build a simple clean-sheet custom screen</h2>
+<h2 id="_vcp_panels">2. VCP Panels</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Qtvcp can be used to create control panels that interface with HAL.<br /></p></div>
+<div class="sect2">
+<h3 id="_builtin_panels">2.1. Builtin panels</h3>
+<div class="paragraph"><p>There are several builtin HAL panels available.<br />
+in a  terminal type <em>qtvcp</em> &lt;return&gt; to see a list.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+test_panel - collect of useful widgets for testing HAL component. Including speech of LED state.
+</p>
+</li>
+<li>
+<p>
+cam_align - a camera display widget for rotational alignment
+</p>
+</li>
+<li>
+<p>
+sim_panel - a small control panel to simulate MPG jogging controls etc. for simulated configurations
+</p>
+</li>
+<li>
+<p>
+vismach_mill_xyz - 3d openGL view of a 3 axis milling machine
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/qtvismach.png" alt="QtVismach Mill" />
+</div>
+<div class="title">Figure 8. qtvismach- 3 Axis Mill Builtin panel</div>
+</div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">test_panel</span></span></tt></pre></div></div>
+<div class="paragraph"><p>You can of course make your own panel and load it.<br />
+If you made a ui file named <em>my_panel.ui</em> and name the following HAL file, <em>my_panel.hal</em><br />
+You would then load this from a terminal with halrun -I -f my_panel.hal<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># load realtime components</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">threads</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">classicladder_rt</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># load user space programs</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">classicladder</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> -<span style="font-weight: bold"><span style="color: #000000">Wn</span></span> <span style="font-weight: bold"><span style="color: #000000">my_panel</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="color: #009900">my_panel.ui</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># add components to thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">classicladder.0.refresh</span> <span style="font-weight: bold"><span style="color: #000000">thread1</span></span>
+
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect pins</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-input1</span></span>     <span style="color: #009900">test_panel.checkbox_1</span>        <span style="color: #009900">classicladder.0.in-00</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-hide</span></span>       <span style="color: #009900">test_panel.checkbox_4</span>        <span style="color: #009900">classicladder.0.hide_gui</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-output1</span></span>    <span style="color: #009900">test_panel.led_1</span>             <span style="color: #009900">classicladder.0.out-00</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">s32-in1</span></span>        <span style="color: #009900">test_panel.doublescale_1-s</span>   <span style="color: #009900">classicladder.0.s32in-00</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># start thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">start</span></span></tt></pre></div></div>
+<div class="paragraph"><p>In this case we load qtvcp using -Wn; which waits for the panel to finish loading before<br />
+continuing to run the next HAL command. This is so the HAL pins from the panel are finished<br />
+in case the are used in the rest of the file.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_a_simple_clean_sheet_custom_screen">3. Build a simple clean-sheet custom screen</h2>
 <div class="sectionbody">
 <div class="imageblock" style="text-align:left;">
 <div class="content">
 <img src="images/qtvcp_tester.png" alt="QTscreen Mill" />
 </div>
-<div class="title">Figure 8. Ugly custom screen</div>
+<div class="title">Figure 9. Ugly custom screen</div>
 </div>
 <div class="sect2">
-<h3 id="_overview_2">2.1. Overview</h3>
+<h3 id="_overview_2">3.1. Overview</h3>
 <div class="paragraph"><p>To build a panel or screen use QTDesigner to build a design you like.<br />
 Save this design to your configuration folder with a name of your choice, ending with .ui<br />
 modify the configurations INI file to load qtvcp with your new .ui file.<br />
 Then connect any required HAL pins in a HAL file<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_get_designer_to_include_linuxcnc_widgets">2.2. Get Designer to include linuxcnc widgets</h3>
+<h3 id="_get_designer_to_include_linuxcnc_widgets">3.2. Get Designer to include linuxcnc widgets</h3>
 <div class="paragraph"><p>You must have designer installed; These commands should add it:<br />
 Or use your package manager to install the same:<br />
 <em>sudo apt-get install qttools5-dev-tools</em><br />
-<em>sudo apt-get install qttools5.dev</em><br /></p></div>
-<div class="paragraph"><p>Then you need the python-module loading library added.<br />
-Qtvcp uses QT5 with python2 - this combination is not normally available from<br />
-repositories. You can compile it your self or there are precompiled versions<br />
-available for common systems.<br />
-in <em>lib/python/qtvcp/designer</em> there are folders based on system architectures<br />
-and then QT version.<br />
-You must pick the cpu architecture folder then pick the series; 5.5, 5.7, or 5.9 of Qt.<br />
-currently Debian stretch uses 5.7, Mint 12 uses 5.5, Mint 19 uses 5.9<br />
-if in doubt check the version of QT5 on the system.<br /></p></div>
-<div class="paragraph"><p>You must decompress the file and then copy that proper version of<br />
-<em>libpyqt5_py2.so</em> to this folder:<br />
-<em>/usr/lib/x86_64-linux-gnu/qt5/plugins/designer</em><br />
-(x86_64-linux-gnu might be called something slightly different<br />
-on different systems)<br /></p></div>
-<div class="paragraph"><p>You will require super user privileges to copy the file to the folder.<br /></p></div>
-<div class="paragraph"><p>then you must add a link to the qtvcp_plugin.py to the folder that designer will search.<br /></p></div>
+<em>sudo apt-get install qttools5-dev</em><br />
+<em>sudo apt-get install libpython3-dev</em><br /></p></div>
+<div class="paragraph"><p>Then you must add a link to the qtvcp_plugin.py to the folder that designer will search.<br /></p></div>
 <div class="paragraph"><p>In a RIP version of linuxcnc qtvcp_plugin.py will be in:<br />
 <em>~/LINUXCNC_PROJECT_NAME/lib/python/qtvcp/plugins/qtvcp_plugin.py</em><br /></p></div>
 <div class="paragraph"><p>installed version should be:<br />
@@ -249,7 +369,7 @@ then load designer with : <em>designer -qt=5</em><br /></p></div>
 <div class="paragraph"><p>If all goes right you will see the selectable linuxcnc widgets on the left hand side<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_build_the_screen_ui_file">2.3. build the screen .ui file</h3>
+<h3 id="_build_the_screen_ui_file">3.3. build the screen .ui file</h3>
 <div class="paragraph"><p>When Designer is first started there is a <em>New Form</em> dialog displayed.<br />
 Pick <em>Main Window</em> and press the <em>create</em> button.<br />
 Do not rename this window - Qtvcp requires the name to be <em>MainWindow</em><br />
@@ -319,14 +439,14 @@ With the <em>Pause</em> button under the heading <em>Indicated_PushButton</em> c
 <div class="content">
 <img src="images/designer_button_property.png" alt="designer button property" />
 </div>
-<div class="title">Figure 9. Qt Designer - Selecting Pause button&#8217;s properties</div>
+<div class="title">Figure 10. Qt Designer - Selecting Pause button&#8217;s properties</div>
 </div>
 <div class="paragraph"><p>We then need to save this design as <em>tester.ui</em> in the sim/qtvcp folder<br />
 We are saving it as tester as that is a file name that qtvcp recognizes and<br />
 will use a built in handler file to display it.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_handler_file">2.4. Handler file</h3>
+<h3 id="_handler_file">3.4. Handler file</h3>
 <div class="paragraph"><p>a handler file is required. It allows customizations to be written in python.<br />
 For instance keyboard controls are usually written in the handler file.<br />
 <br />
@@ -335,7 +455,7 @@ It does the minimum required to display the tester.ui defined screen and do<br /
 basic keyboard jogging.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_ini">2.5. INI</h3>
+<h3 id="_ini">3.5. INI</h3>
 <div class="paragraph"><p>If you are using qtvcp to make a CNC control screen:<br />
 Under the <em>[DISPLAY]</em> heading:<br />
 <br />
@@ -346,24 +466,33 @@ Under the <em>[DISPLAY]</em> heading:<br />
 will use to display our test screen.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_hal">2.6. HAL</h3>
-<div class="paragraph"><p>If your screen used widgets with HAL pins the you must connect then in a HAL file.<br />
-qtvcp looks under the heading <em>[HAL]</em> for the entry <em>POSTGUI_HALFILE=&lt;filename&gt;</em><br />
+<h3 id="_hal">3.6. HAL</h3>
+<div class="paragraph"><p>If your screen used widgets with HAL pins, then you must connect them in a HAL file.<br />
+Qtvcp looks in the INI file, under the heading <em>[HAL]</em> for the entry <em>POSTGUI_HALFILE=&lt;filename&gt;</em><br />
 Typically <em>&lt;filename&gt;</em> would be the screens base name + <em>_postgui</em> + <em>.hal</em><br />
-eg. <em>qtvcp_postgui.hal</em><br />
+eg. <em>qtvcp_postgui.hal</em>, but can be any legal filename.<br />
 These commands are executed after the screen is built, guaranteeing the widget HAL<br />
 pins are available.<br />
+You can have multiple line of <em>POSTGUI_HALFILE=&lt;filename&gt;</em> in the INI.<br />
+Each will be run one after the other in the order they appear.<br />
+<br />
+Qtvcp also looks in the INI file, under the heading <em>[HAL]</em> for the entry <em>POSTGUI_HALCMD=&lt;command&gt;</em><br />
+<em>&lt;command&gt;</em> would be any valid HAL command.<br />
+These commands are executed after the screen is built, after all the POSTGUI_HALFILEs are run,<br />
+guaranteeing the widget HAL pins are available.<br />
+You can have multiple line of <em>POSTGUI_HALCMD=&lt;command&gt;</em> in the INI.<br />
+Each will be run one after the other in the order they appear.<br />
 <br />
 In our example there are no HAl pins to connect.<br /></p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_handler_file_in_detail">3. Handler file in detail</h2>
+<h2 id="_handler_file_in_detail">4. Handler file in detail</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>handler files are used to create custom controls using python.<br /></p></div>
 <div class="sect2">
-<h3 id="_overview_3">3.1. Overview</h3>
+<h3 id="_overview_3">4.1. Overview</h3>
 <div class="paragraph"><p>Here is a sample handler file.<br />
 It&#8217;s broken up in sections for ease of discussion.<br /></p></div>
 <div class="listingblock">
@@ -581,25 +710,25 @@ ACTION <span style="color: #990000">=</span> <span style="font-weight: bold"><sp
 </tt></pre></div></div>
 </div>
 <div class="sect2">
-<h3 id="_import_section">3.2. IMPORT SECTION</h3>
+<h3 id="_import_section">4.2. IMPORT SECTION</h3>
 <div class="paragraph"><p>This section is for importing library modules required for your screen.<br />
 It would be typical to import qtvcp&#8217;s keybinding, Status and action<br />
 libraries.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_instantiate_libraries_section">3.3. INSTANTIATE LIBRARIES SECTION</h3>
+<h3 id="_instantiate_libraries_section">4.3. INSTANTIATE LIBRARIES SECTION</h3>
 <div class="paragraph"><p>By instantiating the libraries here we create global reference.<br />
 You can note this by the commands that don&#8217;t have <em>self.</em> in front of them.<br />
 By convention we capitalize the names of global referenced libraries.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_handler_class_section">3.4. HANDLER CLASS section</h3>
+<h3 id="_handler_class_section">4.4. HANDLER CLASS section</h3>
 <div class="paragraph"><p>The custom code is placed in a class so qtvcp can utilize it.<br />
 This is the definitions on the handler class.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_initialize_section">3.5. INITIALIZE section</h3>
-<div class="paragraph"><p>Like all python libraies the <em>init</em> function is called when the library<br />
+<h3 id="_initialize_section">4.5. INITIALIZE section</h3>
+<div class="paragraph"><p>Like all python libraries the <em>init</em> function is called when the library<br />
 is first instantiated. You can set defaults and reference variables here.<br />
 The widget references are not available at this point.<br />
 The variables halcomp, widgets and paths give access to qtvcp&#8217;s HAL component,<br />
@@ -608,11 +737,11 @@ This is where you would set up global variables.<br />
 Widgets are not actually accessible at this point.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_special_functions_section">3.6. SPECIAL FUNCTIONS section</h3>
+<h3 id="_special_functions_section">4.6. SPECIAL FUNCTIONS section</h3>
 <div class="paragraph"><p>There are several special functions that qtvcp looks for in the handler file.<br />
 If qtvcp finds these it will call them, if not it will silently ignore them.<br /></p></div>
 <div class="sect3">
-<h4 id="_initialized___self">3.6.1. initialized__(self):</h4>
+<h4 id="_initialized___self">4.6.1. initialized__(self):</h4>
 <div class="paragraph"><p>This function is called after the widgets and HAL pins are built<br />
 You can manipulate the widgets and HAL pins or add more HAL pins here.<br />
 Typically preferences can be checked and set, styles applied to <br />
@@ -620,7 +749,7 @@ widgets or status of linuxcnc be connected to functions.<br />
 This is also where keybindings would be added.<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_class_patch___self">3.6.2. class_patch__(self):</h4>
+<h4 id="_class_patch___self">4.6.2. class_patch__(self):</h4>
 <div class="paragraph"><p>Class patching allow you to override function calls in an imported module.<br />
 Class patching must be done before the module is instantiated and it modifies<br />
 all instances made after that.<br />
@@ -629,55 +758,55 @@ in the handler file instead.<br />
 Class patching is also known as monkey patching.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_processed_key_event___self_receiver_event_is_pressed_key_code_shift_cntrl">3.6.3. processed_key_event__(self, receiver,event,is_pressed,key,code,shift,cntrl):</h4>
+<h4 id="_processed_key_event___self_receiver_event_is_pressed_key_code_shift_cntrl">4.6.3. processed_key_event__(self, receiver,event,is_pressed,key,code,shift,cntrl):</h4>
 <div class="paragraph"><p>This function is called to facilitate keyboard jogging etc.<br />
 By using the keybindings library this can be used to easily add<br />
 functions bound to keypresses.<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_keypress_event___self_receiver_event">3.6.4. keypress_event__(self,receiver, event)):</h4>
+<h4 id="_keypress_event___self_receiver_event">4.6.4. keypress_event__(self,receiver, event)):</h4>
 <div class="paragraph"><p>This function gives raw key press events. It takes presidence over<br />
 the processed_key_event.<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_keyrelease_event___receiver_event">3.6.5. keyrelease_event__(receiver, event):</h4>
+<h4 id="_keyrelease_event___receiver_event">4.6.5. keyrelease_event__(receiver, event):</h4>
 <div class="paragraph"><p>This function gives raw key release events. It takes presidence over<br />
 the processed_key_event.<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_before_loop___self">3.6.6. before_loop__(self):</h4>
+<h4 id="_before_loop___self">4.6.6. before_loop__(self):</h4>
 <div class="paragraph"><p>This function is called just before the Qt event loop is entered.<br />
 At the point all widgets/libraries/initialization code has completed and the screen is already displayed.<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_system_shutdown_request___self">3.6.7. system_shutdown_request__(self):</h4>
+<h4 id="_system_shutdown_request___self">4.6.7. system_shutdown_request__(self):</h4>
 <div class="paragraph"><p>If present, this function overrides the normal function called when a user selects a total system shutdown.<br />
 It could be used to do pre-shutdown housekeeping. The system will not shutdown if using this function, you will<br />
-have to do that yourself. qtvcp/linuxcnc will shutdown wihtout a prompt after this function returns<br /></p></div>
+have to do that yourself. qtvcp/linuxcnc will shutdown without a prompt after this function returns<br /></p></div>
 </div>
 <div class="sect3">
-<h4 id="_closing_cleanup___self">3.6.8. closing_cleanup__(self):</h4>
+<h4 id="_closing_cleanup___self">4.6.8. closing_cleanup__(self):</h4>
 <div class="paragraph"><p>This function is called just before the screen closes. It can be used<br />
 to do cleanup before closing.<br /></p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_status_callbacks_section">3.7. STATUS CALLBACKS section</h3>
+<h3 id="_status_callbacks_section">4.7. STATUS CALLBACKS section</h3>
 <div class="paragraph"><p>By convention this is where you would put functions that are callbacks<br />
 from STATUS definitions.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_callbacks_from_form_section">3.8. CALLBACKS FROM FORM section</h3>
+<h3 id="_callbacks_from_form_section">4.8. CALLBACKS FROM FORM section</h3>
 <div class="paragraph"><p>By convention this is where you would put functions that are callbacks<br />
 from the widgets that you have connected to the MainWindow with the<br />
 designer editor.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_general_functions_section">3.9. GENERAL FUNCTIONS section</h3>
+<h3 id="_general_functions_section">4.9. GENERAL FUNCTIONS section</h3>
 <div class="paragraph"><p>By convention this is where you put your general functions<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_key_binding_section">3.10. KEY BINDING section</h3>
+<h3 id="_key_binding_section">4.10. KEY BINDING section</h3>
 <div class="paragraph"><p>If you are using the keybinding library this is where you place your<br />
 custom key call routines.<br />
 The function signature is:<br /></p></div>
@@ -692,10 +821,10 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p><em>KEY</em> being the code (from the keybindings library) for the desired key.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_closing_event_section">3.11. CLOSING EVENT section</h3>
+<h3 id="_closing_event_section">4.11. CLOSING EVENT section</h3>
 <div class="paragraph"><p>Putting the close event function here will catch closing events.<br />
 This replaces any predefined closeEvent function from qtvcp<br />
-It&#8217;s usally better to use the special closing_cleanup__ function.<br /></p></div>
+It&#8217;s usually better to use the special closing_cleanup__ function.<br /></p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -708,19 +837,19 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 </div>
 <div class="sect1">
-<h2 id="_connecting_widgets_to_python_code">4. Connecting widgets to python code</h2>
+<h2 id="_connecting_widgets_to_python_code">5. Connecting widgets to python code</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>It&#8217;s possible to connect widgets to python code using signals and slots.<br />
 In this way you can give new functions to linuxcnc widgets or utilize<br />
 standard widgets to control linuxcnc.<br /></p></div>
 <div class="sect2">
-<h3 id="_overview_4">4.1. Overview</h3>
+<h3 id="_overview_4">5.1. Overview</h3>
 <div class="paragraph"><p>In the Designer editor you would create user function slots and connect<br />
 them to widgets using signals.<br />
 In the handler file you would create the slot&#8217;s functions defined in Designer.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="cha:designer-slots">4.2. Using Designer to add slots</h3>
+<h3 id="cha:designer-slots">5.2. Using Designer to add slots</h3>
 <div class="paragraph"><p>When you have loaded your screen into designer add a plain PushButton to the screen.<br />
 You could change the name of the button to something interesting like <em>test_button</em><br />
 There are two ways to edit connections - This is the graphical way<br />
@@ -745,11 +874,11 @@ then press ok and save the file.<br /></p></div>
 <div class="content">
 <img src="images/designer_slots.png" alt="QTvcp" />
 </div>
-<div class="title">Figure 10. Designer signal/slot selection</div>
+<div class="title">Figure 11. Designer signal/slot selection</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_handler_file_changes">4.3. Handler file changes</h3>
+<h3 id="_handler_file_changes">5.3. Handler file changes</h3>
 <div class="paragraph"><p>Now you must add the function to the handler file.<br />
 The function signature is <em>def slotname(self):</em><br />
 We will add some code to print the widget name.<br /></p></div>
@@ -776,7 +905,7 @@ Now when you load your screen and press the button it should print the name<br /
 of the button in the terminal.<br /></p></div>
 </div>
 <div class="sect2">
-<h3 id="_more_information">4.4. More Information</h3>
+<h3 id="_more_information">5.4. More Information</h3>
 <div class="paragraph"><p><a href="qtvcp_widgets.html#cha:qtvcp-widgets">QtVCP Widgets</a></p></div>
 <div class="paragraph"><p><a href="qtvcp_libraries.html#cha:qtvcp-libraries">QtVCP Libraries</a></p></div>
 <div class="paragraph"><p><a href="qtvcp_code_snippets.html#cha:qtvcp-code">QtVCP Handler File Code Snippets</a></p></div>
@@ -790,7 +919,7 @@ of the button in the terminal.<br /></p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

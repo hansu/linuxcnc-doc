@@ -426,29 +426,64 @@ On multi spindle machine there will be entries for each spindle number. Qtvcp on
   is started in manual mode. if this setting is not present, this
   defaults to 1 RPM for AXIS and 300 RPM for gmoccapy.
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+deprecated - use the [SPINDLE_n] section instead
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
 <em>DEFAULT_SPINDLE_0_SPEED = 100</em> - The default spindle RPM when the spindle
   is started in manual mode. On multi spindle machine there will be entries for each spindle number. Qtvcp only
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+deprecated - use the [SPINDLE_n] section instead
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
 <em>SPINDLE_INCREMENT = 200</em> - The increment used when clicking increase/decrease buttons Qtvcp only
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+deprecated - use the [SPINDLE_n] section instead
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
 <em>MIN_SPINDLE_0_SPEED = 1000</em> - The minimum RPM that can be manually selected.
 On multi spindle machine there will be entries for each spindle number. Qtvcp only
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+deprecated - use the [SPINDLE_n] section instead
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
 <em>MAX_SPINDLE_0_SPEED = 20000</em> - The maximum RPM that can be manually selected.
 On multi spindle machine there will be entries for each spindle number. Qtvcp only
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+deprecated - use the [SPINDLE_n] section instead
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
@@ -470,8 +505,7 @@ On multi spindle machine there will be entries for each spindle number. Qtvcp on
 </li>
 <li>
 <p>
-<em>CYCLE_TIME = 0.05</em> - Cycle time in seconds that display will sleep between
-   polls.
+<em>CYCLE_TIME = 100</em> - Cycle time of the Display GUI. Depending on the screen, this can be in seconds or ms (ms preferred). This is often the update rate rather then sleep time between updates. If the update time is not set right the screen can become unresponsive or very jerky. A value of 100ms (0.1 seconds) is a common setting though a range of 50 - 200ms (.05 - .2 seconds) may be useable. An under powered CPU may see improvement with a longer setting. Usually the default is fine.
 </p>
 </li>
 </ul></div>
@@ -613,25 +647,100 @@ See <a href="../gui/gmoccapy.html#cha:gmoccapy">gmoccapy</a> document for Gmocca
 </li>
 <li>
 <p>
-<em>GEOMETRY = XYZABCUVW</em> - Controls the preview and backplot of rotary motion. This item consists
-    of a sequence of axis letters, optionally preceded by a "-" sign.
-    This sequence specifies the order in which the effect
-    of each axis is applied, with a "-" inverting the sense of the
-    rotation.
-     The proper GEOMETRY string depends on the machine configuration and
-    the kinematics used to control it. The example string GEOMETRY=XYZBCUVW
-    is for a 5-axis machine where kinematics causes UVW to move in the
-    coordinate system of the tool and XYZ to move in the coordinate system
-    of the material. The order of the letters is important, because it
-    expresses the order in which the different transformations are applied.
-    For example rotating around C then B is different than rotating around
-    B then C. Geometry has no effect without a rotary axis.
-     Foam-cutting machines (FOAM = 1) should specify "XY;UV" or leave the value
-    blank even though this value is presently ignored in foam-cutter mode.  A
-    future version may define what ";" means, but if it does "XY;UV" will mean
-    the same as the current foam default.
+<em>GEOMETRY = XYZABCUVW</em> - Controls the <strong>preview</strong> and <strong>backplot</strong> of motion.
+   This item consists of a sequence of axis letters and control characters:
+</p>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+The letters X,Y,Z specify translation along the named coordinate.
 </p>
 </li>
+<li>
+<p>
+The letters A,B,C specify rotation about the corresponding axes X,Y,Z.
+</p>
+</li>
+<li>
+<p>
+The letters U,V,W specify translation along the related axes X,Y,Z.
+</p>
+</li>
+<li>
+<p>
+Each letter specified must occur in [TRAJ]COORDINATES to have an effect.
+</p>
+</li>
+<li>
+<p>
+A "<strong>-</strong>" character preceding any letter inverts the direction of the operation.
+</p>
+</li>
+<li>
+<p>
+The translation and rotation operations are evaluated <strong>right-to-left</strong>.
+   So using GEOMETRY=XYZBC specifies a C rotation followed by a B rotation
+   followed by Z,Y,X translations.  (The ordering of consecutive translation
+   letters is immaterial.)
+</p>
+</li>
+<li>
+<p>
+If the "<strong>!</strong>" special character appears anywhere in the sequence, rotations
+   for the A,B,C axis letters respect the offsets (G5x, G92) applied to X,Y,Z.
+</p>
+</li>
+<li>
+<p>
+The proper GEOMETRY string depends on the machine configuration and
+   the kinematics used to control it. The order of the letters is important.
+   For example, rotating around C then B is different than rotating
+   around B then C.
+</p>
+</li>
+<li>
+<p>
+Rotations are by default applied with respect to the machine origin.
+   Example: GEOMETRY=CXYZ first translates the control point to X,Y,Z and then
+   performs a C rotation about the Z axis centered at the machine origin.
+</p>
+</li>
+<li>
+<p>
+Rotations applied after translations may use the "<strong>!</strong>" provision to
+   to act with respect to the current machine offset.  Example: GEOMETRY=!CXYZ
+   translates the control point to the X,Y,Z position and then performs
+   a C rotation about the machine origin displaced by the current G5x,G92
+   X,Y,Z offsets.  (Changing offsets may require a program reload).
+</p>
+</li>
+<li>
+<p>
+UVW translation example: GEOMETRY=XYZUVW causes UVW to move in the coordinate
+   system of the tool and XYZ to move in the coordinate system of the material
+</p>
+</li>
+<li>
+<p>
+Foam-cutting machines (FOAM = 1) should specify "XY;UV" or leave the value
+   blank even though this value is presently ignored in foam-cutter mode.  A
+   future version may define what ";" means, but if it does "XY;UV" will mean
+   the same as the current foam default.
+</p>
+</li>
+</ol></div>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">If no [DISPLAY]GEOMETRY is included in the inifile, a default is provided
+by the [DISPLAY]DISPLAY gui program (typically "XYZABCUVW")</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
 <li>
 <p>
 <em>ARCDIVISION = 64</em> - Set the quality of preview of arcs. Arcs are previewed by dividing
@@ -758,7 +867,7 @@ included with LinuxCNC.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-'PROGRAM_EXTENSION = .gcode 3D Printer
+<em>PROGRAM_EXTENSION = .gcode 3D Printer</em>
 </p>
 <div class="ulist"><ul>
 <li>
@@ -774,7 +883,7 @@ included with LinuxCNC.</p></div>
 <td class="icon">
 <div class="title">Note</div>
 </td>
-<td class="content">The program file assoiated with an extension must have either the full
+<td class="content">The program file associated with an extension must have either the full
 path to the program or be located in a directory that is on the system path.</td>
 </tr></table>
 </div>
@@ -815,7 +924,7 @@ should be used by any filter that runs for a long time.</p></div>
 It depends on there being a space between each axis word to work.</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>#!/usr/bin/env python
+<pre><code>#!/usr/bin/env python3
 
 import sys
 
@@ -946,16 +1055,16 @@ time (typ: <em>USER_DEFINED_FUNCTION_MAX_DIRS == 5</em>).</td>
 <p>
 <em>INI_VARS = 1</em> Default 1
 Allows G-code programs to read values from the INI file using the format
-#&lt;_ini[section]name&gt;. See &lt;&lt;gcode:parameters,G-code Parameters&gt;
+#&lt;_ini[section]name&gt;. See <a href="../gcode/overview.html#gcode:parameters">G-code Parameters</a>.
 </p>
 </li>
 <li>
 <p>
 <em>HAL_PIN_VARS = 1</em> Default 1
 Allows G-code programs to read the values of HAL pins using the format
-#&lt;_hal[Hal item]&gt; Variable access is read-only
+#&lt;_hal[Hal item]&gt;.  Variable access is read-only.
 See <a href="../gcode/overview.html#gcode:parameters">G-code Parameters</a> for more details and an
-important caveat
+important caveat.
 </p>
 </li>
 <li>
@@ -1091,13 +1200,26 @@ Section.</p></div>
     one <em>HALFILE</em>, and stepper systems typically have two such files, one which
     specifies the generic stepper configuration (<em>core_stepper.hal</em>) and
     one which specifies the machine pin out (<em>xxx_pinout.hal</em>).
-    HALFILES are found using a search.  If the named file is found in the directory
-    containing the ini file, it is used.  If the named file is not found in this
-    ini file directory, a search is made using a system library of halfiles.
-    A HALFILE may also be specified as an absolute path (when the name starts with
-    a <em>/</em> character).  Absolute paths are not recommended as their use may limit
-    relocation of configurations.
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><code>HALFILES are found using a search.  If the named file is found in the directory
+containing the ini file, it is used.  If the named file is not found in this
+ini file directory, a search is made using a system library of halfiles.</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>If LinuxCNC is started with the linuxcnc script using the "-H dirname" option,
+the specified dirname is prepended to the search described above so that
+"dirname" is searched first.  The "-H dirname" option may be specified more
+than once, directories are prepended in order.</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>A HALFILE may also be specified as an absolute path (when the name starts with
+a '/' character).  Absolute paths are not recommended as their use may limit
+relocation of configurations.</code></pre>
+</div></div>
 </li>
 <li>
 <p>
@@ -1745,7 +1867,7 @@ JOINT_1 = Z
     drive an joint. If backlash is added to an joint and you are using
     steppers the STEPGEN_MAXACCEL must be increased to 1.5 to 2 times the
     MAX_ACCELERATION for the joint. Excessive backlash compensation can cause an
-    joint to jerk as it changes direction. If a COMP_FILE is specificed for a
+    joint to jerk as it changes direction. If a COMP_FILE is specified for a
     joint BACKLASH is not used.
 </p>
 </li>
@@ -1795,8 +1917,8 @@ Type 0 Example
 <li>
 <p>
 <em>Type 1:</em> The second value specifies positive offset from nominal while
-    traveling in the positive direction. The third value specifies the negitive
-    offset from nominal while traveling in a negitive direction.
+    traveling in the positive direction. The third value specifies the negative
+    offset from nominal while traveling in a negative direction.
    <br />
    <br />
 Type 1 Example
@@ -1945,6 +2067,14 @@ occur during the execution of gcode commands.  See also related github issue
     yes, it will affect the kind of home pattern used. Currently, you can&#8217;t
     home to index with steppers unless you&#8217;re using stepgen in velocity mode
     and PID.
+</p>
+</li>
+<li>
+<p>
+<em>HOME_INDEX_NO_ENCODER_RESET = NO</em> -
+     Use YES if the encoder used for this joint does not reset its counter
+     when an index pulse is detected after assertion of the joint
+     index_enable hal pin. Applicable only for HOME_USE_INDEX = YES.
 </p>
 </li>
 <li>
@@ -2379,10 +2509,77 @@ have:
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p><a id="sec:spindle-section"></a></p></div>
+</div>
+<div class="sect2">
+<h3 id="_spindle__lt_num_gt_section">2.14. [SPINDLE_&lt;num&gt;] Section</h3>
+<div class="paragraph"><p>The &lt;num&gt; specifies the spindle number 0 &#8230; (num_spindles-1)
+The value of <em>num_spindles</em> is set by [TRAJ]SPINDLES=</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>MAX_VELOCITY = 20000</em>
+    The maximum spindle speed (in rpm) for the specified spindle. Optional.
+</p>
+</li>
+<li>
+<p>
+<em>MIN_VELOCITY = 3000</em>
+    The minimum spindle speed (in rpm) for the specified spindle. Optional.
+    Many spindles have a minimum speed below which they should not be run.
+    Any spindle speed command below this limit will be /increased/ to this
+    limit.
+</p>
+</li>
+<li>
+<p>
+<em>MAX_REVERSE_VELOCITY = 20000</em>
+    This setting will default to MAX_VELOCITY if omitted. It can be used
+    in cases where the spindle speed is limited in reverse. Set to zero
+    for spindles which must not be run in reverse.
+    In this context "max" refers to the absolute magnitude of the spindle
+    speed.
+</p>
+</li>
+<li>
+<p>
+<em>MIN_REVERSE_VELOCITY = 3000</em>
+    This setting is equivalent to MIN_VELOCITY but for reverse spindle
+    rotation. It will default to the MIN_VELOCITY if omitted.
+</p>
+</li>
+<li>
+<p>
+<em>INCREMENT = 200</em>
+    Sets the step size for spindle speed increment / decrement commands.
+    This can have a different value for each spindle.
+    This setting is effective with Axis and Touchy but note that some
+    GUIs may handle things differently.
+</p>
+</li>
+<li>
+<p>
+<em>HOME_SEARCH_VELOCITY = 100</em> - FIXME: Spindle homing not yet working
+    Sets the homing speed (rpm) for the spindle. The spindle will rotate
+    at this velocity during the homing sequence until the spindle index
+    is located, at which point the spindle position will be set to zero.
+    Note that it makes no sense for the spindle home position to be any
+    value other than zero, and so there is no provision to do so.
+</p>
+</li>
+<li>
+<p>
+<em>HOME_SEQUENCE = 0</em> - FIXME: Spindle homing not yet working
+    Controls where in the general homing sequence the spindle homing
+    rotations occur. Set the HOME_SEARCH_VELOCITY to zero to avoid spindle
+    rotation during the homing sequence
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p><a id="sec:emcio-section"></a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_emcio_section">2.14. [EMCIO] Section</h3>
+<h3 id="_emcio_section">2.15. [EMCIO] Section</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2403,6 +2600,13 @@ have:
 <em>TOOL_TABLE = tool.tbl</em> -
     The file which contains tool information, described in
     the User Manual.
+</p>
+</li>
+<li>
+<p>
+<em>DB_PROGRAM = db_program</em> -
+    Path to an executable program that manages tool data.
+    (When a DB_PROGRAM is specified, a TOOL_TABLE entry is ignored)
 </p>
 </li>
 <li>
@@ -2435,8 +2639,9 @@ have:
 <p>
 <em>TOOL_CHANGE_AT_G30 = 1</em> -
     The machine is moved to reference point defined by parameters
-    5181-5186 for G30 if the value is 1. For more information see the
-    <a href="../gcode/overview.html#gcode:parameters">Parameters Section and the     &lt;&lt;gcode:g30-g30.1</a>.
+    5181-5186 for G30 if the value is 1. For more information see
+    <a href="../gcode/overview.html#gcode:parameters">G-Code Parameters</a> and
+    <a href="../gcode/g-code.html#gcode:g30-g30.1">G-Code G30-G30.1</a>.
 </p>
 </li>
 <li>
@@ -2456,7 +2661,7 @@ have:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2022-02-19 19:48:43 CET
 </div>
 </div>
 </body>

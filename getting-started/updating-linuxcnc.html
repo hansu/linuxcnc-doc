@@ -51,7 +51,7 @@ best off making a fresh install of the new version as described in the
 section <a href="getting-linuxcnc.html#cha:getting-linuxcnc">Getting LinuxCNC</a>.</p></div>
 <div class="paragraph"><p>Furthermore, if you are running Ubuntu Precise or Debian Wheezy it is
 well worth considering making a backup of the "linuxcnc" directory on
-removeable media and performing a
+removable media and performing a
 <a href="getting-linuxcnc.html#cha:getting-linuxcnc">clean install of a newer OS and LinuxCNC version</a>
 as these releases were EOL in 2017 and 2018 respectively.
 If you are running on Ubuntu Lucid then you will have to do this, as
@@ -69,7 +69,7 @@ Distributor ID: Debian
 Codename:       wheezy</code></pre>
 </div></div>
 <div class="paragraph"><p>You should be running on Debian Stretch or Wheezy (as above), or Ubuntu
-Precise. Packages are also avaialble for Debian Jessie or Debian Buster
+Precise. Packages are also available for Debian Jessie or Debian Buster
 if you happen to already be running one of those.</p></div>
 <div class="paragraph"><p>You will also need to check which realtime kernel is being used:</p></div>
 <div class="listingblock">
@@ -573,7 +573,7 @@ NOT This: [KINS]KINEMATICS = trivkins coordinates = X Z</code></pre>
 <h3 id="_home_sequences">3.8. Home sequences</h3>
 <div class="paragraph"><p><strong>Negative</strong> values may be used for the ini file items
 named [JOINT_n]HOME_SEQUENCE.  Prior to joints_axes incorporation a value
-of -1 or the ommission of the item indicated no sequence was applicable.
+of -1 or the omission of the item indicated no sequence was applicable.
 Now, only omission of the item is used for that purpose.
 See the chapter: <a href="../config/ini-homing.html#cha:homing-configuration"><em>Homing Configuration</em></a>
 for more information.</p></div>
@@ -836,7 +836,7 @@ guis (like the axis gui) may hide some of the distinctions for
 simple machines.</p></div>
 <div class="paragraph"><p>In most cases, you can think of joints as <em>motors</em>.</p></div>
 <div class="paragraph"><p>The relationships between joints and axis coordinates are
-determined by the mathmatical kinematics functions that describe a
+determined by the mathematical kinematics functions that describe a
 machine&#8217;s motion.</p></div>
 <div class="paragraph"><p>World coordinates (X,Y,Z,A,B,C,U,V,W) are determined by applying
 <em>FORWARD</em> kinematics operations to joint (motor) positions.</p></div>
@@ -946,7 +946,7 @@ halui.axis.L.select pins.</p></div>
 for the joint selected by the halui.joint.N.select pins.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_aditional_pin_renames">7.2.3. Aditional pin renames</h4>
+<h4 id="_additional_pin_renames">7.2.3. Additional pin renames</h4>
 <div class="paragraph"><p>The hal pins for <em>selected</em> joints were renamed for consistency
 with related pins.</p></div>
 <div class="listingblock">
@@ -1029,7 +1029,7 @@ External changes to the joint/teleop motion mode are detected.
 </div>
 <div class="sect3">
 <h4 id="_home_icons">7.3.4. Home icons</h4>
-<div class="paragraph"><p>For identity kinematics, <em>Home</em> icons are shown for the correspoinding
+<div class="paragraph"><p>For identity kinematics, <em>Home</em> icons are shown for the corresponding
 (one-to-one) axis letter when a joint is homed.</p></div>
 <div class="paragraph"><p>For non-identity kinematics, <em>Home</em> icons are shown for individual joints when
 a joint is homed in joint display mode.  An <em>All-homed</em> icon is displayed for
@@ -1145,7 +1145,7 @@ ShuttleXpress, so the old driver name is no longer accurate.</p></div>
 <h3 id="_linuxcncrsh">7.9. linuxcncrsh</h3>
 <div class="paragraph"><p>"Home All" is now supported with the set home subcommand
 by using -1 for the joint number</p></div>
-<div class="paragraph"><p>The jogging commands have been altered to accomodate both joint (free)
+<div class="paragraph"><p>The jogging commands have been altered to accommodate both joint (free)
 and teleop (world) jogging.</p></div>
 <div class="listingblock">
 <div class="content">
@@ -1163,7 +1163,7 @@ and teleop (world) jogging.</p></div>
       else                  use joint_number</p></div>
 <div class="paragraph"><p>Note: Formerly, the command <em>set jog 0 1.234</em> would jog the zeroth
 axis (X) with requested speed=1.234 in any mode (free or teleop).
-This command now attemps to jog the zeroth joint (Joint0) provided
+This command now attempts to jog the zeroth joint (Joint0) provided
 the mode is free (not teleop).  To jog the X axis, the mode
 must be teleop and the corresponding command is: <em>set jog x 1.234</em></p></div>
 </div>
@@ -1456,10 +1456,204 @@ settings separated by blanks and enclosed with quotes.  Example:</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_changes_beyond_2_8_x">13. Changes beyond 2.8.x</h2>
+<h2 id="_changes_beyond_2_8_x_master_branch_development">13. Changes beyond 2.8.x (master branch development)</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Future versions of this document will note changes made to the development
-branch subsequent to 2.8.x release(s).</p></div>
+<div class="paragraph"><p>The master branch is version-tagged with prerelease notation, typically
+2.9~pre*</p></div>
+<div class="sect2">
+<h3 id="_python3_and_gtk3">13.1. Python3 and GTK3</h3>
+<div class="paragraph"><p>2.9 changed to Python3 and GTK3. This only affects you if you have custom glade or python handlers in your config.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+run py3clean in your config directory to remove any temporary files.
+</p>
+</li>
+<li>
+<p>
+run py3clean in your linuxcnc source directory if you compile from source
+</p>
+</li>
+<li>
+<p>
+run 2to3 -w on any .py files you have written
+</p>
+</li>
+<li>
+<p>
+make sure the interpreter in the first line of the script is python3, not python2
+</p>
+</li>
+<li>
+<p>
+open the ui file in glade, and save it. It should convert everything that can be converted automatically, and give you warnings.
+</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2">
+<h3 id="_linuxcnc_startup">13.2. LinuxCNC startup</h3>
+<div class="paragraph"><p>The main script, <strong>linuxcnc</strong>, supports a new option (-H dirname) to
+specify an additional user-specified directory for Halfiles.  This
+directory is searched before the usual search of 1) theini directory
+and 2)the system halfile library directory.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_g_code_changes">13.3. G-code changes</h3>
+<div class="paragraph"><p>G43.2 (additional offsets) now accepts transient offsets to be added by
+axis words as well as from the tool table.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_updates">13.4. Configuration Updates</h3>
+<div class="sect3">
+<h4 id="_inifile_settings">13.4.1. Inifile Settings</h4>
+<div class="paragraph"><p>New: [JOINT_n]HOME_INDEX_NO_ENCODER_RESET&#8201;&#8212;&#8201;support encoder with
+index that does not reset upon receipt of index pulse following
+assertion of index_enable.</p></div>
+<div class="paragraph"><p>axis.py default for [DISPLAY]GEOMETRY was:"XYZBCUVW",is:"XYZABCUVW"</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_code_updates">13.5. Code Updates</h3>
+<div class="paragraph"><p>Management of the internal storage of tool data and the communication
+of same between EMCIO and TASK has been refactored to use memory mapped
+storage.  Legacy use of nml messages for tooldata is deprecated and
+may be removed before a new release.</p></div>
+<div class="paragraph"><p>Code references to the sequential indexes for internal tooldata have
+been clarified but legacy variable names persist for <strong>selected_pocket</strong>
+and <strong>current_pocket</strong>.  Variables with these names refer to the
+sequential index for internal tooldata not an actual pocket number.
+These variable names may be renamed in the future and require changes
+to user-fielded python remap applications that modify tool handling.</p></div>
+<div class="paragraph"><p>A new optional interface is provided to support management of
+tool data by an external database application.</p></div>
+<div class="paragraph"><p>The ioControl_v2.cc file providing the userspace program iov2 has
+no maintainter and its use is deprecated&#8201;&#8212;&#8201;it may be removed before
+the next release.</p></div>
+<div class="sect3">
+<h4 id="_reverse_run">13.5.1. Reverse Run</h4>
+<div class="paragraph"><p>Support added for reverse run in the trajectory planner, the task, and
+motion modules, the python interface, the axis gui, and the test suite.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_number_of_joints">13.5.2. Number of Joints</h4>
+<div class="paragraph"><p>The maximum number of joints (EMCMOT_MAX_JOINTS) increased from 9
+to 16.  The axis gui now supports display of up to 16 joints.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_extra_joints">13.5.3. Extra Joints</h4>
+<div class="paragraph"><p>A new motmod parameter (num_extrajoints) specifies joints that are
+homed by conventional joint homing methods but controlled by new hal
+pins (joint.N.posthome-cmd) after homing.  Such joints may be
+managed by independent motion planner/controllers in hal and manipulated
+from gcode using custom M-codes.  See the motion man page for
+more info.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_homing">13.5.4. Homing</h4>
+<div class="paragraph"><p>A homing api is provided by src/emc/motion/homing.h to support users'
+custom homing code that replaces src/emc/motion/homing.c with
+a user-customized homing.c file.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_motion">13.5.5. Motion</h4>
+<div class="paragraph"><p>The motion module supports kinematics modules that define new
+functions kinematicsSwitchable() and kinematicsSwitch() to switch
+their kinematics type.  A hal pin, motion.switchkins-type, is
+provided for use of such kinematics modules.</p></div>
+<div class="paragraph"><p>Provided kinematics modules that implement kinematics switching
+use the switchkins.o object to supply the required rtapi_main()
+and related functions.  Kinematics modules that do not support
+kinematics switching use the macro "KINS_NOT_SWITCHABLE"
+provided by kinematics.h.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_switchkins_kinematics_modules">13.5.6. Switchkins Kinematics Modules</h4>
+<div class="paragraph"><p>Several kinematics modules are now switchable between their
+eponymous kinematics and an alternate identity kinematics mode.</p></div>
+<div class="paragraph"><p>Kinematic modules supporting switchkins:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+xyzac-trt-kins table-rotary-tilting (supersedes xyzac-trt-kins)
+</p>
+</li>
+<li>
+<p>
+xyzbc-trt-kins table-rotary-tilting (supersedes xyzbc-trt-kins)
+</p>
+</li>
+<li>
+<p>
+genserkins     generalized serial-link kinematics
+</p>
+</li>
+<li>
+<p>
+genhexkins     generalized hexapod parallel kinematics
+</p>
+</li>
+<li>
+<p>
+scarakins      scara robot
+</p>
+</li>
+<li>
+<p>
+pumakins       puma robot
+</p>
+</li>
+<li>
+<p>
+5axiskins      bridgemill (xyzbcw 6axes)
+</p>
+</li>
+</ol></div>
+<div class="paragraph"><p>The switchkins modules above (and trivkins) support a
+coordinates= parameter that optionally specifies an ordered set
+of coordinate letters that are sequentially assigned to joint
+numbers (beginning with joint0).</p></div>
+<div class="paragraph"><p>The switchkins modules above include provisions for compile-time
+support of an additional user-specified kinematics type identified
+on the make command line by the userkfuncs environmental
+variable.  (See src/Makefile)</p></div>
+<div class="paragraph"><p>The userspace test program bin/genserkins has been isolated to
+a single file (ugenserkins.c) since its original source file
+(genserkins.c) has been refactored for switchkins support.
+The userspace test program has not been actively maintained and
+its use is deprecated.  The ugenserkins.c file may be removed
+in the future.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_other">13.5.7. Other</h4>
+<div class="paragraph"><p>lib/hallib/sim_lib.tcl: simulate encoder index if [JOINT_n]HOME_USE_INDEX
+is specified.</p></div>
+<div class="paragraph"><p>lib/python/vismach.py: new hal pin vismach.plotclear</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hal">13.6. Hal</h3>
+<div class="sect3">
+<h4 id="_components">13.6.1. Components</h4>
+<div class="paragraph"><p>sim_home_switch: added I/O pin for index-enable</p></div>
+</div>
+<div class="sect3">
+<h4 id="_motion_module_pins">13.6.2. Motion module pins</h4>
+<div class="paragraph"><p>motion.feed-upm&#8201;&#8212;&#8201;current feed in units per minute</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configs">13.7. Configs</h3>
+<div class="sect3">
+<h4 id="_inifile">13.7.1. Inifile</h4>
+<div class="paragraph"><p>[DISPLAY]GEOMETRY settings that include  the <em>!</em> character
+specify that displayed rotations respect G5x,G92 offsets.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_simulation_configs">13.7.2. Simulation Configs</h4>
+<div class="paragraph"><p>sim/configs/axis/axis_9axis: demonstrate simulated encoder index</p></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1467,7 +1661,7 @@ branch subsequent to 2.8.x release(s).</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -30,7 +30,7 @@ asciidoc.install(2);
 <h2 id="sec:halcmd">1. Halcmd</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Halcmd is a command line tool for manipulating the HAL. There is a
-rather complete man page for halcmd, which will be installed if you
+rather complete man page for <a href="../man/man1/halcmd.1.html">halcmd</a>, which will be installed if you
 have installed LinuxCNC from either source or a package. The manpage
 provides usage info:</p></div>
 <div class="listingblock">
@@ -132,22 +132,33 @@ Notes:
        Create watchfile in halshow using: 'File/Save Watch List'
        linuxcnc must be running for standalone usage</code></pre>
 </div></div>
-<div class="paragraph"><p>LinuxCNC must be running for standalone usage</p></div>
+<div class="paragraph"><p>LinuxCNC must be running for standalone usage.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/halshow-4.png" alt="Watch Tab" />
+</div>
+</div>
 <div class="paragraph"><p>A watchfile created using the <em>File/Save Watch List</em> menu item
 is formatted as a single line with tokens "pin+", "param+", "sig=+"
 followed by the appropriate pin, param, or signal name.  The
 token-name pairs are separated by a space character.</p></div>
-<div class="paragraph"><p>Example:
-   pin+joint.0.pos-hard-limit pin+joint.1.pos-hard-limit sig+estop-loop</p></div>
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>   pin+joint.0.pos-hard-limit pin+joint.1.pos-hard-limit sig+estop-loop</code></pre>
+</div></div>
 <div class="paragraph"><p>A watchfile created using the <em>File/Save Watch List (multiline)</em> menu item
 is formatted with separate lines for each item identified with token-name
 pairs as described above.</p></div>
-<div class="paragraph"><p>Example:
-   pin+joint.0.pos-hard-limit
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>   pin+joint.0.pos-hard-limit
    pin+joint.1.pos-hard-limit
-   sig+estop-loop</p></div>
+   sig+estop-loop</code></pre>
+</div></div>
 <div class="paragraph"><p>When loading a watchfile with the <em>File/Load Watch List</em> menu item, the
-token-name pairs may appear as single or mulitple lines.  Blank lines and
+token-name pairs may appear as single or multiple lines.  Blank lines and
 lines beginning with a # character are ignored.</p></div>
 </div>
 </div>
@@ -195,13 +206,13 @@ writable pins, parameters or signals.  Usage:</p></div>
 
          Hal item types bit,s32,u32,float are supported
 
-         When a bit item is specifed, a pushbutton is created
+         When a bit item is specified, a pushbutton is created
          to manage the item in one of three manners specified
          by radio buttons:
              toggle: Toggle value when button pressed
              pulse:  Pulse item to 1 once when button pressed
              hold:   Set to 1 while button pressed
-         The bit pushbutton mode can be specifed on the command
+         The bit pushbutton mode can be specified on the command
          line by formatting the item name:
              namei/mode=[toggle | pulse | hold]
          If the mode begins with an uppercase letter, the radio
@@ -425,7 +436,7 @@ function report the function as "Unknown".</td>
 application to aid in designing and verifying connections.  Pin
 types and current values are not shown.  For this information use
 applications like halshow, halmeter, halscope or the <em>show</em>
-command available with comand-line halcmd program.</td>
+command available with command-line halcmd program.</td>
 </tr></table>
 </div>
 </div>
@@ -435,7 +446,7 @@ command available with comand-line halcmd program.</td>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-08 11:23:10 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>Se procurer LinuxCNC</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Se procurer LinuxCNC</h1>
+<div id="toc">
+  <div id="toctitle">Table des matières</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_par_téléchargement_classique">1. Par téléchargement classique</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Téléchargez le CD Live sur le <a href="http://www.linuxcnc.org/index.php?lang=french">site de LinuxCNC</a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_par_téléchargement_fragmenté">2. Par téléchargement fragmenté </h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Si le fichier est trop important pour être téléchargé en une seule
+fois parce que votre connexion Internet est lente ou mauvaise,
+utilisez <em>wget</em> qui permet la reprise après un téléchargement interrompu.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+La commande Wget sous Linux
+</dt>
+<dd>
+<p>
+
+Ouvrez un terminal. Dans Gnome, il est dans <em>Applications</em> → <em>Accessoires</em> →
+<em>Terminal</em>.
+Utilisez <em>cd</em> pour changer le répertoire dans lequel vous voulez stocker l&#8217;image
+ISO. Utilisez <em>mkdir</em> pour créer un nouveau répertoire si nécessaire.
+</p>
+<div class="paragraph"><p>Notez que les noms de fichiers réels peuvent changer, vous pourriez avoir à
+aller sur <a href="http://www.linuxcnc.org/index.php/french">le site de LinuxCNC</a> et y suivre
+le lien <em>Téléchargement</em> pour obtenir le nom réel du fichier. Dans la plupart
+des navigateurs, vous pouvez faire un clic droit sur le lien et sélectionner
+<em>Copier le lien vers</em>, ou similaire, coller ensuite ce lien dans la fenêtre du
+terminal avec un clic droit puis en choisissant <em>Coller</em>.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Ubuntu 10.04 Lucid Lynx et LinuxCNC (version actuelle)</div>
+<div class="paragraph"><p>Pour obtenir la version de Ubuntu 10.04 Lucid Lynx, copier l&#8217;un des liens
+ci-dessous dans la fenêtre du terminal et appuyez sur <em>Entrée</em>:</p></div>
+<div class="paragraph"><p>Pour le miroir Etats-Unis:
+wget <a href="http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc3-i386.iso">http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc3-i386.iso</a></p></div>
+<div class="paragraph"><p>Pour le miroir européen:
+wget <a href="http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-10.04-linuxcnc3-i386.iso">http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-10.04-linuxcnc3-i386.iso</a></p></div>
+<div class="paragraph"><p>La somme MD5 du fichier ci-dessus est: <code>76dc2416b917679b71255e464ede84ec</code></p></div>
+</div></div>
+<div class="paragraph"><p>Pour continuer un téléchargement partiel qui aurait été interrompu par exemple,
+ajoutez l&#8217;option -c à wget:</p></div>
+<div class="paragraph"><p>wget -c <a href="http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc3-i386.iso">http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc3-i386.iso</a></p></div>
+<div class="paragraph"><p>Pour arrêter un téléchargement, utilisez Ctrl-C ou fermer la fenêtre du terminal.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Ubuntu 8.04 Hardy Heron et LinuxCNC (ancien)</div>
+<div class="paragraph"><p>Si vous avez besoin d&#8217;une ancienne version d&#8217;Ubuntu, vous pouvez télécharger
+Ubuntu 8.04. L&#8217;image du CD ci-dessous est l&#8217;ancienne version EMC 2.3.x, mais
+elle peut être modifiée vers la version 2.4.x en suivant les instructions sur:
+ <a href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?UpdatingTo2.4">le wiki LinuxCNC.org</a></p></div>
+<div class="paragraph"><p>Pour le miroir Etats-Unis:
+wget <a href="http://www.linuxcnc.org/iso/ubuntu-8.04-desktop-emc2-aj13-i386.iso">http://www.linuxcnc.org/iso/ubuntu-8.04-desktop-emc2-aj13-i386.iso</a></p></div>
+<div class="paragraph"><p>Pour le miroir européen:
+wget <a href="http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-8.04-desktop-emc2-aj13-i386.iso">http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-8.04-desktop-emc2-aj13-i386.iso</a></p></div>
+<div class="paragraph"><p>La somme MD5 du fichier ci-dessus est: <code>1bab052ec879f941628927c988863f14</code></p></div>
+</div></div>
+<div class="paragraph"><p>Quand le téléchargement est terminé, vous trouverez le fichier ISO dans le
+répertoire que vous avez sélectionné précédemment. Ensuite, il ne vous restera
+plus qu'à graver le CD.</p></div>
+</dd>
+<dt class="hdlist1">
+La commande Wget sous Windows
+</dt>
+<dd>
+<p>
+
+Le programme wget est également disponible pour Windows depuis:
+</p>
+<div class="paragraph"><p><a href="http://gnuwin32.sourceforge.net/packages/wget.htm">http://gnuwin32.sourceforge.net/packages/wget.htm</a></p></div>
+<div class="paragraph"><p>Suivez les instructions de la page web pour télécharger et installer
+le programme wget sous Windows.</p></div>
+<div class="paragraph"><p>Pour lancer wget ouvrez l&#8217;invite de commande.</p></div>
+<div class="paragraph"><p>Dans la plupart des Windows elle est dans <em>Programmes</em> → <em>Accessoires</em> →
+<em>Commande</em></p></div>
+<div class="paragraph"><p>Naviguez jusqu&#8217;au répertoire dans lequel s&#8217;est installé wget.
+Habituellement il est dans <em>C:\Program Files\GnuWin32\bin</em> si
+c&#8217;est le cas, tapez la commande:</p></div>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>cd C:\Program Files\GnuWin32\bin</code></pre>
+</div></div>
+<div class="paragraph"><p>et le prompt devrait changer pour: <em>C:\Program Files\GnuWin32</em></p></div>
+<div class="paragraph"><p>+
+Tapez les commandes <em>wget</em> dans la fenêtre et pressez Entrée comme précédemment.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_graver_l_8217_image_iso_du_cd">3. Graver l&#8217;image ISO du CD</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>LinuxCNC est distribué sous la forme d&#8217;un fichier image de CD, l&#8217;image ISO du CD.
+Pour installer LinuxCNC, vous devez d&#8217;abord graver cette image ISO sur un CD.
+Vous devez disposer d&#8217;un graveur de CD/DVD et d&#8217;un CD vierge de 80 minutes
+(700 Mio). Pour éviter tout échec de gravure, graver à la vitesse la plus lente
+possible.</p></div>
+<div class="sect2">
+<h3 id="_sous_linux">3.1. Sous Linux</h3>
+<div class="sect3">
+<h4 id="_vérifier_la_somme_de_contrôle_sous_linux">3.1.1. Vérifier la somme de contrôle sous Linux</h4>
+<div class="paragraph"><p>Avant de graver un CD, il est fortement recommandé de vérifier la
+somme de contrôle md5 (hash) du fichier de l&#8217;image iso.</p></div>
+<div class="paragraph"><p>Ouvrez un terminal.
+Dans Ubuntu il est dans <em>Applications</em> → <em>Accessoires</em> → <em>Terminal</em>.</p></div>
+<div class="paragraph"><p>Allez dans le répertoire contenant l&#8217;image ISO précédemment téléchargée avec:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>cd répertoire_de_l'image</code></pre>
+</div></div>
+<div class="paragraph"><p>Puis lancez la commande <em>md5sum</em> suivie du nom du fichier, exemple:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>md5sum -b ubuntu-10.04-linuxcnc3-i386.iso</code></pre>
+</div></div>
+<div class="paragraph"><p>La commande md5sum doit retourner une simple ligne après le calcul de la somme
+    de contrôle.
+Sur une machine lente le calcul peut prendre plusieurs minutes:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>md5sum: 41b71c4956c0c89033a99a590ebaefec
+sha256sum: a542092aa9f399d3ad50bbb2f0f4dd63ad9332c23d8387f6061bdd186d1df3b0</code></pre>
+</div></div>
+<div class="paragraph"><p>Il reste à comparer avec la somme md5 fournie sur la page de téléchargement.</p></div>
+<div class="paragraph"><p>Si vous avez téléchargé le md5sum ainsi que l&#8217;ISO, vous pouvez demander au
+programme md5sum de faire la vérification pour vous.
+Dans le même répertoire:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>md5sum -c ubuntu-10.04-linuxcnc1-i386.iso.md5</code></pre>
+</div></div>
+<div class="paragraph"><p>Si tout va bien, après un court délai le terminal affichera:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ubuntu-10.04-linuxcnc1-i386.iso: OK</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_graver_le_cd_sous_linux">3.1.2. Graver le CD sous Linux</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Insérez un CD vierge dans votre graveur. Une fenêtre surgissante
+   <em>CD/DVD Creator</em> ou <em>Choisissez le type de disque</em> va s&#8217;ouvrir.
+   Fermez la, elle ne sera pas utilisée.
+</p>
+</li>
+<li>
+<p>
+Naviguez jusqu&#8217;au répertoire contenant l&#8217;image ISO.
+</p>
+</li>
+<li>
+<p>
+Faites un clic droit sur le fichier de l&#8217;image ISO et choisissez
+   <em>Graver le Disque</em>.
+</p>
+</li>
+<li>
+<p>
+Sélectionnez la vitesse de gravure. Pour graver le CD Live de LinuxCNC il
+   est recommandé de graver à la vitesse la plus lente possible pour
+   éviter toute erreur de gravure.
+</p>
+</li>
+<li>
+<p>
+Lancez la gravure.
+</p>
+</li>
+<li>
+<p>
+Si le choix d&#8217;un nom de fichier est demandé pour l&#8217;image disque,
+   cliquez juste <em>OK</em>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sous_windows">3.2. Sous Windows</h3>
+<div class="sect3">
+<h4 id="_vérifier_la_somme_de_contrôle_sous_windows">3.2.1. Vérifier la somme de contrôle sous Windows</h4>
+<div class="paragraph"><p>Avant de graver un CD, il est fortement recommandé de vérifier la
+somme de contrôle md5 (hash) du fichier de l&#8217;image iso, malheureusement
+Windows ne dispose pas de programme de contrôle du md5. Vous devrez en
+installer un pour vérifier la somme de contrôle de l&#8217;ISO. Plus
+d&#8217;informations sont disponibles ici: <a href="http://doc.ubuntu-fr.org/md5sum">http://doc.ubuntu-fr.org/md5sum</a></p></div>
+</div>
+<div class="sect3">
+<h4 id="_gravez_le_cd_sous_windows">3.2.2. Gravez le CD sous Windows</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+Si votre Windows n&#8217;intègre pas un logiciel de gravure d&#8217;image vous
+   pouvez télécharger Infra Recorder, un logiciel de gravure d&#8217;images
+   gratuit et open source sur <a href="http://infrarecorder.org/">http://infrarecorder.org/</a>
+</p>
+</li>
+<li>
+<p>
+Insérez un CD vierge dans le graveur, sélectionnez <em>Quitter</em> ou
+   <em>Cancel</em> si un auto-run démarre.
+</p>
+</li>
+<li>
+<p>
+Cliquez bouton droit sur le fichier ISO et sélectionnez le menu
+   <em>Graver l&#8217;image disque</em> ou lancez Infra Recorder et choisissez le
+   menu <em>Actions→Graver l&#8217;image</em>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tester_linuxcnc">4. Tester LinuxCNC</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Avec le CD Live de LinuxCNC dans le lecteur de CD/DVD, redémarrez votre PC
+de sorte qu&#8217;il démarre sur le CD Live. Quand l&#8217;ordinateur a redémarré
+vous pouvez essayer LinuxCNC sans l&#8217;installer. Vous ne pouvez pas créer de
+configuration personnalisée ni modifier les réglages du système comme
+la résolution de l'écran sans installer LinuxCNC.</p></div>
+<div class="paragraph"><p>Pour lancer LinuxCNC allez dans le menu Applications/CNC et choisissez
+LinuxCNC. Puis sélectionnez une configuration en sim (simulation) et
+essayez le.</p></div>
+<div class="paragraph"><p>Pour savoir si votre ordinateur est utilisable par le générateur de
+trains d&#8217;impulsions du logiciel, lancez un test de latence comme
+indiqué <a href="../install/Latency_Test_fr.html#cha:test-de-latence">dans ce chapitre</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installer_la_distribution_ubuntu_de_linuxcnc_sur_votre_pc">5. Installer la distribution Ubuntu de LinuxCNC sur votre PC</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Si vous avez envie d&#8217;aller plus loin, cliquez juste sur l&#8217;icône
+<em>Install</em> se trouvant sur le bureau, répondez à quelques questions (votre
+nom, votre fuseau horaire, le mot de passe) et faites une installation
+complète en quelques minutes. Notez bien le mot de passe indiqué et le
+nom d&#8217;utilisateur. Une fois l&#8217;installation complète et que vous êtes
+connecté, le gestionnaire de mises à jour vous proposera d&#8217;effectuer
+une mise à jour vers la dernière version stable de LinuxCNC.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_les_mises_à_jour_de_linuxcnc">6. Les mises à jour de LinuxCNC </h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Avec l&#8217;installation standard, le gestionnaire de mises à jour vous avertira des
+mises à jour de LinuxCNC disponibles quand vous serez en ligne et vous permettra
+de mettre à jour facilement sans connaissance particulière de Linux.
+Si vous souhaitez passer en 10.04 à partir d&#8217;une 8.04, une installation propre
+à partir du CD live est recommandée.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Attention</div>
+</td>
+<td class="content"><span class="red">Ne pas mettre à jour Ubuntu vers une nouvelle distribution
+comme de 10.04 vers 12.04, car elle ne permettrait plus d&#8217;utiliser LinuxCNC, ne
+pas mettre non plus à jour le kernel, car les modules temps réels ne
+fonctionnerait plus.</span></td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_problème_d_8217_installation_possible">7. Problème d&#8217;installation possible</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Dans de rares cas, vous pourriez avoir à réinitialiser le BIOS aux réglages par
+défaut si lors de l&#8217;installation du Live CD, le disque dur n&#8217;est pas reconnu
+pendant le démarrage.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Dernière mise à jour
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

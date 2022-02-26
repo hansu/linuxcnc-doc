@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title></title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<div id="toc">
+  <div id="toctitle">Table des matières</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">Cette documentation n&#8217;a pas été mise à jour depuis LinuxCNC version 2.5,
+publiée en 2012.
+C&#8217;est très dépassé. Veuillez utiliser la documentation en anglais.
+Si vous souhaitez mettre à jour cette traduction, veuillez contacter
+l'équipe LinuxCNC via le forum ou la liste de diffusion.</td>
+</tr></table>
+</div>
+<h1 id="_mises_à_jour_de_linuxcnc">Mises à jour de LinuxCNC</h1>
+<div class="sect1">
+<h2 id="_mise_à_jour_de_2_4_x_vers_2_5_x">1. Mise à jour de 2.4.x vers 2.5.x</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La version 2.5.0 de LinuxCNC change de nom, elle passe de <em>EMC2</em> à
+<em>LinuxCNC</em>. Tous les programmes dont les noms contenaient <em>emc</em> ont été
+renommés pour contenir <em>linuxcnc</em>. Toute la documentation à été mise à jour.</p></div>
+<div class="paragraph"><p>De plus, le nom du paquet debian contenant le logiciel a changé.
+Malheureusement les mises à jour automatiques sont cassées. Pour mettre à jour
+depuis emc2 2.4.X vers linuxcnc 2.5.X, suivez ces méthodes:</p></div>
+<div class="sect2">
+<h3 id="_sous_ubuntu_lucid_10_04">1.1. Sous Ubuntu Lucid 10.04</h3>
+<div class="paragraph"><p>Déclarer d&#8217;abord où se trouve le nouveau logiciel LinuxCNC, pour cela:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Dans le menu, cliquer sur <em>Système -&gt; Administration -&gt; Sources de logiciels</em>.
+</p>
+</li>
+<li>
+<p>
+Sélectionner l&#8217;onglet <em>Autres logiciels</em>.
+</p>
+</li>
+<li>
+<p>
+Sélectionner la ligne indiquant <em>http://www.linuxcnc.org/emc2 lucid base
+emc2.4</em> ou <em>http://www.linuxcnc.org/emc2 lucid base emc2.4-sim</em> puis cliquer le
+bouton <em>Éditer</em>.
+</p>
+</li>
+<li>
+<p>
+Dans le champ <em>URI</em>, remplacer la ligne courante par <em>http://www.linuxcnc.org</em>
+</p>
+</li>
+<li>
+<p>
+Dans le champ <em>Composants</em>, modifier <em>emc2.4</em> par <em>linuxcnc2.5</em>, ou
+<em>emc2.4-sim</em> par <em>linuxcnc2.5-sim</em>.
+</p>
+</li>
+<li>
+<p>
+Cliquer enfin sur le bouton <em>Valider</em>.
+</p>
+</li>
+<li>
+<p>
+De retour dans la fenêtre des sources de logiciels, onglet <em>Autres
+logiciels</em>, cliquer sur le bouton <em>Fermer</em>.
+</p>
+</li>
+<li>
+<p>
+Une fenêtre surgissante informe alors que <em>Les informations sur les
+logiciels disponibles sont obsolètes</em>. Cliquer le bouton <em>Actualiser</em>.
+</p>
+</li>
+<li>
+<p>
+Suivre la même procédure pour le <em>Code source</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Maintenant l&#8217;ordinateur sait où trouver le nouveau logiciel, ensuite il faudra
+lui demander de l&#8217;installer:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Dans le menu, cliquer sur <em>Système -&gt; Administration -&gt; Gestionnaire de
+paquets Synaptic</em>
+</p>
+</li>
+<li>
+<p>
+Dans la barre de recherche rapide, en haut, taper <em>linuxcnc</em>.
+</p>
+</li>
+<li>
+<p>
+Cocher la case pour valider l&#8217;installation du nouveau paquet linuxcnc.
+</p>
+</li>
+<li>
+<p>
+Cliquer sur le bouton <em>Appliquer</em> et laisser le paquet s&#8217;installer.
+</p>
+</li>
+<li>
+<p>
+L&#8217;ancien paquet emc 2.4 sera automatiquement supprimé pour laisser place au
+nouveau paquet LinuxCNC 2.5.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_sous_ubuntu_hardy_8_04">1.2. Sous Ubuntu Hardy 8.04</h3>
+<div class="paragraph"><p>Déclarer d&#8217;abord où se trouve le nouveau logiciel LinuxCNC, pour cela:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Dans le menu, cliquer sur <em>Système -&gt; Administration -&gt; Gestionnaire de
+paquets Synaptic</em>
+</p>
+</li>
+<li>
+<p>
+Aller dans le menu <em>Configuration -&gt; Dépôts</em>.
+</p>
+</li>
+<li>
+<p>
+Sélectionner l&#8217;onglet <em>Logiciels tiers</em>.
+</p>
+</li>
+<li>
+<p>
+Sélectionner la ligne indiquant <em>http://linuxcnc.org/hardy hardy emc2.4</em> ou
+<em>http://linuxcnc.org/hardy hardy emc2.4-sim</em> et cliquer sur le bouton <em>Éditer</em>.
+</p>
+</li>
+<li>
+<p>
+Dans le champs <em>Composants</em>, modifier <em>emc2.4</em> par <em>linuxcnc2.5</em> ou
+<em>emc2.4-sim</em> par <em>linuxcnc2.5-sim</em>.
+</p>
+</li>
+<li>
+<p>
+Cliquer sur le bouton <em>Valider</em>.
+</p>
+</li>
+<li>
+<p>
+De retour dans la fenêtre des sources de logiciels, cliquer sur le
+bouton <em>Fermer</em>.
+</p>
+</li>
+<li>
+<p>
+De retour dans la fenêtre de Synaptic, cliquer sur le bouton <em>Actualiser</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Maintenant l&#8217;ordinateur sait où trouver le nouveau logiciel, ensuite il faudra
+lui demander de l&#8217;installer:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Dans le menu, cliquer sur <em>Système -&gt; Administration -&gt; Gestionnaire de
+paquets Synaptic</em>, cliquer sur le bouton <em>Rechercher</em>.
+</p>
+</li>
+<li>
+<p>
+Dans le champ du dialogue de recherche qui s&#8217;ouvre, taper <em>linuxcnc</em> puis
+cliquer sur le bouton <em>Rechercher</em>.
+</p>
+</li>
+<li>
+<p>
+Cocher la case pour valider l&#8217;installation du paquet <em>linuxcnc</em>.
+</p>
+</li>
+<li>
+<p>
+Cliquer sur le bouton <em>Appliquer</em> et laisser le nouveau paquet s&#8217;installer.
+</p>
+</li>
+<li>
+<p>
+L&#8217;ancien paquet emc 2.4 sera automatiquement supprimé pour laisser place au
+nouveau paquet LinuxCNC 2.5.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changement_de_configuration">2. Changement de configuration</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Les configurations utilisateur ont migré de $HOME/emc2 vers $HOME/linuxcnc,
+il sera nécessaire de renommer l&#8217;ancien répertoire si il existe, ou de déplacer
+les fichiers vers ce nouvel endroit.
+Le watchdog de hostmod2 dans LinuxCNC 2.5 ne démarre qu&#8217;après que les threads
+de HAL soient eux-même démarrés. Cela signifie qu&#8217;il tolère désormais un
+délai d&#8217;attente de l&#8217;ordre de la période servo thread, au lieu de nécessiter
+un délai qui soit de l&#8217;ordre du temps entre le chargement du pilote
+et le démarrage des threads de HAL. Ce qui signifie, de l&#8217;ordre de quelques
+millisecondes (quelques périodes du thread servo) au lieu de plusieurs
+centaines de millisecondes préalablement. La valeur par défaut est descendue
+de 1 seconde à 5 millisecondes. Vous ne devriez donc plus avoir a ajuster le
+délai du watchdog, à moins que vous ne modifiez la période du threads servo.</p></div>
+<div class="paragraph"><p>Les anciens pilotes pour les cartes Mesa 5i20, hal_m5i20, ont été enlevés, ils
+étaient obsolètes et remplacés par hostmot2 depuis 2009 (version 2.3.)
+Si vous utilisiez ces pilotes, vous devrez reconstruire une nouvelle
+configuration utilisant le pilote hostmod2. Pncconf peux vous y aider et il
+contient quelques exemples de configurations (hm2-servo et hm2-stepper)
+qui vous serviront d&#8217;exemple.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Dernière mise à jour
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

@@ -143,12 +143,12 @@ O-word procedures etc in pure Python, without resorting to the
 somewhat cumbersome RS274NGC language at all.</p></div>
 <div class="paragraph"><div class="title">A Word on Embedded Python</div><p>Many people are familiar with <em>extending</em> the Python interpreter by
 <em>C/C++</em> modules, and this is heavily used in LinuxCNC to access Task,
-HAL and and Interpreter internals from Python scripts. <em>Extending
+HAL and Interpreter internals from Python scripts. <em>Extending
 Python</em> basically means: your Python script executes as <em>it is in the
 driver seat</em>, and may access non-Python code by importing and using
 extension modules written in <em>C/C+\+</em>. Examples for this are the LinuxCNC
 <code>hal</code>, <code>gcode</code> and <code>emc</code> modules.</p></div>
-<div class="paragraph"><p>Embedded Python is a bit different and and less commonly known: The
+<div class="paragraph"><p>Embedded Python is a bit different and less commonly known: The
 main program is written in C/C++ and may use Python like a
 subroutine. This is powerful extension mechanism and the basis for the
 <em>scripting extensions</em> found in many successful software
@@ -980,7 +980,7 @@ use:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-when the NML message queued by a SELECT_POCKET() canon command is
+when the NML message queued by a SELECT_TOOL() canon command is
 executed, this triggers the "raise tool-prepare and wait for
 tool-prepared to become high" HAL sequence in iocontrol, besides
 setting the XXXX pins
@@ -1064,7 +1064,7 @@ work</em>.</p></div>
 <div class="paragraph"><p>So what our O-word procedure would do is to replace the steps
 <a href="#remap:interpreter-action-on-m6">outlined here</a>. Looking through
 these steps you&#8217;ll find that NGC code can be used for most of them,
-but not all. So the stuff NGC cant handle will be done in Python prolog
+but not all. So the stuff NGC can&#8217;t handle will be done in Python prolog
 and epilog functions.</p></div>
 </div>
 <div class="sect2">
@@ -1136,8 +1136,18 @@ tool change complete - <strong>execute in Python epilog</strong>
 <div class="paragraph"><p>So the prolog covering steps 1 and 2 would look like so - we decide to
 pass a few variables to the remap procedure which can be inspected and
 changed there, or used in a message. Those are: <code>tool_in_spindle</code>,
-<code>selected_tool</code> (tool numbers) and their respective pockets
+<code>selected_tool</code> (tool numbers) and their respective tooldata indices
 <code>current_pocket</code> and <code>selected_pocket</code>:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">The legacy names <strong>selected_pocket</strong> and <strong>current_pocket</strong> actually reference
+a sequential tooldata index for tool items loaded from a tool
+table ([EMCIO]TOOL_TABLE) or via a tooldata database ([EMCIO]DB_PROGRAM)</td>
+</tr></table>
+</div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -1207,7 +1217,7 @@ http://www.gnu.org/software/src-highlite -->
 except steps 3-5 need to be filled in with your NGC code.</p></div>
 <div class="paragraph"><p>Again, most epilogs have a common scheme: first, determine whether
 things went right in the remap procedure, then do any commit and cleanup
-actions which cant be done in NGC code.</p></div>
+actions which can&#8217;t be done in NGC code.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_configuring_iocontrol_with_a_remapped_m6">5.4. Configuring iocontrol with a remapped M6</h3>
@@ -1395,7 +1405,7 @@ http://www.gnu.org/software/src-highlite -->
         <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> self<span style="color: #990000">.</span>return_value <span style="color: #990000">&gt;</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
             self<span style="color: #990000">.</span>selected_tool <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>params<span style="color: #990000">[</span><span style="color: #FF0000">"tool"</span><span style="color: #990000">])</span>
             self<span style="color: #990000">.</span>selected_pocket <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>params<span style="color: #990000">[</span><span style="color: #FF0000">"pocket"</span><span style="color: #990000">])</span>
-            emccanon<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SELECT_POCKET</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>selected_pocket<span style="color: #990000">,</span> self<span style="color: #990000">.</span>selected_tool<span style="color: #990000">)</span>
+            emccanon<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SELECT_TOOL</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>selected_tool<span style="color: #990000">)</span>
             <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> INTERP_OK
         <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
             <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"T%d: aborted (return code %.1f)"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>params<span style="color: #990000">[</span><span style="color: #FF0000">"tool"</span><span style="color: #990000">]),</span>self<span style="color: #990000">.</span>return_value<span style="color: #990000">)</span>
@@ -2329,7 +2339,7 @@ add a <code>namedparams</code> module so it can be found by the interpreter
 <p>
 define new parameters by functions (see below). These functions
  receive <code>self</code> (the interpreter instance) as parameter and so can
- access aribtrary state. Arbitrary Python capabilities can be used to return a value.
+ access arbitrary state. Arbitrary Python capabilities can be used to return a value.
 </p>
 </li>
 <li>
@@ -2361,7 +2371,7 @@ since this is the RS274NGC convention for globals.</p></div>
 <div class="paragraph"><p>It is possible to redefine an existing predefined parameter by adding
 a Python function of the same name to the <code>namedparams</code> module. In
 this case, a warning is generated during startup.</p></div>
-<div class="paragraph"><p>While the above example isnt terribly useful, note that pretty much
+<div class="paragraph"><p>While the above example isn&#8217;t terribly useful, note that pretty much
 all of the interpreter internal state is accessible from Python, so
 arbitrary predicates may be defined this way. For a slightly more
 advanced example, see <code>tests/remap/predefined-named-params</code>.</p></div>
@@ -2435,7 +2445,7 @@ Otherwise, the <code>#&lt;tool&gt;</code> and <code>#&lt;pocket&gt;</code> param
 </li>
 <li>
 <p>
-then, the Canon command <code>SELECT_POCKET(#&lt;pocket&gt;,#&lt;tool&gt;)</code> is executed.
+then, the Canon command <code>SELECT_TOOL(#&lt;tool&gt;)</code> is executed.
 </p>
 </li>
 </ul></div>
@@ -2497,7 +2507,7 @@ message.
 </li>
 <li>
 <p>
-<code>#&lt;selected_pocket&gt;</code> : the selected tool&#8217;s pocket number
+<code>#&lt;selected_pocket&gt;</code> : the selected tool&#8217;s tooldata index
 </p>
 </li>
 </ul></div>
@@ -5046,10 +5056,10 @@ results.</p></div>
 <div class="sect2">
 <h3 id="_how_tx_prepare_tool_works">17.11. How Tx (Prepare Tool) works</h3>
 <div class="paragraph" id="remap:interpreter-action-on-t"><div class="title">Interpreter action on a Tx command</div><p>All the interpreter does is evaluate the toolnumber parameter, looks up
-its corresponding pocket, remembers it in the <code>selected_pocket</code>
+its corresponding tooldata index, remembers it in the <code>selected_pocket</code>
 variable for later, and  queues a canon command
-(SELECT_POCKET). See <em>Interp::convert_tool_select</em> in <em>src/emc/rs274/interp_execute.cc</em>.</p></div>
-<div class="paragraph"><div class="title">Task action on SELECT_POCKET</div><p>When task gets around to handle a SELECT_POCKET, it sends a
+(SELECT_TOOL). See <em>Interp::convert_tool_select</em> in <em>src/emc/rs274/interp_execute.cc</em>.</p></div>
+<div class="paragraph"><div class="title">Task action on SELECT_TOOL</div><p>When task gets around to handle a SELECT_TOOL, it sends a
 EMC_TOOL_PREPARE message to the iocontrol process, which handles most
 tool-related actions in LinuxCNC.</p></div>
 <div class="paragraph"><p>In the current implementation, task actually waits for iocontrol to
@@ -5292,7 +5302,7 @@ DEBUG = 0x7FFFFFFF # All debug messages</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -52,10 +52,10 @@ very much a work in progress, and its layout may change in the future.</p></div>
 <p>
 <em>AXIS</em> - An axis is one of the nine degrees of freedom that define a tool
     position in three-dimensional Cartesian space. Those nine axes are
-    referred to as X, Y, Z, A, B, C, U, V, and W. The linear orthagonal
+    referred to as X, Y, Z, A, B, C, U, V, and W. The linear orthogonal
     coordinates X, Y, and Z determine where the tip of the tool is
     positioned. The angular coordinates A, B, and C determine the tool
-    orientation. A second set of linear orthagonal coordinates U, V, and W
+    orientation. A second set of linear orthogonal coordinates U, V, and W
     allows tool motion (typically for cutting actions) relative to the
     previously offset and rotated axes.
     Unfortunately “axis” is also
@@ -798,9 +798,9 @@ and <strong>Machine On</strong>.</p></div>
 <div class="paragraph"><p>The I/O Controller is separate module that accepts NML commands from TASK.<br />
 It interacts with external I/O using HAL pins.<br />
 iocontrol.cc is loaded via the linuxcnc script before TASK is.<br />
-There are curently two versions of iocontrol. The second version handles toolchange hardware errors<br />
+There are currently two versions of iocontrol. The second version handles toolchange hardware errors<br />
 <br /></p></div>
-<div class="paragraph"><p>Curently ESTOP/Enable, coolant, lube, and tool changing are handled by<br />
+<div class="paragraph"><p>Currently ESTOP/Enable, coolant, lube, and tool changing are handled by<br />
 iocontrol. These are relatively low speed events, high speed coordinated I/O is handled in motion.<br />
 <br /></p></div>
 <div class="paragraph"><p>emctaskmain.cc sends I/O commands via taskclass.cc<br />
@@ -1526,7 +1526,7 @@ tool <code>xxx</code>.</p></div>
 <li>
 <p>
 The machine is asked to prepare to switch to the selected tool by
-    calling the Canon function <code>SELECT_POCKET()</code> with the pocket number
+    calling the Canon function <code>SELECT_TOOL()</code> with the tool number
     of the requested tool.
 </p>
 <div class="olist loweralpha"><ol class="loweralpha">
@@ -1553,11 +1553,21 @@ The machine is asked to prepare to switch to the selected tool by
 </li>
 <li>
 <p>
-Back in interp, <code>settings-&gt;selected_pocket</code> is assigned the pocket
-    number of the requested tool <em>xxx</em>.
+Back in interp, <code>settings-&gt;selected_pocket</code> is assigned the tooldata
+    index of the requested tool <em>xxx</em>.
 </p>
 </li>
 </ol></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">The legacy names <strong>selected_pocket</strong> and <strong>current_pocket</strong> actually reference
+a sequential tooldata index for tool items loaded from a tool
+table ([EMCIO]TOOL_TABLE) or via a tooldata database ([EMCIO]DB_PROGRAM)</td>
+</tr></table>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_m6">24.3.2. M6</h4>
@@ -1569,7 +1579,7 @@ by the previous Txxx command).</p></div>
 <p>
 The machine is asked to change to the selected tool
     by calling the Canon function <code>CHANGE_TOOL()</code> with
-    <code>settings-&gt;selected_pocket</code>.
+    <code>settings-&gt;selected_pocket</code> (a tooldata index).
 </p>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
@@ -1586,7 +1596,7 @@ The machine is asked to change to the selected tool
         sends it to IO.  IO sets <code>emcioStatus.tool.toolInSpindle</code>
         to the tool number of the tool in the pocket identified
         by <code>emcioStatus.tool.pocketPrepped</code> (set by <code>Txxx</code>
-        aka <code>SELECT_POCKET()</code>).  It then requests that the
+        aka <code>SELECT_TOOL()</code>).  It then requests that the
         toolchanger hardware perform a tool change, by setting
         the HAL pin <code>iocontrol.0.tool-change</code> to True.  Later,
         IO&#8217;s <code>read_tool_inputs()</code> will sense that the HAL pin
@@ -1616,7 +1626,7 @@ The machine is asked to change to the selected tool
 <li>
 <p>
 Back in interp, <code>settings-&gt;current_pocket</code> is assigned the new
-    tool from <code>settings-&gt;selected_pocket</code> (set by <code>Txxx</code>).  The relevant
+    tooldata index from <code>settings-&gt;selected_pocket</code> (set by <code>Txxx</code>).  The relevant
     numbered parameters (<a href="../gcode/overview.html#sub:numbered-parameters">#5400-#5413</a>) are
     updated with the new tool information from pocket 0 (spindle).
 </p>
@@ -1773,7 +1783,7 @@ of which tool is in the spindle, without actually moving the toolchanger
 or swapping any tools.</p></div>
 <div class="paragraph"><p>Handled by <code>Interp::convert_tool_change()</code>.</p></div>
 <div class="paragraph"><p>Canon: <code>CHANGE_TOOL_NUMBER()</code></p></div>
-<div class="paragraph"><p>settings-&gt;current_pocket is assigned the pocket number currently
+<div class="paragraph"><p>settings-&gt;current_pocket is assigned the tooldata index currently
 holding the tool specified by the Q-word argument.</p></div>
 </div>
 <div class="sect3">
@@ -1847,7 +1857,7 @@ settings.selected_pocket
 </dt>
 <dd>
 <p>
-    Pocket of the tool most recently selected by <code>Txxx</code>.
+    Tooldata index of the tool most recently selected by <code>Txxx</code>.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1855,8 +1865,8 @@ settings.current_pocket
 </dt>
 <dd>
 <p>
-    Original pocket of the tool currently in the spindle.  In other words:
-    which toolchanger pocket the tool that&#8217;s currently in the spindle
+    Original tooldata index of the tool currently in the spindle.  In other words:
+    which tooldata index the tool that&#8217;s currently in the spindle
     was loaded from.
 </p>
 </dd>
@@ -1885,9 +1895,9 @@ settings.toolchange_flag
 <p>
     Interp sets this to true when calling Canon&#8217;s CHANGE_TOOL()
     function.  It is checked in <code>Interp::convert_tool_length_offset()</code>
-    to decide which pocket to use for G43 (with no H-word):
+    to decide which tooldata index to use for G43 (with no H-word):
     <code>settings-&gt;current_pocket</code> if the tool change is still in progress,
-    pocket 0 (the spindle) if the tool change is complete.
+    tooldata index 0 (the spindle) if the tool change is complete.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1932,7 +1942,7 @@ settings.pockets_max
 </dt>
 <dd>
 <p>
-    Used interchangably with <code>CANON_POCKETS_MAX</code> (a #defined constant,
+    Used interchangeably with <code>CANON_POCKETS_MAX</code> (a #defined constant,
     set to 1000 as of April 2020).  FIXME: This settings variable
     is not currently useful and should probably be removed.
 </p>
@@ -2062,7 +2072,7 @@ It always creates nine sets of <code>axis.*.*</code> pins.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

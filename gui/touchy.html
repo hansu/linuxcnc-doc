@@ -49,10 +49,22 @@ provided.</p></div>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_hal_connections">1.1. HAL connections</h3>
-<div class="paragraph"><p>Touchy requires that you create a file named <em>touchy.hal</em> in your
-configuration directory (the directory your ini file is in) to
-connect its controls. Touchy executes the HAL commands in this file
-after it has made its own pins available for connection.</p></div>
+<div class="paragraph"><p>Touchy looks in the INI file, under the heading <em>[HAL]</em> for entries of <em>POSTGUI_HALFILE=&lt;filename&gt;</em><br />
+Typically <em>&lt;filename&gt;</em> would be <em>touchy_postgui.hal</em>, but can be any legal filename.<br />
+These commands are executed after the screen is built, guaranteeing the widget HAL
+pins are available.<br />
+You can have multiple line of <em>POSTGUI_HALFILE=&lt;filename&gt;</em> in the INI.<br />
+Each will be run one after the other in the order they appear in the INI file.<br /></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">Touchy used to require that you create a file named <em>touchy.hal</em> in your
+configuration directory (the directory your INI file is in). For legacy reasons
+this will continue to work, but INI based postgui files are preferred.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>For more information on HAL files and the net command see the
 <a href="../hal/basic-hal.html#cha:basic-hal-reference">HAL Basics</a>.</p></div>
 <div class="paragraph"><p>Touchy has several output pins that are meant to be connected to the
@@ -205,7 +217,7 @@ gcode programs.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-24 09:14:28 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

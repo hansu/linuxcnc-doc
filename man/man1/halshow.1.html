@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:40 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:39 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,6 +23,7 @@
 
 <a href="#NAME">NAME</a><br>
 <a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 <a href="#HISTORY">HISTORY</a><br>
@@ -39,16 +40,33 @@
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">halshow - short
-description</p>
+<p style="margin-left:11%; margin-top: 1em">halshow - Show
+HAL parameters, pins and signals</p>
 
 <h2>SYNOPSIS
 <a name="SYNOPSIS"></a>
 </h2>
 
 
+<p style="margin-left:11%; margin-top: 1em"><b>halshow
+[Options] [watchfile]</b></p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>halshow</b></p>
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">--help (help)
+<br>
+--fformat format_string_for_float <br>
+--iformat format_string_for_int</p>
+
+<p style="margin-left:11%; margin-top: 1em">For format see
+<a href="https://www.tcl.tk/man/tcl8.6.11/TclCmd/format.html">https://www.tcl.tk/man/tcl8.6.11/TclCmd/format.html</a></p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:
+&quot;%.5f&quot; displays a float with 5 digits right of the
+decimal point</p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
@@ -59,7 +77,7 @@ description</p>
 creates a GUI interface to view and interact with a running
 HAL session. It is documented in the PDF and HTML docs much
 more completely than is possible in a manpage:
-http://linuxcnc.org/docs/html/hal/halshow.html</p>
+<a href="http://linuxcnc.org/docs/html/hal/halshow.html">http://linuxcnc.org/docs/html/hal/halshow.html</a></p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -78,6 +96,16 @@ LinuxCNC and HAL User Manuals, found at
 <a name="HISTORY"></a>
 </h2>
 
+
+<p style="margin-left:11%; margin-top: 1em">LinuxCNC
+2.9:</p>
+
+<p style="margin-left:22%;">- Added buttons for
+pin/parameter/signal manipulation <br>
+- Added menu entries for setting update interval, adding
+manually <br>
+- Added right-click menu for copy, set, unlink pin and
+remove from view</p>
 
 <h2>BUGS
 <a name="BUGS"></a>

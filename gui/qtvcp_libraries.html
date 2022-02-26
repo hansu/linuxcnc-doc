@@ -170,7 +170,7 @@ ZIPPED_USRMESS =
 
 self.GLADEVCP = (self.INI.find("DISPLAY", "GLADEVCP")) or None
 
-# embeded program info
+# embedded program info
 TAB_NAMES = (self.INI.findall("DISPLAY", "EMBED_TAB_NAME")) or None
 TAB_LOCATION = (self.INI.findall("DISPLAY", "EMBED_TAB_LOCATION")) or []
 TAB_CMD = (self.INI.findall("DISPLAY", "EMBED_TAB_COMMAND")) or None
@@ -358,7 +358,9 @@ ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span
 ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP</span></span><span style="color: #990000">():</span>
 ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP_RING</span></span><span style="color: #990000">():</span>
 ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP_START</span></span><span style="color: #990000">():</span>
-</tt></pre></div></div>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_DISPLAY_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_ERROR_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>There are some <em>helper functions</em> - mostly used for this library&#8217;s support<br /></p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
@@ -460,15 +462,19 @@ http://www.gnu.org/software/src-highlite -->
 PATH<span style="color: #990000">.</span>WORKINGDIR     <span style="font-style: italic"><span style="color: #9A1900"># The directory qtvcp was launched from</span></span>
 PATH<span style="color: #990000">.</span>IS_SCREEN      <span style="font-style: italic"><span style="color: #9A1900"># Is this a screen or a VCP?</span></span>
 PATH<span style="color: #990000">.</span>CONFIGPATH     <span style="font-style: italic"><span style="color: #9A1900"># launched configuration folder</span></span>
+PATH<span style="color: #990000">.</span>RIPCONFIGDIR   <span style="font-style: italic"><span style="color: #9A1900"># The Run-in-place config folder for Qtvcp screens</span></span>
 PATH<span style="color: #990000">.</span>BASEDIR        <span style="font-style: italic"><span style="color: #9A1900"># Base folder for linuxcnc</span></span>
 PATH<span style="color: #990000">.</span>BASENAME       <span style="font-style: italic"><span style="color: #9A1900"># The Designer files name (no ending)</span></span>
-PATH<span style="color: #990000">.</span>LIBDIR         <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp library folder</span></span>
 PATH<span style="color: #990000">.</span>IMAGEDIR       <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp image folder</span></span>
 PATH<span style="color: #990000">.</span>SCREENDIR      <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp builtin Screen folder</span></span>
 PATH<span style="color: #990000">.</span>PANELDIR       <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp builtin VCP folder</span></span>
 PATH<span style="color: #990000">.</span>HANDLER        <span style="font-style: italic"><span style="color: #9A1900"># Handler file Path</span></span>
 PATH<span style="color: #990000">.</span>XML            <span style="font-style: italic"><span style="color: #9A1900"># Qtvcp ui file path</span></span>
 PATH<span style="color: #990000">.</span>QSS            <span style="font-style: italic"><span style="color: #9A1900"># Qtvcp Qss file path</span></span>
+PATH<span style="color: #990000">.</span>PYDIR          <span style="font-style: italic"><span style="color: #9A1900"># Linuxcnc's python library</span></span>
+PATH<span style="color: #990000">.</span>LIBDIR         <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp library folder</span></span>
+PATH<span style="color: #990000">.</span>WIDGET         <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp widget folder</span></span>
+PATH<span style="color: #990000">.</span>PLUGIN         <span style="font-style: italic"><span style="color: #9A1900"># The Qtvcp widget plugin folder</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># Not currently used:</span></span>
 PATH<span style="color: #990000">.</span>LOCALEDIR      <span style="font-style: italic"><span style="color: #9A1900"># Locale translation folder</span></span>
@@ -950,7 +956,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -63,7 +63,7 @@ number causes a
 single step pulse generator to be loaded, the value of the number
  determines the stepping type. <em>&lt;ctrl_array&gt;</em> is a comma separated
 series of <em>p</em> or <em>v</em> characters, to specify position or velocity
-mode. <em>ctrl_type</em> is optional, if ommitted, all of the step generators
+mode. <em>ctrl_type</em> is optional, if omitted, all of the step generators
 will be position
 mode.</p></div>
 <div class="paragraph"><p>For example:</p></div>
@@ -215,14 +215,14 @@ on the step type and control type selected.</p></div>
 </li>
 <li>
 <p>
-<em>(float) stepgen.&lt;chan&gt;.dirhold</em> - Minmum time from the end of a
+<em>(float) stepgen.&lt;chan&gt;.dirhold</em> - Minimum time from the end of a
    step pulse to a direction change
    (step type 0 only), in nanoseconds.
 </p>
 </li>
 <li>
 <p>
-<em>(float) stepgen.&lt;chan&gt;.dirdelay</em> - Minmum time any step to a step
+<em>(float) stepgen.&lt;chan&gt;.dirdelay</em> - Minimum time any step to a step
    in the opposite direction (step
    types 1-14 only), in nano-seconds.
 </p>
@@ -530,9 +530,9 @@ not supported.</p></div>
 <h2 id="_encoder">3. Encoder</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>This component provides software based counting of signals from
-quadrature encoders. It is a realtime component only, and depending on
-CPU speed, latency, etc, is capable of maximum count rates of 10kHz to
-perhaps up to 50kHz.</p></div>
+quadrature (or single-pulse) encoders. It is a realtime component only,
+and depending on CPU speed, latency, etc, is capable of maximum count
+rates of 10kHz to perhaps up to 50kHz.</p></div>
 <div class="paragraph"><p>The base thread should be 1/2 count speed to allow for noise and timing
 variation. For example if you have a 100 pulse per revolution encoder on the
 spindle and your maximnum RPM is 3000 the maximum base thread should be 25 us.
@@ -578,6 +578,18 @@ of a specific counter. The first counter is number 0.</p></div>
 </li>
 <li>
 <p>
+<em>encoder.&lt;chan&gt;.missing-teeth</em> (s32, In) (default: 0) - ~Enables the use
+   of missing-tooth index. This allows a single IO pin to provide both
+   position and index information. If the encoder wheel has 58 teeth with
+   two missing, spaced as if there were 60(common for automotive crank
+   sensors) then the position-scale should be set to 60 and
+   missing-teeth to 2. To use this mode counter-mode should be set
+   true. This mode will work for lathe threading but not for rigid
+   tapping.
+</p>
+</li>
+<li>
+<p>
 <em>encoder.&lt;chan&gt;.counts</em> (s32, Out) - Position in encoder counts.
 </p>
 </li>
@@ -591,7 +603,7 @@ of a specific counter. The first counter is number 0.</p></div>
 <em>encoder.&lt;chan&gt;.index-enable</em> (bit, I/O) - When True, <em>counts</em> and
    <em>position are</em> reset to zero on next rising edge of Phase Z. At the
    same time, <em>index-enable</em> is reset to zero to indicate that the rising
-   edge has occoured. The <em>index-enable</em> pin is bi-directional. If
+   edge has occurred. The <em>index-enable</em> pin is bi-directional. If
    <em>index-enable</em> is False, the Phase Z channel of the encoder will be
    ignored, and the
     counter will count normally. The encoder driver will never set
@@ -1603,7 +1615,7 @@ function is <em>0xa</em>. The hexadecimal prefix is <em>0x</em>.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

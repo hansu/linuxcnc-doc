@@ -77,10 +77,8 @@ generic name used for the buttons, sliders, labels etc of the PyGTK toolkit.</p>
 <div class="paragraph"><p>A Glade file is a text file organized in the XML standard that describes the
 layout and the widgets of the screen. PyGTK uses this file to actually display
 and react to those widgets. The Glade editor makes it relatively easy to build
-and edit this file You must use the Glade 3.8.0 editor that uses the GTK2
-widgets. Newer versions of Linux use the newest Glade editor that uses GTK3
-widgets. In that case you must download the older Glade editor from their
-repository.</p></div>
+and edit this file You must use the Glade 3.38.2 editor that uses the GTK3
+widgets.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_pygtk">1.2. PyGTK</h3>
@@ -149,8 +147,8 @@ GTK supports <em>themes</em>.
 Themes are a way to modify the look and feel of the widgets on the screen.
 For instance the color or size of buttons and sliders can be changed using
 themes.
-There are many GTK2 themes available on the web.
-Themes can also be customized to modifiy visuals of particular named widgets.
+There are many GTK themes available on the web.
+Themes can also be customized to modify visuals of particular named widgets.
 This ties the theme file to the glade file more tightly.
 Some of the sample screen skins allow the user to select any of the themes on
 the system. The sample <em>gscreen</em> is an example.
@@ -165,7 +163,7 @@ and changes the visual behaivor of those specific widgets. The Estop and
 machine-on buttons use different colors then the rest of the buttons so that
 they stand out. This is done in the handler file by giving them specific names
 an by adding specific commands in the theme&#8217;s gtkrc file.
-For some info on GTK2 theming (The sample theme uses the pixmap theme engine) See:</p></div>
+For some info on GTK theming (The sample theme uses the pixmap theme engine) See:</p></div>
 <div class="paragraph"><p><a href="https://wiki.gnome.org/Attic/GnomeArt/Tutorials/GtkThemes">GTK Themes</a></p></div>
 <div class="paragraph"><p><a href="https://wiki.gnome.org/Attic/GnomeArt/Tutorials/GtkEngines/PixmapEngine">Pixmap Theme Engine</a></p></div>
 </div>
@@ -276,7 +274,7 @@ The buttons in this example are regular buttons not HAL buttons. We don&#8217;t
 </div>
 <div class="paragraph"><p>In this screen we are using VCP_actions to communicate to LinuxCNC the actions
 we want. This allows us standard functions without adding python code in the
-handler file. Let&#8217;s link the estop toogle button to the estop action Select the
+handler file. Let&#8217;s link the estop toggle button to the estop action Select the
 estop toggle button and under the general tab look for <em>Related Action</em> and
 click the button beside it. Now select the toggle estop action. Now the button
 will toggle estop on and off when clicked. Under the general tab you can change
@@ -473,8 +471,8 @@ GSTAT = GStat()</code></pre>
 <pre><code>self.update_filepath(self, obj, path):
     self.widgets.my_path_label.set_text(path)</code></pre>
 </div></div>
-<div class="paragraph"><p>When linuxcnc loads a new file, Gstat will send a callback message to the funciton <em>update_filepath</em>.<br />
-In this example whe update a label with that path name (assuming there is a label nammed <em>my_path_label</em>) in the GLADE file.<br /></p></div>
+<div class="paragraph"><p>When linuxcnc loads a new file, Gstat will send a callback message to the function <em>update_filepath</em>.<br />
+In this example we update a label with that path name (assuming there is a label nammed <em>my_path_label</em>) in the GLADE file.<br /></p></div>
 </div>
 <div class="sect2">
 <h3 id="_jogging_keys">4.3. Jogging Keys</h3>
@@ -713,7 +711,7 @@ Gscreen checks the handler file for <em>timer_interupt(self)</em> function call
 the handler file use this same name. The optional second screen will be the
 same name with a 2 (eg. tester2.glade) There is no second handler file allowed.
 It will only be loaded if it is present. Gscreen will search the LinuxCNC
-configuration file that was launched first for the files, then in the systen
+configuration file that was launched first for the files, then in the system
 skin folder.</p></div>
 </div>
 </div>
@@ -787,7 +785,7 @@ Note: Using POSIX non-realtime
 Found file(lib): /home/chris/emc-dev/lib/hallib/sim_spindle_encoder.hal
 Found file(lib): /home/chris/emc-dev/lib/hallib/axis_manualtoolchange.hal
 Found file(lib): /home/chris/emc-dev/lib/hallib/simulated_home.hal
-**** GSCREEN WARNING: no audio alerts available - Is python-gst0.10 libray installed?
+**** GSCREEN WARNING: no audio alerts available - Is python-gst0.10 library installed?
 **** GSCREEN INFO ini: /home/chris/emc-dev/configs/sim/gscreen/gscreen_custom/industrial_lathe.ini
 **** GSCREEN INFO: Skin name = industrial
 
@@ -811,7 +809,7 @@ This works the same for the Glade file.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

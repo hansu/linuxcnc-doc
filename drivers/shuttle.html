@@ -30,7 +30,7 @@ asciidoc.install(2);
 <h2 id="cha:shuttle">1. Description</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Shuttle is a non-realtime HAL component that interfaces Contour Design’s
-ShuttleXpress and ShuttlePRO devices with LinuxCNC’s HAL.</p></div>
+ShuttleXpress, ShuttlePRO, and ShuttlePRO2 devices with LinuxCNC’s HAL.</p></div>
 <div class="paragraph"><p>If the driver is started without command-line arguments, it will probe
 all /dev/hidraw* device files for Shuttle devices, and use all devices
 found. If it is started with command-line arguments, it will only
@@ -39,6 +39,9 @@ probe the devices specified.</p></div>
 jog wheel with detents, and a 15-position spring-loaded outer wheel that
 returns to center when released.</p></div>
 <div class="paragraph"><p>The ShuttlePRO has 13 momentary buttons, a 10 counts/revolution jog
+wheel with detents, and a 15-position spring-loaded outer wheel that
+returns to center when released.</p></div>
+<div class="paragraph"><p>The ShuttlePRO2 has 15 momentary buttons, a 10 counts/revolution jog
 wheel with detents, and a 15-position spring-loaded outer wheel that
 returns to center when released.</p></div>
 <div class="admonitionblock">
@@ -72,19 +75,22 @@ device files. This can be accomplished by adding a file
 <div class="listingblock">
 <div class="content">
 <pre><code>SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0b33", ATTRS{idProduct}=="0020", MODE="0444"
-SUBSYSTEM=="hidraw", ATTRS{idVendor}=="05f3", ATTRS{idProduct}=="0240", MODE="0444"</code></pre>
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="05f3", ATTRS{idProduct}=="0240", MODE="0444"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0b33", ATTRS{idProduct}=="0030", MODE="0444"</code></pre>
 </div></div>
 <div class="paragraph"><p>The LinuxCNC Debian package installs an appropriate udev file
 automatically, but if you are building LinuxCNC from source and are not
-using the Debian packaging you&#8217;ll need to install this file by hand.</p></div>
+using the Debian packaging you&#8217;ll need to install this file by hand.
+If you install the file by hand you&#8217;ll need to tell udev to reload its
+rules files by running <code>udevadm control --reload-rules</code>.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_pins">3. Pins</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>All HAL pin names are prefixed with the type of device followed by
-the index of the device (the order in which the driver found them),
-for example "shuttlexpress.0" or "shuttlepro.2".</p></div>
+<div class="paragraph"><p>All HAL pin names are prefixed with <code>shuttle</code> followed by the index
+of the device (the order in which the driver found them), for example
+"shuttle.0" or "shuttle.2".</p></div>
 <div class="dlist"><dl>
 <dt class="hdlist1">
 <em>&lt;Prefix&gt;.button-&lt;ButtonNumber&gt;</em> (bit out)
@@ -141,7 +147,7 @@ for example "shuttlexpress.0" or "shuttlepro.2".</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

@@ -64,7 +64,7 @@ asciidoc.install(2);
 <div class="sect1">
 <h2 id="_translation_and_rotation_matrices">4. Translation and Rotation Matrices</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Homogenous transformations provide a simple way to describe the mathematics of
+<div class="paragraph"><p>Homogeneous transformations provide a simple way to describe the mathematics of
 multi-axis machine kinematics. A transformation of the space H is a 4x4 matrix and can represent translation and rotation transformations. Given a point x,y,x described by a vector u = {x,y,z,1}<sup>T</sup>, then its transformation v is represented by the matrix product</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -197,7 +197,7 @@ A tilting table which rotates about the X- or Y-axis (A- or B-rotation, secondar
 </div>
 <div class="sect3">
 <h4 id="_inverse_transformation">5.1.2. Inverse Transformation</h4>
-<div class="paragraph"><p>We can solve for P from  equation (13) as <em>P = (<sup>Q</sup>A<sub>P</sub>)<sup>-1</sup> * Q</em>. Noting that the square matrix is a homogenous 4x4 matrix containing a rotation matrix R and translation vector q, for which the inverse can be written as:</p></div>
+<div class="paragraph"><p>We can solve for P from  equation (13) as <em>P = (<sup>Q</sup>A<sub>P</sub>)<sup>-1</sup> * Q</em>. Noting that the square matrix is a homogeneous 4x4 matrix containing a rotation matrix R and translation vector q, for which the inverse can be written as:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="5-axis-figures/equation__15.png" alt="5-axis-figures/equation__15.png" />
@@ -449,7 +449,7 @@ xyzac-trt-kins.tool-offset -- input  HAL pin to xyzac-trt-kins</code></pre>
 at startup of LinuxCNC.  The most common kinematics module, <em>trivkins</em>,
 implements identity (trivial) kinematics where there is a one-to-one
 correspondence between an axis coordinate letter and a motor joint.
-Addtional kinematics modules for more complex systems (including <em>xyzac-trt</em>
+Additional kinematics modules for more complex systems (including <em>xyzac-trt</em>
 and <em>xyzbc-trt</em> described above) are available.</p></div>
 <div class="paragraph"><p>See the kins manpage (<strong>\$ man kins</strong>) for brief descriptions of the available
 kinematics modules.</p></div>
@@ -554,7 +554,7 @@ model of machine tool: C-H She, C-C Chang, Int. J Machine Tools &amp; Manufactur
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

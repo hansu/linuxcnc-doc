@@ -117,7 +117,7 @@ QtVCP now polls for events.<br />
 <li>
 <p>
 Finally when QtVCP is asked to shutdown, it calls shutdown functions<br />
-in the handler file, shuts down STATUS monitoring and kills teh HAL<br />
+in the handler file, shuts down STATUS monitoring and kills the HAL<br />
 component.<br />
 </p>
 </li>
@@ -241,7 +241,7 @@ ScreenOptions widget.</p></div>
 <div class="sect2">
 <h3 id="_widget_special_setup_functions">5.5. Widget special setup functions</h3>
 <div class="paragraph"><p>QtVCP looks for and calls the <em>_hal_init</em> function, when the widget<br />
-is first loaded. It is not called when using Designer.<br />
+is first loaded. It is not called when using Designer editor.<br />
 After this function is called the widget has access to some special<br />
 variables:<br /></p></div>
 <div class="listingblock">
@@ -254,15 +254,18 @@ http://www.gnu.org/software/src-highlite -->
         self<span style="color: #990000">.</span>QT_OBJECT_ <span style="color: #990000">=</span> This widgets pyQt object instance
         self<span style="color: #990000">.</span>QTVCP_INSTANCE_ <span style="color: #990000">=</span> The very toplevel Parent Of the screen
         self<span style="color: #990000">.</span>PATHS_ <span style="color: #990000">=</span> The instance of QtVCP's path library
-        self<span style="color: #990000">.</span>PREFS_ <span style="color: #990000">=</span> the instance of an optional preference file</tt></pre></div></div>
+        self<span style="color: #990000">.</span>PREFS_ <span style="color: #990000">=</span> the instance of an optional preference file
+        self<span style="color: #990000">.</span>SETTINGS_ <span style="color: #990000">=</span> the Qsettings object</tt></pre></div></div>
 <div class="paragraph"><p>When making a custom widget, import and sub class the<br />
-<em>_HalWidgetBase</em> class:</p></div>
+<em>_HalWidgetBase</em> class for this behaivor:</p></div>
 </div>
 <div class="sect2">
 <h3 id="_dialogs">5.6. Dialogs</h3>
-<div class="paragraph"><p>Dialogs (AKA pop up windows) are placed on the screen in Designer.<br />
+<div class="paragraph"><p>Dialogs (AKA pop up windows) are best loaded with the screenoptions widget,<br />
+but they can be placed on the screen in Designer.<br />
 It doesn&#8217;t matter where on the layout but to make them hidden,<br />
 cycle the <em>state</em> property to true then false.<br />
+<br />
 By default, if there is a preference file, the dialogs will<br />
 remember their last size/placement. It is possible to override<br />
 this so they open in the same location each time.<br /></p></div>
@@ -281,7 +284,7 @@ location as the handler file.<br /></p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

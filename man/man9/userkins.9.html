@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:47 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:57 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -113,6 +113,19 @@ halcompile --install <br>
 7) To use a different component name, rename the file <br>
 (example mykins.comp) and change all instances of <br>
 &rsquo;userkins&rsquo; to &rsquo;mykins&rsquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>NOTES:</b>
+<br>
+1 A &rsquo;dummy&rsquo; pin is required to satisfy the
+requirements of <br>
+the halcompile utility but it is not accessible to <br>
+kinematics functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">2 Hal pins and
+parameters needed in kinematics functions <br>
+(kinematicsForward(), kinematicsInverse()) must <br>
+be setup in a function (userkins_setup()) invoked <br>
+by the initial motion module call to kinematicsType().</p>
 
 <h2>PINS
 <a name="PINS"></a>

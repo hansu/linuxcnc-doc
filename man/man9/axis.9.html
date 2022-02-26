@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:44 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:49 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,7 +27,8 @@
 <a href="#MOTION PINS">MOTION PINS</a><br>
 <a href="#AXIS PINS">AXIS PINS</a><br>
 <a href="#JOINT PINS">JOINT PINS</a><br>
-<a href="#JOINT UNLOCK PINS">JOINT UNLOCK PINS</a><br>
+<a href="#JOINT posthome pins">JOINT posthome pins</a><br>
+<a href="#JOINT unlock pins">JOINT unlock pins</a><br>
 <a href="#SPINDLE PINS">SPINDLE PINS</a><br>
 <a href="#MOTION PARAMETERS">MOTION PARAMETERS</a><br>
 <a href="#FUNCTIONS">FUNCTIONS</a><br>
@@ -56,22 +57,36 @@ motmod [base_period_nsec=</b><i>period</i><b>]
 [base_thread_fp=</b><i>0 or 1</i><b>]
 [servo_period_nsec=</b><i>period</i><b>]
 [traj_period_nsec=</b><i>period</i><b>]
-[num_joints=</b><i>[1-9]</i><b>]
+[num_joints=</b><i>[1-16]</i><b>]
 [num_dio=</b><i>[1-64]</i><b>]
 [num_aio=</b><i>[1-64]</i><b>]
+[num_misc_error=</b><i>[0-64]</i><b>]
 [num_spindles=</b><i>[1-8]</i><b>]
-[unlock_joints_mask=</b><i>jointmask</i><b>]</b></p>
+[unlock_joints_mask=</b><i>jointmask</i><b>]
+[num_extrajoints=</b><i>[0-16]</i><b>]</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">The limits for
-the following items are compile-time settings: <br>
-Number of joints available (num_joints) is set by
-EMCMOT_MAX_JOINTS. <br>
-Maximum number of digital inputs (num_dio) is set by
-EMCMOT_MAX_DIO. <br>
-Maximum number of analog inputs (num_aio) is set by
-EMCMOT_MAX_AIO. <br>
-Maximum number of spindles (num_spindles) is set by
+the following items are compile-time settings: <b><br>
+num_joints</b>: Maximum number of joints is set by
+EMCMOT_MAX_JOINTS. <b><br>
+num_dio</b>: Maximum number of digital inputs is set by
+EMCMOT_MAX_DIO. <b><br>
+num_aio</b>: Maximum number of analog inputs is set by
+EMCMOT_MAX_AIO. <b><br>
+num_misc_error</b>: Maximum number of extra error inputs is
+set by <br>
+EMCMOT_MAX_MISC_ERRORS. <b><br>
+num_spindles</b>: Maximum number of spindles is set by
 EMCMOT_MAX_SPINDLES</p>
+
+<p style="margin-left:11%; margin-top: 1em">Optionally the
+number of Digital I/O is set with num_dio. The number of
+Analog I/O is set with num_aio. The default is 4 each.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pin names
+starting with &quot;<b>joint</b>&quot; or
+&quot;<b>axis</b>&quot; are are read and updated by the
+motion-controller function.</p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
@@ -93,14 +108,39 @@ waypoints and generates a nice blended and
 constraint-limited stream of joint positions to be fed to
 the motor drives.</p>
 
-<p style="margin-left:11%; margin-top: 1em">Optionally the
-number of Digital I/O is set with num_dio. The number of
-Analog I/O is set with num_aio. The default is 4 each.</p>
+<p style="margin-left:11%; margin-top: 1em">The optional
+<b>num_extrajoints</b> parameter specifies a quantity of
+joints that participate in homing but are not used by
+kinematics transformations. After homing, control of an
+&rsquo;extra&rsquo; joint is transferred to a posthome
+command hal pin (joint.N.posthome-cmd) and the motor
+feedback value is ignored. &rsquo;Extra&rsquo; joints must
+be managed by independent motion planners/controllers
+(typically using limit3 hal components). Extra joints maybe
+unhomed only when motion is disabled.</p>
 
-<p style="margin-left:11%; margin-top: 1em">Pin names
-starting with &quot;<b>joint</b>&quot; or
-&quot;<b>axis</b>&quot; are are read and updated by the
-motion-controller function.</p>
+<p style="margin-left:11%; margin-top: 1em">The maximum
+<b>num_extrajoints</b> value is equal to the
+<b>num_joints</b> value. (Note that using the maximum value
+would allow no operation in world coordinates). The
+<b>num_joints</b> value must be equal to the sum of the
+number of joints used for kinematics calculations plus the
+number of &rsquo;extra&rsquo; joints.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>num_joints</b> parameter is conventionally set using the
+ini file setting <b>[KINS]JOINTS=</b>value. The
+<b>num_extrajoints</b> is set by the additional motmod
+parameter <b>[EMCMOT]motmod num_extrajoints=</b>value. Hal
+pin numbering for all joints is zero based [<b>0 ...
+num_joints-1</b>]. When specified, &rsquo;extra&rsquo;
+joints are assigned the last <b>num_extrajoints</b> in the
+numbering sequence. For example, specifying [KINS]JOINTS=5
+and [EMCMOT]motmod num_extrajoints=2 for a 3 joint trivkins
+configuration <b>[KINS] KINEMATICS=trivkins
+coordinates=xyz</b> uses joints 0,1,2 for the kinematic
+joints and joints 3,4 for the &rsquo;extra&rsquo;
+joints.</p>
 
 <h2>MOTION PINS
 <a name="MOTION PINS"></a>
@@ -234,6 +274,16 @@ when this pin goes FALSE.</p>
 <p style="margin-left:22%; margin-top: 1em">Note:
 feed-inhibit applies to gcode commands -- not jogs.</p>
 
+<p style="margin-left:11%;"><b>motion.feed-upm</b> OUT
+FLOAT</p>
+
+<p style="margin-left:22%;">Current feed rate in machine
+units per minute for motion.motion-types feed(2) and arc(3).
+Value is the program F value multiplied by the current feed
+override value and the motion.adaptive-feed setting (if M52
+active). Value is zero if motion.feed-hold or
+motion.feed-inhibit are asserted.</p>
+
 <p style="margin-left:11%;"><b>motion.homing-inhibit</b> IN
 BIT</p>
 
@@ -248,6 +298,15 @@ BIT</p>
 <p style="margin-left:22%;">TRUE if the machine is in
 position (ie, not currently moving towards the commanded
 position).</p>
+
+
+<p style="margin-left:11%;"><b>motion.misc-error-</b><i>NN</i>
+IN BIT</p>
+
+<p style="margin-left:22%;">Extra error inputs for faults
+such as over-temperature sensors, low coolant warnings,
+custom hal component errors. If driven TRUE this will
+disable a machine. Similar to spindle.amp-fault-in</p>
 
 <p style="margin-left:11%;"><b>motion.motion-enabled</b>
 OUT BIT <b><br>
@@ -308,6 +367,16 @@ between invocations of the servo thread. Typically, this
 number divided by the CPU speed gives the time in seconds,
 and can be used to determine whether the realtime motion
 controller is meeting its timing constraints</p>
+
+<p style="margin-left:11%;"><b>motion.switchkins-type</b>
+IN float</p>
+
+<p style="margin-left:22%;">Kinematics modules that define
+the functions kinematicsSwitchable() and kinematicsSwitch()
+receive the <b>integer</b> value of this pin to select the
+machine kinematics functions. Extra gcode commands may be
+required to synchronize task and motion before and after
+changes to the pin value.</p>
 
 <p style="margin-left:11%;"><b>motion.teleop-mode</b> OUT
 BIT</p>
@@ -762,8 +831,20 @@ velocity</p>
 <p style="margin-left:11%;"><b>joint.</b><i>N</i><b>.wheel-jog-active</b>
 OUT BIT <b>(DEBUG)</b></p>
 
-<h2>JOINT UNLOCK PINS
-<a name="JOINT UNLOCK PINS"></a>
+<h2>JOINT posthome pins
+<a name="JOINT posthome pins"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each joint
+designated as an &rsquo;extra&rsquo; joint is provided with
+a hal pin <b>joint.N.posthome-cmd</b>. The pin value is
+ignored prior to homing. After homing, the pin value is
+augmented by the motor offset value and routed to the
+<b>joint.N.motor-pos-cmd</b>.</p>
+
+<h2>JOINT unlock pins
+<a name="JOINT unlock pins"></a>
 </h2>
 
 

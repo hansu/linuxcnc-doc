@@ -38,22 +38,30 @@ normal and back tool lathe and can be adapted to nearly every need, because
 gmoccapy supports embedded tabs and side panels.
 As a good example for that see
 <a href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Gmoccapy_plasma">gmoccapy_plasma</a></p></div>
-<div class="paragraph"><p>*gmoccapy 3 does support up to 9 axis and 9 joints. As gmoccapy 3 has been
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">gmoccapy 3 does support up to 9 axis and 9 joints. As gmoccapy 3 has been
 changed in code to support the joint / axis changes in LinuxCNC it does not
-work on 2.7 or 2.6 branch!</p></div>
+work on 2.7 or 2.6 branch!</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>It has support for integrated virtual keyboard (onboard or matchbox-keyboard),
 so there is no need for a hardware keyboard or mouse, but it can also be used
 with that hardware. Gmoccapy offers a separate settings page to configure most
 settings of the GUI without editing files.</p></div>
 <div class="paragraph"><p><em>GMOCCAPY</em> can be localized very easy, because the corresponding files are
 separated from the linuxcnc.po files, so there is no need to translate unneeded
-stuff. The files are placed in <strong>/src/po/gmoccapy</strong>. Just copy the gmoccapy.pot
-file to something like fr.po and translate that file with gtranslator or poedit.
-After rebuilding, you got the GUI in your preference language. Please publish
-your translation, so it can be included in the official packages and be
-published to other users. At the Moment it is available in English, German,
+stuff. The files are placed in <strong>/src/po/gmoccapy</strong>. You could just copy the gmoccapy.pot
+file to something like it.po and translate that file with gtranslator or poedit.
+After rebuilding, you&#8217;d get the GUI in your preference language. To facilitate the
+sharing of the translation gmoccapy is presented on the <a href="https://hosted.weblate.org/projects/linuxcnc/gmocappy/">Weblate web interface</a>.
+<em>GMOCCAPY</em> is currently available in English, German,
 Spanish, Polish, Serbian and Hungarian. Feel free to help me to introduce more
-languages, <strong>nieson@web.de</strong>. If you need help, don&#8217;t hesitate to ask.</p></div>
+languages, be it locally or via the web.
+If you need help, don&#8217;t hesitate to contact me on <strong>nieson@web.de</strong>.</p></div>
 <div class="imageblock" style="text-align:left;">
 <div class="content">
 <img src="images/gmoccapy_5_axis.png" alt="images/gmoccapy_5_axis.png" />
@@ -168,7 +176,7 @@ DISPLAY = gmoccapy</code></pre>
 </li>
 <li>
 <p>
--logo &lt;path to logo file&gt; : If given, the logo will hide the jog button tab in manual mode, this is only usefull for machines with hardware button for jogging and increment selection<br />
+-logo &lt;path to logo file&gt; : If given, the logo will hide the jog button tab in manual mode, this is only useful for machines with hardware button for jogging and increment selection<br />
 </p>
 </li>
 </ul></div>
@@ -467,7 +475,7 @@ MESSAGE_PINNAME = okdialog</code></pre>
 SUBROUTINE_PATH = macros</code></pre>
 </div></div>
 <div class="paragraph"><p>Sets the path to search for macros and other subroutines. If you want to use
-several subroutine paths, just separate them wit ":"</p></div>
+several subroutine paths, just separate them with ":"</p></div>
 </div>
 <div class="sect2">
 <h3 id="gmoccapy:macros">4.3. The MACRO Section</h3>
@@ -622,15 +630,19 @@ without mouse or keyboard.</p></div>
 <td class="icon">
 <div class="title">Note</div>
 </td>
-<td class="content">You will have to do all connections to gmoccapy pins in your postgui.hal file,
-because they are not available before loading the GUI completely. It is possible
-to call several postgui hal files, making the config easier to debug. Just use
-a postgui_call_list.hal file. Connections to user panel must be made in a
-separate hal file, as the panels are loaded after the GUI.
-See <a href="#gmoccapy:configuration-of-tabs-and-side-panels">Tabs and side panels</a>
-for details.</td>
+<td class="content">You will have to do all connections to gmoccapy pins in your postgui.hal file.
+When gmoccapy is started it creates the HAL pins for the GUI then it executes
+the HAL file named  in the INI file: <em>[HAL]POSTGUI_HALFILE=&lt;filename&gt;</em>.<br />
+Typically <em>&lt;filename&gt;</em> would be the configs base name + <em>_postgui</em> + <em>.hal</em>
+eg. <em>lathe_postgui.hal</em>, but can be any legal filename.<br />
+These commands are executed after the screen is built, guaranteeing the widget&#8217;s HAL
+pins are available.<br />
+You can have multiple line of <em>POSTGUI_HALFILE=&lt;filename&gt;</em> in the INI.<br />
+Each will be run one after the other in the order they appear.<br /></td>
 </tr></table>
 </div>
+<div class="paragraph"><p>See <a href="#gmoccapy:configuration-of-tabs-and-side-panels">Tabs and side panels</a>
+for details.</p></div>
 <div class="sect2">
 <h3 id="_right_and_bottom_button_lists">5.1. Right And Bottom Button Lists</h3>
 <div class="paragraph"><p>The screen has two main button lists, one on the right side an one on the
@@ -1642,7 +1654,7 @@ gmoccapy.delete-message
 </li>
 </ul></div>
 <div class="paragraph"><p>gmoccapy.error is an bit out pin, to indicate an error, so a light can lit or even the machine may
-be stopped. It will be reseted with the pin gmoccapy.delete-message. gmoccapy.delete-message will
+be stopped. It will be reset with the pin gmoccapy.delete-message. gmoccapy.delete-message will
 delete the first error and reset the gmoccapy.error pin to False after the last error has been cleared.</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -1891,7 +1903,7 @@ touch of you workpiece in X and Y
 </li>
 <li>
 <p>
-measure the hight of your block from the base where your tool switch is
+measure the height of your block from the base where your tool switch is
   located, to the upper face of the block (including chuck etc.)
 </p>
 </li>
@@ -2066,7 +2078,7 @@ net tool-prep-loop iocontrol.0.tool-prepare &lt;= iocontrol.0.tool-prepared</cod
 <span class="image">
 <img src="images/gmoccapy_settings_button.png" alt="images/gmoccapy_settings_button.png" />
 </span>
-and give an unlock code, witch is <strong>123</strong> as default. If you want to change it
+and give an unlock code, which is <strong>123</strong> as default. If you want to change it
 at this time you will have to edit the hidden preference file, see
 <a href="gmoccapy.html#gmoccapy:display-section">the display section</a> for details.</p></div>
 <div class="paragraph"><p>The page looks at the moment like so:</p></div>
@@ -2267,7 +2279,7 @@ the distance to go will be shown in the preview window +<br />
 </td>
 <td class="content"><strong>You can change through the DRO modes (absolute, relative, distance
 to go) by clicking on the DRO!</strong>
-* if you click on the left side letter of the DRO a popup window will allow you to set the value of the axis, making it more easy to set the value, as you will not need to go over the touch off botton button. Clicking the numbers (right side of the DRO) will toggle trough the DRO modes as descibed above. *</td>
+* if you click on the left side letter of the DRO a popup window will allow you to set the value of the axis, making it easier to set the value, as you will not need to go over the touch off bottom button. Clicking the numbers (right side of the DRO) will toggle through the DRO modes as described above. *</td>
 </tr></table>
 </div>
 <div class="paragraph"><p><em>size</em><br />
@@ -2414,8 +2426,8 @@ For the different Hal Pin to connect MPG Wheels to, you may select individual sc
 The main reason for this was my own test to solve this through hal connections, resulting in a very
 complex hal file. Imagine a user having an MPG Wheel with 100 ipr and he wants to slow down the max
 vel from 14000 to 2000 mm/min, that needs 12000 impulses, resulting in 120 turns of the wheel!
-Or an other user having a MPG Wheel with 500 ipr and he wants to set the spindle override witch has
-limits from 50 to 120 % so he goes from min to max within 70 impulses, meaning not even 1/4 turn.
+Or an other user has an MPG Wheel with 500 ipr and wants to set the spindle override which has
+limits from 50% to 120%, so he goes from min to max within 70 impulses, meaning not even 1/4 turn.
 </p>
 </dd>
 </dl></div>
@@ -2638,7 +2650,7 @@ G43 will be executed after the change.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><div class="title">Probe Information</div><p>The following informations are taken from your INI file and must be given
+<div class="paragraph"><div class="title">Probe Information</div><p>The following information is taken from your INI file and must be given
 in absolute coordinates</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2670,7 +2682,7 @@ Max. Probe = is the distance to search for contact, an error will be
 Probe Height = is the height of your probe switch, you can measure it.
  Just touch off the base where the probe switch is located and set that to
  zero. Then make a tool change and watch the tool_offset_z value, that is the
- hight you must enter here.
+ height you must enter here.
 </p>
 </li>
 </ul></div>
@@ -2851,11 +2863,12 @@ see <a href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Gmoccapy_plasma">Plasma wi
 </div>
 </div>
 <div class="sect1">
-<h2 id="_video_on_you_tube">10. Video On You Tube</h2>
+<h2 id="_videos_on_youtube">10. Videos On YouTube</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>This are videos showing gmoccapy in action, unfortunately the videos don&#8217;t
-show the latest version of gmoccapy, but the way to use it will not change
-much in the future. I will try to actualize the videos as soon as possible.</p></div>
+<div class="paragraph"><p>Below are a series of videos list that show gmoccapy in action.
+Unfortunately, these videos don&#8217;tshow the latest version of gmoccapy,
+but the way to use it will still be the same as in the current version.
+I will update the videos as soon as possible.</p></div>
 <div class="sect2">
 <h3 id="_basic_usage">10.1. Basic Usage</h3>
 <div class="paragraph"><p><a href="https://www.youtube.com/watch?v=O5B-s3uiI6g">https://www.youtube.com/watch?v=O5B-s3uiI6g</a></p></div>
@@ -2870,7 +2883,7 @@ much in the future. I will try to actualize the videos as soon as possible.</p><
 </div>
 <div class="sect2">
 <h3 id="_simulated_hardware_button">10.4. Simulated Hardware Button</h3>
-<div class="paragraph"><p>Deutsch = <a href="http://www.youtube.com/watch?v=DTqhY-MfzDE">http://www.youtube.com/watch?v=DTqhY-MfzDE</a></p></div>
+<div class="paragraph"><p>German = <a href="http://www.youtube.com/watch?v=DTqhY-MfzDE">http://www.youtube.com/watch?v=DTqhY-MfzDE</a></p></div>
 <div class="paragraph"><p>English = <a href="http://www.youtube.com/watch?v=ItVWJBK9WFA">http://www.youtube.com/watch?v=ItVWJBK9WFA</a></p></div>
 </div>
 <div class="sect2">
@@ -2878,7 +2891,7 @@ much in the future. I will try to actualize the videos as soon as possible.</p><
 <div class="paragraph"><p><a href="http://www.youtube.com/watch?v=rG1zmeqXyZI">http://www.youtube.com/watch?v=rG1zmeqXyZI</a></p></div>
 </div>
 <div class="sect2">
-<h3 id="gmoccapy:tool-measurement-videos">10.6. Tool Measurement Video</h3>
+<h3 id="gmoccapy:tool-measurement-videos">10.6. Tool Measurement Videos</h3>
 <div class="paragraph"><p>Auto Tool Measurement Simulation = <a href="http://youtu.be/rrkMw6rUFdk">http://youtu.be/rrkMw6rUFdk</a></p></div>
 <div class="paragraph"><p>Auto Tool Measurement Screen = <a href="http://youtu.be/Z2ULDj9dzvk">http://youtu.be/Z2ULDj9dzvk</a></p></div>
 <div class="paragraph"><p>Auto Tool Measurement Machine = <a href="http://youtu.be/1arucCaDdX4">http://youtu.be/1arucCaDdX4</a></p></div>
@@ -2943,7 +2956,7 @@ m2</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-24 09:14:03 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

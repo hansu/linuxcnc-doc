@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:45 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:50 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -83,6 +83,12 @@ counts increase on each rising edge of <b>phase-A</b>. This
 mode may be useful for counting a unidirectional spindle
 with a single input line, though the noise-resistant
 characteristics of quadrature are lost.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If used in
+counter-mode it is also possible to enable the missing-teeth
+index mode, where a gap in the pulse train of one or more
+teeth is used as in index marker. This system is used
+extensively for automotive crank position sensors.</p>
 
 <h2>FUNCTIONS
 <a name="FUNCTIONS"></a>
@@ -214,6 +220,16 @@ float i/o</p>
 length unit. For example, if <b>position-scale</b> is 500,
 then 1000 counts of the encoder will be reported as a
 position of 2.0 units.</p>
+
+
+<p style="margin-left:11%;"><b>encoder.</b><i>N</i><b>.missing-teeth</b>
+s32 in</p>
+
+<p style="margin-left:22%;">The number of teeth missing
+from the index gap. For example a 60 tooth gear with two
+teeth shortened to form an index so that there are 58 pulses
+per revolution would use a position-scale of 60 and a
+missing-teeth of 2.</p>
 
 
 <p style="margin-left:11%;"><b>encoder.</b><i>N</i><b>.rawcounts</b>

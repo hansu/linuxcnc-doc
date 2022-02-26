@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:42 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:43 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,7 +27,9 @@
 <a href="#OPTIONS">OPTIONS</a><br>
 <a href="#UDEV">UDEV</a><br>
 <a href="#STANDALONE USAGE">STANDALONE USAGE</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
 <a href="#HAL USAGE">HAL USAGE</a><br>
+<a href="#Input/Output Signals">Input/Output Signals</a><br>
 <a href="#HAL CONFIGURATION EXAMPLE">HAL CONFIGURATION EXAMPLE</a><br>
 <a href="#SEE ALSO">SEE ALSO</a><br>
 <a href="#NOTES">NOTES</a><br>
@@ -171,9 +173,14 @@ without LinuxCNC to test a pendant. This standalone mode is
 used to identify the button codes produced for each button
 press and debug transmitted USB data.</p>
 
-<p style="margin-left:11%; margin-top: 1em"><b>EXAMPLES
-<br>
-xhc-whb04b-6 -ue</b></p>
+<h3>EXAMPLES
+<a name="EXAMPLES"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xhc-whb04b-6
+-ue</b></p>
 
 <p style="margin-left:17%;">Start in userspace mode
 (simulation) and prints incoming USB data transfer and
@@ -210,13 +217,16 @@ Override + Feedrate Override + Big step 5/10mm).</p>
 option to specify HAL mode and other options as required:
 <b>loadusr -W xhc-whb04b-6 -HsfB</b></p>
 
+<h3>Input/Output Signals
+<a name="Input/Output Signals"></a>
+</h3>
 
-<p style="margin-left:11%; margin-top: 1em"><b>Input/Output
-Signals <br>
-Note:</b> For each button an output pin is provided even if
-no functionality is realized with that signal. For example,
-to stop a running program the Stop button pin may be
-directly connected to halui.program.stop. However, to
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note:</b>
+For each button an output pin is provided even if no
+functionality is realized with that signal. For example, to
+stop a running program the Stop button pin may be directly
+connected to halui.program.stop. However, to
 start/pause/resume a program, the corresponding button
 toggles besides whb.button.start-pause also the
 whb.halui.program.{run,pause,resume} signals accordingly.
@@ -972,6 +982,13 @@ sleep mode (turned on), false otherwise.</p>
 </h2>
 
 
+<p style="margin-left:11%; margin-top: 1em">Exercise
+caution if using copy and paste of this example code from
+the online web docs. Certain characters are incompatibly
+encoded by the web site (minus becomes em-dash). It is safer
+to copy and paste from
+https://raw.githubusercontent.com/LinuxCNC/linuxcnc/2.8/src/hal/user_comps/xhc-whb04b-6/example-configuration.md.</p>
+
 <p style="margin-left:17%; margin-top: 1em"># <br>
 ### Hal File xhc_whb04b_6.hal Example <br>
 # <br>
@@ -1038,6 +1055,16 @@ net pdnt.mode.is-joint halui.mode.is-joint
 whb.halui.mode.is-joint <br>
 net pdnt.mode.is-teleop halui.mode.is-teleop
 whb.halui.mode.is-teleop</p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+&quot;is-homed&quot; axis signal for allowing pendant when
+machine is not homed <br>
+net pdnt.axis.X.is-homed halui.joint.0.is-homed
+whb.halui.joint.x.is-homed <br>
+net pdnt.axis.Y.is-homed halui.joint.1.is-homed
+whb.halui.joint.y.is-homed <br>
+net pdnt.axis.Z.is-homed halui.joint.2.is-homed
+whb.halui.joint.z.is-homed</p>
 
 <p style="margin-left:17%; margin-top: 1em">#
 &quot;selected axis&quot; signals <br>

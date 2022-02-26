@@ -82,11 +82,14 @@ of G20/G21.</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> gi
+gi<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">require_version</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Gtk'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'3.0'</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> gi<span style="color: #990000">.</span>repository <span style="font-weight: bold"><span style="color: #000080">import</span></span> GObject
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> gi<span style="color: #990000">.</span>repository <span style="font-weight: bold"><span style="color: #000080">import</span></span> GLib
 <span style="font-weight: bold"><span style="color: #000080">import</span></span> hal
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> hal_glib <span style="font-weight: bold"><span style="color: #000080">import</span></span> GStat
-<span style="font-weight: bold"><span style="color: #000080">import</span></span> gobject
 GSTAT <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">GStat</span></span><span style="color: #990000">()</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># callback to change HAL pin state</span></span>
@@ -108,7 +111,7 @@ GSTAT<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 
 <span style="font-style: italic"><span style="color: #9A1900"># loop till exit</span></span>
 <span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">:</span>
-        gobject<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">MainLoop</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">()</span>
+        GLib<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">MainLoop</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">()</span>
 <span style="font-weight: bold"><span style="color: #0000FF">except</span></span> KeyboardInterrupt<span style="color: #990000">:</span>
     <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> SystemExit</tt></pre></div></div>
 <div class="paragraph"><p>This would be loaded with <em>loadusr python PATH-TO-FILE/FILENAME.py</em><br />
@@ -127,7 +130,7 @@ The pins would be: <em>metric_status.g20</em> and <em>metric_status.g21</em><br 
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> hal_glib <span style="font-weight: bold"><span style="color: #000080">import</span></span> GStat
 GSTAT <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">GStat</span></span><span style="color: #990000">()</span>
@@ -154,7 +157,7 @@ GSTAT <span style="color: #990000">=</span> <span style="font-weight: bold"><spa
         self<span style="color: #990000">.</span>builder<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_object</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'e_state_label'</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">set_label</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"E State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
 
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">update_interp_label</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span>text<span style="color: #990000">):</span>
-        self<span style="color: #990000">.</span>builder<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_object</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'interp_state_label'</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">set_label</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Interpeter State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
+        self<span style="color: #990000">.</span>builder<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_object</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'interp_state_label'</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">set_label</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Interpreter State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
 
 <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">get_handlers</span></span><span style="color: #990000">(</span>halcomp<span style="color: #990000">,</span>builder<span style="color: #990000">,</span>useropts<span style="color: #990000">):</span>
     <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">HandlerClass</span></span><span style="color: #990000">(</span>halcomp<span style="color: #990000">,</span>builder<span style="color: #990000">,</span>useropts<span style="color: #990000">)]</span></tt></pre></div></div>
@@ -171,7 +174,7 @@ This handler file assumes there are three QLabels named:<br />
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Status
 GSTAT <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Status</span></span><span style="color: #990000">()</span>
@@ -198,7 +201,7 @@ GSTAT <span style="color: #990000">=</span> <span style="font-weight: bold"><spa
         self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>e_state_label<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setText</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"E State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
 
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">update_interp_label</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span>text<span style="color: #990000">):</span>
-        self<span style="color: #990000">.</span>winterp_state_label<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setText</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Interpeter State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
+        self<span style="color: #990000">.</span>winterp_state_label<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setText</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Interpreter State: %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span>text<span style="color: #990000">))</span>
 
 <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">get_handlers</span></span><span style="color: #990000">(</span>halcomp<span style="color: #990000">,</span>builder<span style="color: #990000">,</span>useropts<span style="color: #990000">):</span>
     <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">HandlerClass</span></span><span style="color: #990000">(</span>halcomp<span style="color: #990000">,</span>widgets<span style="color: #990000">,</span>paths<span style="color: #990000">)]</span></tt></pre></div></div>
@@ -428,7 +431,7 @@ It is expected to be in the machine&#8217;s native units regardless of the curre
 </dt>
 <dd>
 <p>
-<em>(returns float)</em> -
+<em>(returns float, text)</em> -
 Sent when jog increment has changed.<br />
 Linuxcnc does not have an internal jog increment.<br />
 This is GStat&#8217;s internal jog increment.<br />
@@ -440,7 +443,7 @@ It is expected to be in the machine&#8217;s native units regardless of the curre
 </dt>
 <dd>
 <p>
-<em>(returns float)</em> -
+<em>(returns float, text)</em> -
 Sent when angular jog increment has changed.<br />
 Linuxcnc does not have an internal angular jog increment.<br />
 This is GStat&#8217;s internal angular jog increment.<br />
@@ -543,8 +546,9 @@ Sent when motion&#8217;s mode has changed
 </dt>
 <dd>
 <p>
-<em>(returns bool, integer)</em> -
-Sent when spindle direction or running status changes.
+<em>(returns integer, bool, integer, bool)</em> -
+(spindle num, spindle on state, requested spindle direction &amp; rate, at-speed state)<br />
+Sent when spindle direction or running status changes or at-speed changes.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -700,7 +704,7 @@ Sent when G96 status changes<br />
 <p>
 <em>(returns bool)</em> -
 Sent when G97 status changes<br />
-(constatnt RPM mode)
+(constant RPM mode)
 </p>
 </dd>
 <dt class="hdlist1">
@@ -804,6 +808,16 @@ This depends on the widget/libraries used.<br />
 <p>
 <em>(returns integer)</em> -
 intended to be sent when graphics line is selected by user.<br />
+This depends on the widget/libraries used.<br />
+</p>
+</dd>
+<dt class="hdlist1">
+<strong>graphics-loading-progress</strong> 
+</dt>
+<dd>
+<p>
+<em>(returns integer)</em> -
+intended to return percentage done of loading a program or running a program.<br />
 This depends on the widget/libraries used.<br />
 </p>
 </dd>
@@ -1011,6 +1025,25 @@ intended to be sent when one wishes to initialize or arbitrarily update an objec
 This depends on the widget/libraries used.<br />
 </p>
 </dd>
+<dt class="hdlist1">
+<strong>progress</strong> 
+</dt>
+<dd>
+<p>
+<em>(returns integer, python object)</em>
+intended to be sent to indicate the progress of a filter program.<br />
+This depends on the widget/libraries used.<br />
+</p>
+</dd>
+<dt class="hdlist1">
+<strong>following-error</strong> 
+</dt>
+<dd>
+<p>
+<em>(returns python list)</em>
+returns a list of all joints current following error<br />
+</p>
+</dd>
 </dl></div>
 </div>
 </div>
@@ -1039,7 +1072,7 @@ GSTAT.set_jog_rate(10) would set the jog rate to 10 machine-units-per-minute and
 <dd>
 <p>
 <em>(Nothing)</em> -
-x = GSTAT.get_jograte would return GSTAT&#8217;s current internal jograte.
+x = GSTAT.get_jograte() would return GSTAT&#8217;s current internal jograte (float).
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1315,7 +1348,7 @@ This will hopefully be resolved with the merge of state-tags branch.<br /></p></
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2022-02-19 19:48:43 CET
 </div>
 </div>
 </body>

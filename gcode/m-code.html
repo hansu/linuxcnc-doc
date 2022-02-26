@@ -681,10 +681,10 @@ cutters and wire spark eroders but it is not limited to such applications.</td>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>M61 Q-</em> - change the current tool number while in MDI or Manual mode without
-             a tool change. One use is when you power up LinuxCNC with a tool
-             currently in the spindle you can set that tool number without
-             doing a tool change.
+<em>M61 Q-</em> - change the current tool number without a tool change. One use is
+             when you power up LinuxCNC with a tool currently in the spindle,
+             you can then set that tool number without doing a tool change.
+             M61 Q0 will set the spindle to the tool-unloaded state.
 </p>
 </li>
 </ul></div>
@@ -953,7 +953,7 @@ connected in your hal file to outputs.</td>
 <em>M70</em>. Once modal state has been saved with <em>M70</em>, it can be restored
 to exactly that state by executing an <em>M72</em>.</p></div>
 <div class="paragraph"><p>A pair of <em>M70</em> and <em>M72</em> instructions will typically be used to
-protect a program against inadvertant modal changes within
+protect a program against inadvertent modal changes within
 subroutines.</p></div>
 <div class="paragraph" id="mcode:m70-saved-state"><p>The state saved consists of:</p></div>
 <div class="ulist"><ul>
@@ -1097,7 +1097,7 @@ mode first, and then all other state including feed to make sure the
 feed value is interpreted in the correct unit setting.</p></div>
 <div class="paragraph"><p>It is an error to execute an <em>M72</em> with no previous <em>M70</em> save
 operation at that level.</p></div>
-<div class="paragraph"><p>The following example demonstrates saving and explicitely restoring
+<div class="paragraph"><p>The following example demonstrates saving and explicitly restoring
 modal state around a subroutine call using <em>M70</em> and <em>M72</em>. Note that
 the <em>imperialsub</em> subroutine is not "aware" of the M7x features and can be
 used unmodified:</p></div>
@@ -1130,7 +1130,7 @@ http://www.gnu.org/software/src-highlite -->
 
 <span style="font-weight: bold"><span style="color: #0000FF">M70</span></span> <span style="font-style: italic"><span style="color: #9A1900">(save caller state in at global level)</span></span>
 <span style="font-weight: bold"><span style="color: #000080">O&lt;imperialsub&gt; call</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">M72</span></span> <span style="font-style: italic"><span style="color: #9A1900">(explicitely restore state)</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">M72</span></span> <span style="font-style: italic"><span style="color: #9A1900">(explicitly restore state)</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900">(debug, back in main, state now:)</span></span>
 <span style="font-weight: bold"><span style="color: #000080">o&lt;showstate&gt; call</span></span>
@@ -1150,7 +1150,7 @@ will <strong>not</strong> restore state.</p></div>
 <div class="paragraph"><p>The suggested use is at the beginning of a O-word subroutine as in the
 following example. Using <em>M73</em> this way enables designing subroutines
 which need to modify modal state but will protect the calling program
-against inadvertant modal changes. Note the use of
+against inadvertent modal changes. Note the use of
 <a href="overview.html#gcode:predefined-named-parameters">predefined named parameters</a> in
 the <em>showstate</em> subroutine.</p></div>
 <div class="listingblock">
@@ -1256,14 +1256,14 @@ http://www.gnu.org/software/src-highlite -->
 <div class="title">Note</div>
 </td>
 <td class="content">After creating a new <em>M1nn</em> file you must restart the GUI so it is aware
-of the new file, otherwise you will get an <em>Unkown m code</em> error.</td>
+of the new file, otherwise you will get an <em>Unknown m code</em> error.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The external program named <em>M100</em> through <em>M199</em> (no extension and a capitol M)
 is executed with the optional P and Q values as its two arguments.
 Execution of the G code file pauses until the external program exits.
 Any valid executable file can be used. The file must be located in the search
-path specificed in the ini file configuration. See the
+path specified in the ini file configuration. See the
 <a href="../config/ini-config.html#sec:display-section">Display Section</a> for more information on search paths.</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -1366,7 +1366,7 @@ exit 0</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

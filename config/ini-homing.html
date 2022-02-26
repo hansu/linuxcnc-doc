@@ -31,10 +31,10 @@ asciidoc.install(2);
 <div class="sectionbody">
 <div class="paragraph"><p>Homing sets the zero origin of the G53 machine coordinates.<br />
 Soft limits are defined relative to the machine origin.<br />
-The soft limits automatically decelerate and stop the axes before they hits the limits switches<br />
-A properly setup and functioning machine will not move beyond soft(ware) limits and<br />
+The soft limits automatically decelerate and stop the axes before they hit the limits switches<br />
+A properly configured and functioning machine will not move beyond soft(ware) limits and<br />
 will have the machine origin set as repeatable as the home switch/index mechanism is.<br />
-Linuxcnc can be  homed by eye (alignment marks), with switches, with switches and encoder index, or use absolute encoders.<br />
+Linuxcnc can be homed by eye (alignment marks), with switches, with switches and an encoder index, or by using absolute encoders.<br />
 Homing seems simple enough - just move each joint to a known location,
 and set LinuxCNC&#8217;s internal variables accordingly.<br />
 However, different machines have different requirements, and homing is actually quite
@@ -437,7 +437,14 @@ from the encoder.n.index-enable.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_home_offset">6.6. HOME_OFFSET </h3>
+<h3 id="_home_index_no_encoder_reset">6.6. HOME_INDEX_NO_ENCODER_RESET </h3>
+<div class="paragraph"><p>Default is NO.   Use YES if the encoder used for this joint does not
+reset its counter when an index pulse is detected after assertion
+of the joint index_enable hal pin.
+Applicable only for HOME_USE_INDEX = YES.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_home_offset">6.7. HOME_OFFSET </h3>
 <div class="paragraph"><p>This defines the location of the origin zero point of the G53 machine coordinate system.<br />
 It is the distance (offset), in joint units, from the machine origin to the home switch
 trip point or index pulse.<br />
@@ -456,7 +463,7 @@ hard limit switches.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_home">6.7. HOME </h3>
+<h3 id="_home">6.8. HOME </h3>
 <div class="paragraph"><p>The position that the joint will go to upon completion of the homing
 sequence. After detecting the home switch or home switch then index pulse
 (depending on configuration), and setting the coordinate of that point to
@@ -480,7 +487,7 @@ joint should move to on that scale.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_home_is_shared">6.8. HOME_IS_SHARED </h3>
+<h3 id="_home_is_shared">6.9. HOME_IS_SHARED </h3>
 <div class="paragraph"><p>If there is not a separate home switch input for this joint, but a
 number of momentary switches wired to the same pin, set this value to 1
 to prevent homing from starting if one of the shared switches is
@@ -488,7 +495,7 @@ already closed. Set this value to 0 to permit homing even if the switch
 is already closed.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_home_absolute_encoder">6.9. HOME_ABSOLUTE_ENCODER </h3>
+<h3 id="_home_absolute_encoder">6.10. HOME_ABSOLUTE_ENCODER </h3>
 <div class="paragraph"><p>Use for absolute encoders.  When a request is made to home the joint,
 the current joint position is set to the <em>[JOINT_n]HOME_OFFSET</em> value.</p></div>
 <div class="paragraph"><p>The final move to the <em>[JOINT_n]HOME</em> position is optional according
@@ -518,7 +525,7 @@ HOME_ABSOLUTE_ENCODER = 2 Absolute encoder, NO final move to [JOINT_n]HOME</code
 <div class="paragraph"><p><a id="sec:homing-section"></a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_home_sequence">6.10. HOME_SEQUENCE </h3>
+<h3 id="_home_sequence">6.11. HOME_SEQUENCE </h3>
 <div class="paragraph"><p>Used to define a multi-joint homing sequence <strong>HOME ALL</strong> and enforce
 homing order (e.g., Z may not be homed if X is not yet homed). A joint
 may be homed after all joints with a lower (absolute value)
@@ -593,7 +600,7 @@ world coordinates is always available once a machine is homed.</p></div>
 </div></div>
 </div>
 <div class="sect2">
-<h3 id="_volatile_home">6.11. VOLATILE_HOME </h3>
+<h3 id="_volatile_home">6.12. VOLATILE_HOME </h3>
 <div class="paragraph"><p>If this setting is true, this joint becomes unhomed whenever the
 machine transitions into the OFF state. This is appropriate for
 any joint that does not maintain position when the joint drive is
@@ -601,12 +608,12 @@ off.  Some stepper drives, especially microstep drives, may need
 this.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_locking_indexer">6.12. LOCKING_INDEXER </h3>
+<h3 id="_locking_indexer">6.13. LOCKING_INDEXER </h3>
 <div class="paragraph"><p>If this joint is a locking rotary indexer, it will unlock before
 homing, and lock afterward.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_immediate_homing">6.13. Immediate Homing </h3>
+<h3 id="_immediate_homing">6.14. Immediate Homing </h3>
 <div class="paragraph"><p>If a joint does not have home switches or does not have a logical
 home position like a rotary joint and you want that joint to home at
 the current position when the "Home All" button is pressed in the
@@ -652,7 +659,7 @@ eliminates the joint from <strong>HOME ALL</strong> behavior as noted above.</td
 </div>
 </div>
 <div class="sect2">
-<h3 id="_inhibiting_homing">6.14. Inhibiting Homing </h3>
+<h3 id="_inhibiting_homing">6.15. Inhibiting Homing </h3>
 <div class="paragraph"><p>A hal pin (motion.homing-inhibit) is provided to disallow
 homing initiation for both "Home All" and individual joint
 homing.</p></div>
@@ -723,7 +730,7 @@ configs/sim/axis/gantry/ directory.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2022-01-05 21:10:59 CET
 </div>
 </div>
 </body>

@@ -426,12 +426,12 @@ the <em>net</em> command see the <a href="../hal/basic-hal.html#sec:hal-commands
 </li>
 <li>
 <p>
-<em>&lt;font&gt;("Helvetica",20)&lt;/font&gt;</em> - specificy the font and size of the text
+<em>&lt;font&gt;("Helvetica",20)&lt;/font&gt;</em> - specify the font and size of the text
 </p>
 </li>
 <li>
 <p>
-<em>&lt;relief&gt;FLAT&lt;/relief&gt;</em> - specificy the border around the label (<em>FLAT</em>,
+<em>&lt;relief&gt;FLAT&lt;/relief&gt;</em> - specify the border around the label (<em>FLAT</em>,
   <em>RAISED</em>, <em>SUNKEN</em>) default is <em>FLAT</em>
 </p>
 </li>
@@ -472,7 +472,7 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 <div class="sect2">
 <h3 id="_multi_label">6.4. Multi_Label</h3>
-<div class="paragraph"><p>An extention of the text label.</p></div>
+<div class="paragraph"><p>An extension of the text label.</p></div>
 <div class="paragraph"><p>Selectable text label, can display up to 6 label legends when associated bit pin
 is activated.</p></div>
 <div class="paragraph"><p>Attach each legend pin to a signal and get a descriptive label when the signal
@@ -480,7 +480,7 @@ is TRUE.</p></div>
 <div class="paragraph"><p>If more than one legend pin is TRUE, the highest numbered <em>TRUE</em> legend will be
 displayed.</p></div>
 <div class="paragraph"><p>If a disable pin is created with <em>&lt;disable_pin&gt;True&lt;/disable_pin&gt;</em> and that pin
-is set to true the lable changes to a grayed out state.</p></div>
+is set to true the label changes to a grayed out state.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -631,7 +631,7 @@ button is released. Buttons can use the following optional options.</p></div>
 </li>
 <li>
 <p>
-<em>&lt;fg&gt; "color"&lt;/fg&gt;</em> - the forground color.
+<em>&lt;fg&gt; "color"&lt;/fg&gt;</em> - the foreground color.
 </p>
 </li>
 <li>
@@ -1048,7 +1048,12 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 <div class="paragraph"><div class="title">Jogwheel</div><p>Jogwheel mimics a real jogwheel by outputting a FLOAT pin which counts
 up or down as the wheel is turned, either by dragging in a circular
-motion, or by rolling the mouse-wheel.</p></div>
+motion, or by rolling the mouse-wheel. Optional tags
+<em>&lt;text&gt;"My Text"&lt;/text&gt;</em> displays text
+<em>&lt;bgcolor&gt;"grey"&lt;/bgcolor&gt; &lt;fillcolor&gt;"green"&lt;/fillcolor&gt;</em> background &amp; active colors
+<em>&lt;scale_pin&gt;1&lt;/scale_pin&gt;</em> creates scale text and a FLOAT.scale pin to display jog scale
+<em>&lt;clear_pin&gt;1&lt;/clear_pin&gt;</em> creates DRO and a BIT.reset pin to reset DRO. Needs scale_pin
+for scaled DRO. shift+click resets DRO also</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -1192,7 +1197,7 @@ vertical fill</p></div>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><div class="title">Anchor</div><p>Container anchors are specificed with the &lt;boxanchor anchor=""/&gt; tag. The anchor
+<div class="paragraph"><div class="title">Anchor</div><p>Container anchors are specified with the &lt;boxanchor anchor=""/&gt; tag. The anchor
 specifies where to position each slave in its parcel. Valid entries are center,
 n, s, e, w, for center, north, south, east and west. Combinations like sw, se,
 nw and ne are also valid.</p></div>
@@ -1204,7 +1209,7 @@ nw and ne are also valid.</p></div>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><div class="title">Expand</div><p>Container expand is specificed with the boolean &lt;boxexpand expand=""/&gt; tag.
+<div class="paragraph"><div class="title">Expand</div><p>Container expand is specified with the boolean &lt;boxexpand expand=""/&gt; tag.
 Valid entries are yes, no.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1382,7 +1387,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

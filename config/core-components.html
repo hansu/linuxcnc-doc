@@ -124,7 +124,7 @@ joint(s).  The LSB of the mask selects joint 0.  Example:
      (float, in) When adaptive feed is enabled with <em>M52 P1</em> , the
     commanded velocity is multiplied by this value. This effect is
      multiplicative with the NML-level feed override value and
-    <em>motion.feed-hold</em>. As of version 2.8 of LinuxCNC it is possible to
+    <em>motion.feed-hold</em>. As of version 2.9 of LinuxCNC it is possible to
     use a negative adaptive feed value to run the G-code path in reverse.
 </p>
 </li>
@@ -286,7 +286,7 @@ joint(s).  The LSB of the mask selects joint 0.  Example:
 <em>motion.requested-vel</em> -
      (float, out) The current requested velocity in user units per
     second.  This value is the F-word setting from the G-code file,
-    possibly reduced to accomodate machine velocity and acceleration
+    possibly reduced to accommodate machine velocity and acceleration
     limits. The value on this pin does not reflect the feed override or
     any other adjustments.
 </p>
@@ -466,7 +466,7 @@ searching for desired orientation mode
 </li>
 <li>
 <p>
-orienation complete mode.
+orientation complete mode.
 </p>
 </li>
 </ul></div>
@@ -510,7 +510,7 @@ interpreted as follows:</p></div>
 </li>
 </ul></div>
 <div class="paragraph"><p>It can be used with the <code>orient</code> HAL component which provides a PID
-command value based on spindle encoder positon, <code>spindle-orient-angle</code>
+command value based on spindle encoder position, <code>spindle-orient-angle</code>
 and <code>spindle-orient-mode</code>.</p></div>
 </div>
 <div class="sect2">
@@ -887,7 +887,7 @@ of commands.</td>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 13:57:47 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

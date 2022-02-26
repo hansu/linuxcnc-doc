@@ -51,6 +51,39 @@ And one is for dialog widgets.<br />
 <br />
 For Designer to add custom widgets to it&#8217;s editor it must have a plugin added to the right folder.<br /></p></div>
 </div>
+<div class="sect2">
+<h3 id="_initialization_process">1.3. initialization process</h3>
+<div class="paragraph"><p>Qtvcp does extra setup for widgets subclassed from _HALWidgetBase. (aka HAL-ified widgets)+
+This includes injecting important variables, calling an extra setup function and<br />
+calling a closing cleanup function at shutdown.<br />
+These functions are not called when the Designer editor displays the widgets.<br />
+When Qtvcp builds a screen from the .ui file, it searches for all the HAL-ified widgets.<br />
+Then it finds the ScreenOptions widget, to collect information it needs to inject into the other widgets.<br />
+It then instantiates each widget and if a HAL-fied widget, it calls the function hal_init().<br />
+hal_init() is defined in the base class and it adds variables such as the preference file to every HAL-ifed widget.<br />
+hal_init() will then call _hal_init() on the widget. _hal_init() allows the widget designer to do setup that<br />
+requires access to the extra variables.<br />
+Here is a description of the extra variables inject into HAL-ified widgets:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        self<span style="color: #990000">.</span>HAL_GCOMP <span style="color: #990000">=</span> the HAL component instance
+        self<span style="color: #990000">.</span>HAL_NAME <span style="color: #990000">=</span> This widgets name as a string
+        self<span style="color: #990000">.</span>QT_OBJECT_ <span style="color: #990000">=</span> This widgets object instance
+        self<span style="color: #990000">.</span>QTVCP_INSTANCE_ <span style="color: #990000">=</span> The very toplevel Parent Of the screen
+        self<span style="color: #990000">.</span>PATHS_ <span style="color: #990000">=</span> The instance of Qtvcp's path library
+        self<span style="color: #990000">.</span>PREFS_ <span style="color: #990000">=</span> the instance of an optional preference file
+        self<span style="color: #990000">.</span>SETTINGS_ <span style="color: #990000">=</span> the Qsettings object</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_cleanup_process">1.4. cleanup process</h3>
+<div class="paragraph"><p>When Qtvcp closes, it calls the function _hal_cleanup() on all HAL-ified widgets.<br />
+The baseclass creates an empty _hal_cleanup() function, which can be redefined in the custom widget subclass.<br />
+This can be used to do such things as record preferences, etc.<br />
+This function is not called when the Designer editor displays the widgets.<br /></p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -64,7 +97,7 @@ Lets look at a snippet of simple_widgets.py.<br /></p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/python2.7</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900">###############################</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># Imports</span></span>
@@ -137,7 +170,7 @@ This LED indicator widget will respond to selectable linuxcnc controller states.
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/python2.7</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900">###############################</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># Imports</span></span>
@@ -277,7 +310,7 @@ http://www.gnu.org/software/src-highlite -->
         self<span style="color: #990000">.</span>QT_OBJECT_ <span style="color: #990000">=</span> This widgets pyQt object instance
         self<span style="color: #990000">.</span>QTVCP_INSTANCE_ <span style="color: #990000">=</span> The very toplevel Parent Of the screen
         self<span style="color: #990000">.</span>PATHS_ <span style="color: #990000">=</span> The instance of Qtvcp's path library
-        self<span style="color: #990000">.</span>PREFS_ <span style="color: #990000">=</span> the isnstance of an optional preference file</tt></pre></div></div>
+        self<span style="color: #990000">.</span>PREFS_ <span style="color: #990000">=</span> the instance of an optional preference file</tt></pre></div></div>
 <div class="paragraph"><p>We could use this information to create HAL pins or look up image paths etc.<br /></p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
@@ -324,7 +357,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="sect3">
 <h4 id="_in_the_em_designer_properties_setter_getters_resetters_em_section">3.3.1. In the  <em>Designer properties setter/getters/resetters</em> section</h4>
 <div class="paragraph"><p>This is how Designer sets the attributes of the widget.<br />
-thes can also be called directly in the widget.<br /></p></div>
+This can also be called directly in the widget.<br /></p></div>
 </div>
 <div class="sect3">
 <h4 id="_in_the_em_designer_properties_em_section">3.3.2. In the <em>Designer properties</em> section</h4>
@@ -359,7 +392,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>widgets<span style="color: #990000">.</span>dialog_widget <span style="font-weight: bold"><span style="color: #000080">import</span></span> EntryDialog
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Status<span style="color: #990000">,</span> Action<span style="color: #990000">,</span> Info
 
-<span style="font-style: italic"><span style="color: #9A1900"># Instiniate the libraries with global reference</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># Instantiate the libraries with global reference</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># STATUS gives us status messages from linuxcnc</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># INFO holds ini details</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># ACTION gives commands to linuxcnc</span></span>
@@ -451,7 +484,92 @@ ACTION <span style="color: #990000">=</span> <span style="font-weight: bold"><sp
 </div>
 </div>
 <div class="sect1">
-<h2 id="_widget_plugins">5. Widget Plugins</h2>
+<h2 id="_stylesheet_property_changes_based_on_events">5. Stylesheet Property Changes Based On Events</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>It&#8217;s possible to have widgets restyled when events change.<br />
+You must explicitly <em>polish</em> the widget to have PyQt redo the style.<br />
+This is a relatively expensive function so should be used sparingly.<br />
+This example will set the property isHomed based on linuxcnc&#8217;s homed state.<br />
+This property can be used in the stylesheet to change stylesheet properties.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="font-weight: bold"><span style="color: #000000">HomeLabel</span></span><span style="color: #990000">(</span>QLabel<span style="color: #990000">,</span> _HalWidgetBase<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> parent<span style="color: #990000">=</span>None<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #000000">super</span></span><span style="color: #990000">(</span>HomeLabel<span style="color: #990000">,</span> self<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>parent<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span>joint_number <span style="color: #990000">=</span> <span style="color: #993399">0</span>
+        <span style="font-style: italic"><span style="color: #9A1900"># for stylesheet reading</span></span>
+        self<span style="color: #990000">.</span>_isHomed <span style="color: #990000">=</span> False
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">_hal_init</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #000000">super</span></span><span style="color: #990000">(</span>HomeLabel<span style="color: #990000">,</span> self<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">_hal_init</span></span><span style="color: #990000">()</span>
+        STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'homed'</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">lambda</span></span> w<span style="color: #990000">,</span>d<span style="color: #990000">:</span> self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">_home_status_polish</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>d<span style="color: #990000">),</span> True<span style="color: #990000">))</span>
+        STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'unhomed'</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">lambda</span></span> w<span style="color: #990000">,</span>d<span style="color: #990000">:</span> self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">_home_status_polish</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>d<span style="color: #990000">),</span> False<span style="color: #990000">))</span>
+
+    <span style="font-style: italic"><span style="color: #9A1900"># update ishomed property</span></span>
+    <span style="font-style: italic"><span style="color: #9A1900"># polish widget so stylesheet sees the property change</span></span>
+    <span style="font-style: italic"><span style="color: #9A1900"># some stylesheets color the text on home/unhome</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">_home_status_polish</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> d<span style="color: #990000">,</span> state<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> self<span style="color: #990000">.</span>joint_number <span style="color: #990000">=</span> d<span style="color: #990000">:</span>
+            self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'isHomed'</span><span style="color: #990000">,</span> state<span style="color: #990000">)</span>
+            self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">style</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">unpolish</span></span><span style="color: #990000">(</span>self<span style="color: #990000">)</span>
+            self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">style</span></span><span style="color: #990000">().</span><span style="font-weight: bold"><span style="color: #000000">polish</span></span><span style="color: #990000">(</span>self<span style="color: #990000">)</span>
+
+    <span style="font-style: italic"><span style="color: #9A1900"># Qproperty getter and setter</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">getisHomed</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> self<span style="color: #990000">.</span>_isHomed
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">setisHomed</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> data<span style="color: #990000">):</span>
+        self<span style="color: #990000">.</span>_isHomed <span style="color: #990000">=</span> data
+
+    <span style="font-style: italic"><span style="color: #9A1900"># Qproperty</span></span>
+    isHomed <span style="color: #990000">=</span> QtCore<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">pyqtProperty</span></span><span style="color: #990000">(</span>bool<span style="color: #990000">,</span> getisHomed<span style="color: #990000">,</span> setisHomed<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Here is a sample stylesheet to change text color based on home state.<br />
+In this case any widget based on the HomeLabel widget above will change text color.<br />
+You would usually pick specific widgets using <em>HomeLabel #specific_widget_name[homed=true]{</em><br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>HomeLabel[homed=true] {
+    color: green;
+}
+HomeLabel[homed=false] {
+    color: red;
+}</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_stylesheets_to_change_custom_widget_properties">6. Use Stylesheets To Change Custom Widget Properties</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="font-weight: bold"><span style="color: #000000">Label</span></span><span style="color: #990000">(</span>QLabel<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> parent<span style="color: #990000">=</span>None<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #000000">super</span></span><span style="color: #990000">(</span>Label<span style="color: #990000">,</span> self<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>parent<span style="color: #990000">)</span>
+        alternateFont0 <span style="color: #990000">=</span> self<span style="color: #990000">.</span>font
+
+    <span style="font-style: italic"><span style="color: #9A1900"># Qproperty getter and setter</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">getFont0</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> self<span style="color: #990000">.</span>aleternateFont0
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">setFont0</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> value<span style="color: #990000">):</span>
+        self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">alternateFont0</span></span><span style="color: #990000">(</span>value<span style="color: #990000">)</span>
+    <span style="font-style: italic"><span style="color: #9A1900"># Qproperty</span></span>
+    styleFont0 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">pyqtProperty</span></span><span style="color: #990000">(</span>QFont<span style="color: #990000">,</span> getFont0<span style="color: #990000">,</span> setFont0<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Sample stylesheet that sets a custom widget property.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Label{
+qproperty-styleFont0: "Times,12,-1,0,90,0,0,0,0,0";
+}</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_widget_plugins">7. Widget Plugins</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>We must register our custom widget for Designer to use them.<br />
 Here is a typical samples<br />
@@ -459,60 +577,58 @@ they would need to be added to qtvcp/plugins/<br />
 Then qtvcp/plugins/qtvcp_plugin.py would need to be adjusted<br />
 to import them.<br /></p></div>
 <div class="sect2">
-<h3 id="_gridlayout_example">5.1. Gridlayout example</h3>
+<h3 id="_gridlayout_example">7.1. Gridlayout example</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<div class="content">
+<pre><code>#!/usr/bin/env python3
 
-<span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5 <span style="font-weight: bold"><span style="color: #000080">import</span></span> QtCore<span style="color: #990000">,</span> QtGui
-<span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5<span style="color: #990000">.</span>QtDesigner <span style="font-weight: bold"><span style="color: #000080">import</span></span> QPyDesignerCustomWidgetPlugin
-<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>widgets<span style="color: #990000">.</span>simple_widgets <span style="font-weight: bold"><span style="color: #000080">import</span></span> Lcnc_GridLayout
-<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>widgets<span style="color: #990000">.</span>qtvcp_icons <span style="font-weight: bold"><span style="color: #000080">import</span></span> Icon
-ICON <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Icon</span></span><span style="color: #990000">()</span>
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
+from qtvcp.widgets.simple_widgets import Lcnc_GridLayout
+from qtvcp.widgets.qtvcp_icons import Icon
+ICON = Icon()
 
-<span style="font-style: italic"><span style="color: #9A1900">####################################</span></span>
-<span style="font-style: italic"><span style="color: #9A1900"># GridLayout</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">####################################</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="font-weight: bold"><span style="color: #000000">LcncGridLayoutPlugin</span></span><span style="color: #990000">(</span>QPyDesignerCustomWidgetPlugin<span style="color: #990000">):</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> parent <span style="color: #990000">=</span> None<span style="color: #990000">):</span>
-        QPyDesignerCustomWidgetPlugin<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">)</span>
-        self<span style="color: #990000">.</span>initialized <span style="color: #990000">=</span> False
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">initialize</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> formEditor<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> self<span style="color: #990000">.</span>initialized<span style="color: #990000">:</span>
-            <span style="font-weight: bold"><span style="color: #0000FF">return</span></span>
-        self<span style="color: #990000">.</span>initialized <span style="color: #990000">=</span> True
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">isInitialized</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> self<span style="color: #990000">.</span>initialized
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">createWidget</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> parent<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #000000">Lcnc_GridLayout</span></span><span style="color: #990000">(</span>parent<span style="color: #990000">)</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">name</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"Lcnc_GridLayout"</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">group</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"Linuxcnc - HAL"</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">icon</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> QtGui<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">QIcon</span></span><span style="color: #990000">(</span>QtGui<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">QPixmap</span></span><span style="color: #990000">(</span>ICON<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_path</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'lcnc_gridlayout'</span><span style="color: #990000">)))</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">toolTip</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"HAL enable/disable GridLayout widget"</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">whatsThis</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">""</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">isContainer</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> True
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">domXml</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">'&lt;widget class="Lcnc_GridLayout" name="lcnc_gridlayout" /&gt;\n'</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">includeFile</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"qtvcp.widgets.simple_widgets"</span></tt></pre></div></div>
+####################################
+# GridLayout
+####################################
+class LcncGridLayoutPlugin(QPyDesignerCustomWidgetPlugin):
+    def __init__(self, parent = None):
+        QPyDesignerCustomWidgetPlugin.__init__(self)
+        self.initialized = False
+    def initialize(self, formEditor):
+        if self.initialized:
+            return
+        self.initialized = True
+    def isInitialized(self):
+        return self.initialized
+    def createWidget(self, parent):
+        return Lcnc_GridLayout(parent)
+    def name(self):
+        return "Lcnc_GridLayout"
+    def group(self):
+        return "Linuxcnc - HAL"
+    def icon(self):
+        return QtGui.QIcon(QtGui.QPixmap(ICON.get_path('lcnc_gridlayout')))
+    def toolTip(self):
+        return "HAL enable/disable GridLayout widget"
+    def whatsThis(self):
+        return ""
+    def isContainer(self):
+        return True
+    def domXml(self):
+        return '&lt;widget class="Lcnc_GridLayout" name="lcnc_gridlayout" /&gt;\n'
+    def includeFile(self):
+        return "qtvcp.widgets.simple_widgets"</code></pre>
+</div></div>
 </div>
 <div class="sect2">
-<h3 id="_systemtoolbutton_example">5.2. SystemToolbutton example</h3>
+<h3 id="_systemtoolbutton_example">7.2. SystemToolbutton example</h3>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5 <span style="font-weight: bold"><span style="color: #000080">import</span></span> QtCore<span style="color: #990000">,</span> QtGui
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5<span style="color: #990000">.</span>QtDesigner <span style="font-weight: bold"><span style="color: #000080">import</span></span> QPyDesignerCustomWidgetPlugin
@@ -542,7 +658,7 @@ ICON <span style="color: #990000">=</span> <span style="font-weight: bold"><span
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">icon</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
         <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> QtGui<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">QIcon</span></span><span style="color: #990000">(</span>QtGui<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">QPixmap</span></span><span style="color: #990000">(</span>ICON<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_path</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'systemtoolbutton'</span><span style="color: #990000">)))</span>
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">toolTip</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
-        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"Button for selecting a User Co-ordinate System"</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"Button for selecting a User Coordinate System"</span>
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">whatsThis</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
         <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">""</span>
     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">isContainer</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
@@ -553,7 +669,7 @@ ICON <span style="color: #990000">=</span> <span style="font-weight: bold"><span
         <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">"qtvcp.widgets.system_tool_button"</span></tt></pre></div></div>
 </div>
 <div class="sect2">
-<h3 id="_making_a_plugin_with_a_menuentry_dialog_box">5.3. Making a plugin with a MenuEntry dialog box</h3>
+<h3 id="_making_a_plugin_with_a_menuentry_dialog_box">7.3. Making a plugin with a MenuEntry dialog box</h3>
 <div class="paragraph"><p>It possible to add an entry to the dialog that pops up when you right<br />
 click the widget in the layout. This can do such things as select options<br />
 in a more convenient way. This is the plugin used for action buttons.<br /></p></div>
@@ -562,7 +678,7 @@ in a more convenient way. This is the plugin used for action buttons.<br /></p><
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
 
 <span style="font-weight: bold"><span style="color: #000080">import</span></span> sip
 <span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5 <span style="font-weight: bold"><span style="color: #000080">import</span></span> QtCore<span style="color: #990000">,</span> QtGui<span style="color: #990000">,</span> QtWidgets
@@ -722,7 +838,7 @@ Q_TYPEID <span style="color: #990000">=</span> <span style="color: #990000">{</s
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

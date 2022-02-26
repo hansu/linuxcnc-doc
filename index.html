@@ -88,12 +88,12 @@ function setup_page(){
   <img src="linuxcnc-logo-chips.png" alt="LinuxCNC Logo" width="175"/>
 </div>
 
-<h3>LinuxCNC version <strong>2.8.1</strong></h3>
+<h3>LinuxCNC version <strong>2.9.0~pre0</strong></h3>
 
 <div style="margin-top: 0em; margin-bottom: 1em; line-height: 150%">
 <p>Translated Documents <a href="index_es.html">Espa&ntilde;ol</a>  *  
 <a href="index_fr.html">Fran&ccedil;ais</a>
-<a href="index_cn.html">中文</a>
+<a href="index_zh_CN.html">中文</a>
 </p>
 <p><a href="http://linuxcnc.org">LinuxCNC Home Page</a>  *  
 <a href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl">Wiki Community</a>  *  
@@ -108,7 +108,7 @@ function setup_page(){
 		<li><a href="getting-started/about-linuxcnc.html">About LinuxCNC</a></li>
 		<li><a href="getting-started/system-requirements.html">System Requirements</a></li>
 		<li><a href="getting-started/getting-linuxcnc.html">Getting LinuxCNC</a></li>
-		<li><a href="getting-started/running-linuxcnc.html">Configuration Launcher</a></li>
+		<li><a href="getting-started/running-linuxcnc.html">Running LinuxCNC</a></li>
 		<li><a href="getting-started/updating-linuxcnc.html">Updating LinuxCNC</a></li>
 		<li><a href="common/linux-faq.html">Linux FAQ</a></li>
 	</ul>
@@ -139,13 +139,13 @@ function setup_page(){
 <div id="sec3">
 	<ul>
 		<li><a href="gui/axis.html">Axis, Keyboard GUI</a></li>
-		<li><a href="gui/gmoccapy.html">Gmoccapy, Touchscreen GUI</a> <a href="gui/gmoccapy-hu.html"> hu(Magyar)</a></li>
+		<li><a href="gui/gmoccapy.html">Gmoccapy, Touchscreen GUI</a> <a href="gui/gmoccapy_hu.html"> hu(Magyar)</a></li>
 		<li><a href="gui/touchy.html">Touchy, Touchscreen GUI</a></li>
 		<li><a href="gui/gscreen.html">Gscreen, Customizable Touchscreen GUI</a></li>
-		<li><a href="gui/qtdragon.html">SilverDragon, Customizable QT based GUI</a></li>
+		<li><a href="gui/qtdragon.html">QtDragon, Customizable QT based GUI</a></li>
 		<li><a href="gui/ngcgui.html">NGCGUI, Subroutine GUI</a></li>
 		<li><a href="gui/tklinuxcnc.html">TkLinuxCNC, (no opengl) GUI</a></li>
-		<li><a href="plasma/plasmac-user-guide.html">PlasmaC, A Complete Plasma Cutting Configuration</a></li>
+		<li><a href="plasma/qtplasmac.html">QtPlasmaC, A Complete Plasma Cutting Configuration</a></li>
 	</ul>
 </div>
 
@@ -174,6 +174,7 @@ function setup_page(){
 		<li><a href="motion/tweaking-steppers.html">Stepper Tuning</a></li>
 		<li><a href="config/ini-config.html">INI Configuration</a></li>
 		<li><a href="config/ini-homing.html">Homing Configuration</a></li>
+		<li><a href="config/iov2.html">I/O Control V2</a></li>
 		<li><a href="config/lathe-config.html">Lathe Configuration</a></li>
 		<li><a href="config/stepper-quickstart.html">Stepper Quick Start</a></li>
 		<li><a href="config/stepper.html">Stepper Configuration</a></li>
@@ -189,6 +190,7 @@ function setup_page(){
 		<li><a href="gui/gladevcp.html">Glade Virtual Control Panel</a></li>
 		<li><a href="gui/gscreen.html">Gscreen</a></li>
 		<li><a href="gui/qtvcp.html">QTvcp</a></li>
+		<li><a href="gui/qtvcp_VCPpanels.html">QTvcp -VCP Panels</a></li>
 		<li><a href="gui/qtvcp_widgets.html">QTvcp -widgets</a></li>
 		<li><a href="gui/qtvcp_libraries.html">QTvcp -libraries</a></li>
 		<li><a href="gui/qtvcp_custom_widgets.html">QTvcp -Custom Widgets</a></li>
@@ -201,6 +203,7 @@ function setup_page(){
 <div id="sec7">
 	<ul>
 		<li><a href="gui/panelui.html">Panelui</a></li>
+		<li><a href="gui/filter_programs.html">Filter Programs</a></li>
 		<li><a class="tooltips" href="gui/halui.html">HALUI, Hardware Abstract Layer User Interface</a></li>
 		<li><a href="hal/halui-examples.html">HALUI examples</a></li>
 		<li><a href="config/python-interface.html">Python Interface</a></li>
@@ -276,11 +279,13 @@ into LinuxCNC.
 		<li><a href="motion/kinematics.html">Kinematics</a></li>
 		<li><a href="motion/dh-parameters.html">DH Parameters</a></li>
 		<li><a href="motion/5-axis-kinematics.html">5-Axis-Kinematics</a></li>
+		<li><a href="motion/switchkins.html">Switchable Kinematics</a></li>
 		<li><a href="motion/pid-theory.html">PID theory</a></li>
 		<li><a href="remap/remap.html">Remap: Extending LinuxCNC</a></li>
 		<li><a href="config/moveoff.html">Moveoff Component</a></li>
 		<li><a href="code/rs274.html">Stand Alone Interpreter</a></li>
 		<li><a href="motion/external-offsets.html">External Offsets</a></li>
+		<li><a href="tooldatabase/tooldatabase.html">Tool Database Interface</a></li>
 	</ul>
 </div>
 
@@ -318,7 +323,7 @@ into LinuxCNC.
 
 <h3>Man Pages</h3>
 <div style="margin-top: 0em; margin-bottom: 1em; line-height: 150%">
-<p>For more information about man pages see the <a href="common/linux-faq.html">Linux FAQ</a></p>
+<p>For more information about man pages see the <a href="common/linux-faq.html#faq:man-pages">Linux FAQ</a></p>
 </div>
 <p><input type="button" id="manExpand" value="Expand Man Pages" onclick="return toggle_section(this);"/>
    <input type="button" id="manCollapse" value="Collapse Man Pages" onclick="return toggle_section(this);"/></p>
@@ -386,6 +391,8 @@ into LinuxCNC.
 <li><a href="man/man1/moveoff_gui.1.html">moveoff_gui</a></li>
 <li><a href="man/man1/ngcgui.1.html">ngcgui</a></li>
 <li><a href="man/man1/panelui.1.html">panelui</a></li>
+<li><a href="man/man1/pi500_vfd.1.html">pi500_vfd</a></li>
+<li><a href="man/man1/pmx485-test.1.html">pmx485-test</a></li>
 <li><a href="man/man1/pmx485.1.html">pmx485</a></li>
 <li><a href="man/man1/pncconf.1.html">pncconf</a></li>
 <li><a href="man/man1/puma560gui.1.html">puma560gui</a></li>
@@ -394,6 +401,10 @@ into LinuxCNC.
 <li><a href="man/man1/pyui.1.html">pyui</a></li>
 <li><a href="man/man1/pyvcp.1.html">pyvcp</a></li>
 <li><a href="man/man1/pyvcp_demo.1.html">pyvcp_demo</a></li>
+<li><a href="man/man1/qtplasmac-cfg2prefs.1.html">qtplasmac-cfg2prefs</a></li>
+<li><a href="man/man1/qtplasmac-materials.1.html">qtplasmac-materials</a></li>
+<li><a href="man/man1/qtplasmac-plasmac2qt.1.html">qtplasmac-plasmac2qt</a></li>
+<li><a href="man/man1/qtplasmac-setup.1.html">qtplasmac-setup</a></li>
 <li><a href="man/man1/qtvcp.1.html">qtvcp</a></li>
 <li><a href="man/man1/rotarydelta.1.html">rotarydelta</a></li>
 <li><a href="man/man1/rs274.1.html">rs274</a></li>
@@ -401,10 +412,12 @@ into LinuxCNC.
 <li><a href="man/man1/scaragui.1.html">scaragui</a></li>
 <li><a href="man/man1/schedrmt.1.html">schedrmt</a></li>
 <li><a href="man/man1/scorbot-er-3.1.html">scorbot-er-3</a></li>
+<li><a href="man/man1/sendkeys.1.html">sendkeys</a></li>
 <li><a href="man/man1/shuttle.1.html">shuttle</a></li>
 <li><a href="man/man1/sim_pin.1.html">sim_pin</a></li>
 <li><a href="man/man1/simulate_probe.1.html">simulate_probe</a></li>
 <li><a href="man/man1/stepconf.1.html">stepconf</a></li>
+<li><a href="man/man1/svd-ps_vfd.1.html">svd-ps_vfd</a></li>
 <li><a href="man/man1/teach-in.1.html">teach-in</a></li>
 <li><a href="man/man1/thermistor.1.html">thermistor</a></li>
 <li><a href="man/man1/tooledit.1.html">tooledit</a></li>
@@ -467,6 +480,7 @@ into LinuxCNC.
 <li><a href="man/man9/eoffset_per_angle.9.html">eoffset_per_angle</a></li>
 <li><a href="man/man9/estop_latch.9.html">estop_latch</a></li>
 <li><a href="man/man9/feedcomp.9.html">feedcomp</a></li>
+<li><a href="man/man9/filter_kalman.9.html">filter_kalman</a></li>
 <li><a href="man/man9/flipflop.9.html">flipflop</a></li>
 <li><a href="man/man9/gantry.9.html">gantry</a></li>
 <li><a href="man/man9/gantrykins.9.html">gantrykins</a></li>
@@ -510,6 +524,7 @@ into LinuxCNC.
 <li><a href="man/man9/mesa_7i65.9.html">mesa_7i65</a></li>
 <li><a href="man/man9/mesa_pktgyro_test.9.html">mesa_pktgyro_test</a></li>
 <li><a href="man/man9/message.9.html">message</a></li>
+<li><a href="man/man9/millturn.9.html">millturn</a></li>
 <li><a href="man/man9/minmax.9.html">minmax</a></li>
 <li><a href="man/man9/motion.9.html">motion</a></li>
 <li><a href="man/man9/moveoff.9.html">moveoff</a></li>
@@ -567,8 +582,11 @@ into LinuxCNC.
 <li><a href="man/man9/time.9.html">time</a></li>
 <li><a href="man/man9/timedelay.9.html">timedelay</a></li>
 <li><a href="man/man9/timedelta.9.html">timedelta</a></li>
+<li><a href="man/man9/tof.9.html">tof</a></li>
 <li><a href="man/man9/toggle.9.html">toggle</a></li>
 <li><a href="man/man9/toggle2nist.9.html">toggle2nist</a></li>
+<li><a href="man/man9/ton.9.html">ton</a></li>
+<li><a href="man/man9/tp.9.html">tp</a></li>
 <li><a href="man/man9/tripodkins.9.html">tripodkins</a></li>
 <li><a href="man/man9/tristate_bit.9.html">tristate_bit</a></li>
 <li><a href="man/man9/tristate_float.9.html">tristate_float</a></li>
@@ -636,10 +654,13 @@ into LinuxCNC.
 <li><a href="man/man3/hal_pin_float_new.3hal.html">hal_pin_float_new</a></li>
 <li><a href="man/man3/hal_pin_float_newf.3hal.html">hal_pin_float_newf</a></li>
 <li><a href="man/man3/hal_pin_new.3hal.html">hal_pin_new</a></li>
+<li><a href="man/man3/hal_pin_port_new.3hal.html">hal_pin_port_new</a></li>
+<li><a href="man/man3/hal_pin_port_newf.3hal.html">hal_pin_port_newf</a></li>
 <li><a href="man/man3/hal_pin_s32_new.3hal.html">hal_pin_s32_new</a></li>
 <li><a href="man/man3/hal_pin_s32_newf.3hal.html">hal_pin_s32_newf</a></li>
 <li><a href="man/man3/hal_pin_u32_new.3hal.html">hal_pin_u32_new</a></li>
 <li><a href="man/man3/hal_pin_u32_newf.3hal.html">hal_pin_u32_newf</a></li>
+<li><a href="man/man3/hal_port.3hal.html">hal_port</a></li>
 <li><a href="man/man3/hal_ready.3hal.html">hal_ready</a></li>
 <li><a href="man/man3/hal_s32_t.3hal.html">hal_s32_t</a></li>
 <li><a href="man/man3/hal_set_constructor.3hal.html">hal_set_constructor</a></li>

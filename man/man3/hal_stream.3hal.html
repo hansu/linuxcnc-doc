@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:43 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:45 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,6 +24,23 @@
 <a href="#NAME">NAME</a><br>
 <a href="#SYNOPSIS">SYNOPSIS</a><br>
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#hal_stream_create">hal_stream_create</a><br>
+<a href="#hal_stream_destroy">hal_stream_destroy</a><br>
+<a href="#hal_stream_attach">hal_stream_attach</a><br>
+<a href="#hal_stream_detach">hal_stream_detach</a><br>
+<a href="#hal_stream_element_count">hal_stream_element_count</a><br>
+<a href="#hal_stream_element_type">hal_stream_element_type</a><br>
+<a href="#hal_stream_readable">hal_stream_readable</a><br>
+<a href="#hal_stream_read">hal_stream_read</a><br>
+<a href="#hal_stream_writable">hal_stream_writable</a><br>
+<a href="#hal_stream_depth">hal_stream_depth</a><br>
+<a href="#hal_stream_maxdepth">hal_stream_maxdepth</a><br>
+<a href="#hal_stream_num_overruns">hal_stream_num_overruns</a><br>
+<a href="#hal_stream_num_underruns">hal_stream_num_underruns</a><br>
+<a href="#hal_stream_wait_readable">hal_stream_wait_readable</a><br>
+<a href="#hal_stream_wait_writable">hal_stream_wait_writable</a><br>
+<a href="#hal_stream_read">hal_stream_read</a><br>
+<a href="#hal_stream_write">hal_stream_write</a><br>
 <a href="#ARGUMENTS">ARGUMENTS</a><br>
 <a href="#SAMPLE CODE">SAMPLE CODE</a><br>
 <a href="#REALTIME CONSIDERATIONS">REALTIME CONSIDERATIONS</a><br>
@@ -106,123 +123,167 @@ case of <b>halstreamer</b> the key is 0x48535430 plus the
 channel number. In the case of <b>halsampler</b> the key is
 0x48534130 plus the channel number.</p>
 
-
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_create</b>
-<br>
-Create the given stream, initializing the <i>stream</i>
-which is passed by reference. It is an undiagnosed error if
-a stream has already been created with the same
-<i>key</i>.</p>
+<h3>hal_stream_create
+<a name="hal_stream_create"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_destroy</b>
-<br>
-Destroy the given stream. It is an undiagnosed error if the
-stream is still attached by another component. It is an
-undiagnosed error if the stream was attached with
+<p style="margin-left:11%; margin-top: 1em">Create the
+given stream, initializing the <i>stream</i> which is passed
+by reference. It is an undiagnosed error if a stream has
+already been created with the same <i>key</i>.</p>
+
+<h3>hal_stream_destroy
+<a name="hal_stream_destroy"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Destroy the
+given stream. It is an undiagnosed error if the stream is
+still attached by another component. It is an undiagnosed
+error if the stream was attached with
 <b>hal_stream_attach</b> rather than created with
 <b>hal_stream_create</b>. It is an undiagnosed error if the
 call to <b>hal_stream_destroy</b> is omitted.</p>
 
+<h3>hal_stream_attach
+<a name="hal_stream_attach"></a>
+</h3>
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_attach</b>
-<br>
-Attach the given stream, which was already created by
+
+<p style="margin-left:11%; margin-top: 1em">Attach the
+given stream, which was already created by
 <b>hal_stream_create</b>. If the typestring is specified,
 this call fails if it does not match the typestring the
 stream was created with. If the typestring argument is NULL,
 then any typestring is accepted.</p>
 
-
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_detach</b>
-<br>
-Detach the given stream. It is an undiagnosed error if the
-stream was created with <b>hal_stream_create</b> rather than
-attached with <b>hal_stream_attach</b>. It is an undiagnosed
-error if the call to <b>hal_stream_detach</b> is
-omitted.</p>
+<h3>hal_stream_detach
+<a name="hal_stream_detach"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_element_count</b>
-<br>
-Returns the number of pins.</p>
+<p style="margin-left:11%; margin-top: 1em">Detach the
+given stream. It is an undiagnosed error if the stream was
+created with <b>hal_stream_create</b> rather than attached
+with <b>hal_stream_attach</b>. It is an undiagnosed error if
+the call to <b>hal_stream_detach</b> is omitted.</p>
+
+<h3>hal_stream_element_count
+<a name="hal_stream_element_count"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_element_type</b>
-<br>
-Returns the type of the given pin number.</p>
+<p style="margin-left:11%; margin-top: 1em">Returns the
+number of pins.</p>
+
+<h3>hal_stream_element_type
+<a name="hal_stream_element_type"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_readable</b>
-<br>
-Returns true if the stream has at least one sample to
-read</p>
+<p style="margin-left:11%; margin-top: 1em">Returns the
+type of the given pin number.</p>
+
+<h3>hal_stream_readable
+<a name="hal_stream_readable"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_read</b>
-<br>
-If the stream has one sample to read, stores it in buf.</p>
+<p style="margin-left:11%; margin-top: 1em">Returns true if
+the stream has at least one sample to read</p>
+
+<h3>hal_stream_read
+<a name="hal_stream_read"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_writable</b>
-<br>
-Returns true if the stream has room for at least one sample
-to be written.</p>
+<p style="margin-left:11%; margin-top: 1em">If the stream
+has one sample to read, stores it in buf.</p>
+
+<h3>hal_stream_writable
+<a name="hal_stream_writable"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_depth</b>
-<br>
-Returns the number of samples waiting to be read.</p>
+<p style="margin-left:11%; margin-top: 1em">Returns true if
+the stream has room for at least one sample to be
+written.</p>
+
+<h3>hal_stream_depth
+<a name="hal_stream_depth"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_maxdepth</b>
-<br>
-Returns the <b>depth</b> argument that the stream was
-created with.</p>
+<p style="margin-left:11%; margin-top: 1em">Returns the
+number of samples waiting to be read.</p>
+
+<h3>hal_stream_maxdepth
+<a name="hal_stream_maxdepth"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_num_overruns</b>
-<br>
-Returns a number which is incremented each time
+<p style="margin-left:11%; margin-top: 1em">Returns the
+<b>depth</b> argument that the stream was created with.</p>
+
+<h3>hal_stream_num_overruns
+<a name="hal_stream_num_overruns"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Returns a
+number which is incremented each time
 <b>hal_stream_write</b> is called without space
 available.</p>
 
-
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_num_underruns</b>
-<br>
-Returns a number which is incremented each time
-<b>hal_stream_read</b> is called without a sample
-available.</p>
+<h3>hal_stream_num_underruns
+<a name="hal_stream_num_underruns"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_wait_readable</b>
-<br>
-Waits until the stream is readable or the stop flag is
-set.</p>
+<p style="margin-left:11%; margin-top: 1em">Returns a
+number which is incremented each time <b>hal_stream_read</b>
+is called without a sample available.</p>
+
+<h3>hal_stream_wait_readable
+<a name="hal_stream_wait_readable"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_wait_writable</b>
-<br>
-Waits until the stream is writable or the stop flag is
-set.</p>
+<p style="margin-left:11%; margin-top: 1em">Waits until the
+stream is readable or the stop flag is set.</p>
+
+<h3>hal_stream_wait_writable
+<a name="hal_stream_wait_writable"></a>
+</h3>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_read</b>
-<br>
-Reads a record from stream. If successful, it is stored in
-the given buffer. Optionally, the sample number can be
-retrieved. If no sample is available, <i>num_underruns</i>
-is incremented. It is an undetected error if more than one
-component or real-time function calls <b>hal_stream_read</b>
+<p style="margin-left:11%; margin-top: 1em">Waits until the
+stream is writable or the stop flag is set.</p>
+
+<h3>hal_stream_read
+<a name="hal_stream_read"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a record
+from stream. If successful, it is stored in the given
+buffer. Optionally, the sample number can be retrieved. If
+no sample is available, <i>num_underruns</i> is incremented.
+It is an undetected error if more than one component or
+real-time function calls <b>hal_stream_read</b>
 concurrently.</p>
 
+<h3>hal_stream_write
+<a name="hal_stream_write"></a>
+</h3>
 
-<p style="margin-left:11%; margin-top: 1em"><b>hal_stream_write</b>
-<br>
-Writes a record to the stream. If successful, it copied from
-the given buffer. If no room is available,
-<i>num_overruns</i> is incremented. In either case, the
-internal <i>sampleno</i> value is incremented. <br>
+
+<p style="margin-left:11%; margin-top: 1em">Writes a record
+to the stream. If successful, it copied from the given
+buffer. If no room is available, <i>num_overruns</i> is
+incremented. In either case, the internal <i>sampleno</i>
+value is incremented. <br>
 It is an undetected error if more than one component or
 real-time function calls <b>hal_stream_write</b>
 concurrently.</p>

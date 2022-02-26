@@ -177,6 +177,18 @@ Component
     component is a piece of software with well-defined inputs, outputs, and
     behavior, that can be installed and interconnected as needed.
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><code>Note: Many HAL Components model the behaviour of a tangible part of a
+machine, and a *pin* may indeed be meant to be connected to a *physical pin*
+on the device to communicate with it, hence the names. But most often this is not the case.
+Imagine a retrofit of a manual lathe/mill. What LinuxCNC implements is
+how the machine presents itself to the outside world, and it is secondary
+if the implementation how to draw a circle is implemented on the machine already
+or provided from LinuxCNC. And it is common to add buttons to the imaginary retrofit that
+*signal* an action, like an emergency stop. LinuxCNC and the machine become one.
+And that is through the HAL.</code></pre>
+</div></div>
 </dd>
 <dt class="hdlist1">
 Parameter
@@ -569,7 +581,7 @@ with the parport function(s) to write the steps to the port.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-01-23 14:30:43 CET
+ 2022-01-05 21:10:59 CET
 </div>
 </div>
 </body>

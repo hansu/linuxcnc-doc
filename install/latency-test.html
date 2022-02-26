@@ -98,8 +98,8 @@ the latency test checks to see what the worst case numbers are.</p></div>
 <td class="content">Do not run LinuxCNC or Stepconf while the latency test is running.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>The important numbers are the <em>max jitter</em>.
-In the example above, that is 9075 nanoseconds, or 9.075 microseconds.
+<div class="paragraph"><p>The important number for software stepping is the <em>max jitter</em> of the base thread.
+In the example above, that is 6693 nanoseconds, or 6.693 microseconds.
 Record this number, and enter it in Stepconf when it is requested.</p></div>
 <div class="paragraph"><p>In the example above, latency-test only ran for a few seconds.
 You should run the test for at least several minutes; sometimes
@@ -133,7 +133,7 @@ problem.</p></div>
 </div>
 <div class="paragraph"><p>For more information on stepper tuning see the
 <a href="../motion/tweaking-steppers.html#cha:Stepper-Tuning">Stepper Tuning</a> Chapter.</p></div>
-<div class="paragraph"><p>Additional command line tools are availalbe for examining latency
+<div class="paragraph"><p>Additional command line tools are available for examining latency
 when LinuxCNC is not running.</p></div>
 <div class="paragraph"><p>latency-plot makes a strip chart recording for a base and a servo
 thread.  It may be useful to see spikes in latency when other
@@ -201,7 +201,7 @@ Notes:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

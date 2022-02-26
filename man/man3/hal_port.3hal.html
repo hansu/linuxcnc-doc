@@ -1,0 +1,315 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sun Feb 20 11:28:45 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>hal_port</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" />
+</head>
+<body>
+
+<h1 align="center">hal_port</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#hal_port_read">hal_port_read</a><br>
+<a href="#hal_port_peek">hal_port_peek</a><br>
+<a href="#hal_port_peek_commit">hal_port_peek_commit</a><br>
+<a href="#hal_port_readable">hal_port_readable</a><br>
+<a href="#hal_port_clear">hal_port_clear</a><br>
+<a href="#hal_port_write">hal_port_write</a><br>
+<a href="#hal_port_writable">hal_port_writable</a><br>
+<a href="#hal_port_buffer_size">hal_port_buffer_size</a><br>
+<a href="#hal_port_wait_readable">hal_port_wait_readable</a><br>
+<a href="#hal_port_wait_writable">hal_port_wait_writable</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#SAMPLE CODE">SAMPLE CODE</a><br>
+<a href="#REALTIME CONSIDERATIONS">REALTIME CONSIDERATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hal_port - a
+hal pin type that acts as an asynchronous one way byte
+stream</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;hal.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">bool
+hal_port_read(hal_port_t port, char* dest, unsigned count);
+<br>
+bool hal_port_peek(hal_port_t port, char* dest, unsigned
+count); <br>
+bool hal_port_peek_commit(hal_port_t port, unsigned count);
+<br>
+unsigned hal_port_readable(hal_port_t port); <br>
+void hal_port_clear(hal_port_t port);</p>
+
+<p style="margin-left:11%; margin-top: 1em">bool
+hal_port_write(hal_port_t port, const char* src, unsigned
+count); <br>
+unsigned hal_port_writable(hal_port_t port);</p>
+
+<p style="margin-left:11%; margin-top: 1em">unsigned
+hal_port_buffer_size(hal_port_t port);</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>#ifdef
+ULAPI</b> <br>
+void hal_port_wait_readable(hal_port_t **port, unsigned
+count, sig_atomic_t *stop); <br>
+void hal_port_wait_writable(hal_port_t **port, unsigned
+count, sig_atomic_t *stop); <b><br>
+#endif</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A HAL port pin
+is a hal pin that acts as a one way byte oriented data
+stream in real time. An output port on any component may be
+connected to an input port on any other component via a
+signal. Data written on the output pin becomes accessible to
+the input pin. A HAL port signal may link only a single
+writer and a single reader.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A port also
+buffers data. Users should determine the proper buffer size
+based upon their intended application.</p>
+
+<h3>hal_port_read
+<a name="hal_port_read"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads count
+bytes from the port into destination buffer dest.
+hal_port_read will read <i>count</i> bytes if and only if
+<i>count</i> bytes are available for reading and otherwise
+it will leave the port unaffected. Returns true if count
+bytes were read and false otherwise. This function should
+only be called by the component that owns the IN PORT
+pin.</p>
+
+<h3>hal_port_peek
+<a name="hal_port_peek"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Behaves the
+same as hal_port_read, however it does not consume bytes
+from the hal port. Repeated calls to hal_port_peek will
+return the same data. Returns true if count bytes were read
+and false otherwise. This function should only be called by
+the component that owns the IN PORT pin.</p>
+
+<h3>hal_port_peek_commit
+<a name="hal_port_peek_commit"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Advances the
+read position in the port buffer by count bytes. A
+hal_port_peek followed by a hal_port_peek_commit would
+function equivalently to hal_port_read given the same count
+value. Returns true if count readable bytes were skipped and
+are no longer accessible and false if no bytes wer skipped.
+This function should only be called by the component that
+owns the IN PORT pin.</p>
+
+<h3>hal_port_readable
+<a name="hal_port_readable"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Returns the
+number of bytes available for reading from port. It is safe
+to call this function from any component.</p>
+
+<h3>hal_port_clear
+<a name="hal_port_clear"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Emptys a given
+port of all data. hal_port_clear should only be called by
+the component that owns the IN PORT pin.</p>
+
+<h3>hal_port_write
+<a name="hal_port_write"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Writes count
+bytes from src into the port. Returns true if count bytes
+were written and false otherwise. This function should only
+be called by the component that owns the OUT PORT pin.</p>
+
+<h3>hal_port_writable
+<a name="hal_port_writable"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Returns the
+number of bytes that can be written into the port. It is
+safe to call this function from any component.</p>
+
+<h3>hal_port_buffer_size
+<a name="hal_port_buffer_size"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Returns the
+maximum number of bytes that a port can buffer. It is safe
+to call this function from any component.</p>
+
+<h3>hal_port_wait_readable
+<a name="hal_port_wait_readable"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Waits until the
+port has count bytes or more available for reading or the
+stop flag is set.</p>
+
+<h3>hal_port_wait_writable
+<a name="hal_port_wait_writable"></a>
+</h3>
+
+
+<p style="margin-left:11%; margin-top: 1em">Waits until the
+port has count bytes or more available for writing or the
+stop flag is set.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hal_port_t</b></p>
+
+<p style="margin-left:22%;">A handle to a port object.
+Created by hal_pin_new</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>dest</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>An array of bytes that hal_port_read and hal_port_peek
+will copy data into. This must be allocated by the caller
+and be at least count bytes long.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>count</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The number of bytes that hal_port_read, hal_port_peek,
+and hal_port_write will copy in to dest or out from src</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>src</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>An array of bytes that hal_port_write will copy data
+from into the port buffer. This must be of size count bytes
+or larger.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>stop</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>A pointer to a value which is monitored while waiting.
+If it is nonzero, the wait operation returns early. This
+allows a wait call to be safely terminated in the case of a
+signal.</p> </td></tr>
+</table>
+
+<h2>SAMPLE CODE
+<a name="SAMPLE CODE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the source
+tree under <br>
+src/hal/components/raster.comp is a realtime component
+intended for laser control. <br>
+src/tests/raster is a test program that also programs the
+raster component from python.</p>
+
+<h2>REALTIME CONSIDERATIONS
+<a name="REALTIME CONSIDERATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hal_port_read</b>,
+<b>hal_port_peek</b>, <b>hal_port_peek_commit</b>,
+<b>hal_port_readable</b>, <b>hal_port_clear</b>,
+<b>hal_port_write</b>, <b>hal_port_writable</b>,
+<b>hal_port_buffer_size</b> may be called from realtime
+code.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hal_port_wait_writable</b>,
+<b>hal_port_wait_readable</b> may be called from ULAPI
+code.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>raster</b>(9),</p>
+<hr>
+</body>
+</html>

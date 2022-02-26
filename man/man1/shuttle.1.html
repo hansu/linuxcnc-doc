@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sat Feb  6 17:36:41 2021 -->
+<!-- CreationDate: Sun Feb 20 11:28:42 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,8 +37,8 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">shuttle -
-control HAL pins with the ShuttleXpress or ShuttlePRO device
-made by Contour Design</p>
+control HAL pins with the ShuttleXpress, ShuttlePRO, and
+ShuttlePRO2 device made by Contour Design</p>
 
 <h2>SYNOPSIS
 <a name="SYNOPSIS"></a>
@@ -55,8 +55,8 @@ made by Contour Design</p>
 
 <p style="margin-left:11%; margin-top: 1em">shuttle is a
 non-realtime HAL component that interfaces Contour
-Design&rsquo;s ShuttleXpress and ShuttlePRO devices with
-LinuxCNC&rsquo;s HAL.</p>
+Design&rsquo;s ShuttleXpress, ShuttlePRO, and ShuttlePRO2
+devices with LinuxCNC&rsquo;s HAL.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the driver
 is started without command-line arguments, it will probe all
@@ -72,6 +72,11 @@ released.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The ShuttlePRO
 has 13 momentary buttons, a 10 counts/revolution jog wheel
+with detents, and a 15-position spring-loaded outer wheel
+that returns to center when released.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The ShuttlePRO2
+has 15 momentary buttons, a 10 counts/revolution jog wheel
 with detents, and a 15-position spring-loaded outer wheel
 that returns to center when released.</p>
 
@@ -98,11 +103,19 @@ ATTRS{idVendor}==&quot;05f3&quot;,
 ATTRS{idProduct}==&quot;0240&quot;,
 MODE=&quot;0444&quot;</p>
 
+
+<p style="margin-left:11%; margin-top: 1em">SUBSYSTEM==&quot;hidraw&quot;,
+ATTRS{idVendor}==&quot;0b33&quot;,
+ATTRS{idProduct}==&quot;0030&quot;,
+MODE=&quot;0444&quot;</p>
+
 <p style="margin-left:11%; margin-top: 1em">The LinuxCNC
 Debian package installs an appropriate udev file
 automatically, but if you are building LinuxCNC from source
 and are not using the Debian packaging, you&rsquo;ll need to
-install this file by hand.</p>
+install this file by hand. If you install the file by hand
+you&rsquo;ll need to tell udev to reload its rules files by
+running &rsquo;udevadm control --reload-rules&rsquo;.</p>
 
 <h2>A warning about the Jog Wheel
 <a name="A warning about the Jog Wheel"></a>
@@ -133,10 +146,10 @@ jog-wheel will work fine and notice the first click.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">All HAL pin
-names are prefixed with the type of device followed by the
-index of the device (the order in which the driver found
-them), for example &quot;shuttlexpress.0&quot; or
-&quot;shuttlepro.2&quot;. <br>
+names are prefixed with &rsquo;shuttle&rsquo; followed by
+the index of the device (the order in which the driver found
+them), for example &quot;shuttle.0&quot; or
+&quot;shuttle.2&quot;. <br>
 (bit out) <i>(prefix).button-(number)</i> <br>
 (bit out) <i>(prefix).button-(number)-not</i></p>
 

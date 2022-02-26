@@ -50,7 +50,20 @@ section <em>[DISPLAY]</em> change the <em>DISPLAY</em> line to read
 <div class="paragraph"><p>The sample configuration
 <em>sim/axis.ini</em> is already configured to use AXIS as its front-end.</p></div>
 <div class="sect2">
-<h3 id="_a_typical_session">2.1. A Typical Session</h3>
+<h3 id="_ini_settings">2.1. INI settings</h3>
+<div class="paragraph"><p>For more information on ini file settings that can change how AXIS
+works see the <a href="../config/ini-config.html#sec:display-section">Display Section</a> of the INI
+Configuration Chapter.</p></div>
+<div class="paragraph"><p>Adjust the response rate of the GUI in milli seconds. Typical 100, useable range 50 - 200<br />
+(will accept time in seconds (.05 -.2) for legacy reasons - milli seconds preferred to match other screens)</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[DISPLAY]
+CYCLE_TIME = 100</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_a_typical_session">2.2. A Typical Session</h3>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
@@ -764,7 +777,7 @@ the display will include a cyan <a href="../gcode/coordinates.html#sec.machine-c
 </span> marker.</p></div>
 <div class="paragraph"><p>If the position is <em>Commanded</em>, then the exact coordinate given in a G code
 command is displayed. If it is <em>Actual</em>, then it is the position the machine
-has actually moved to. These values can be different from commanded postition
+has actually moved to. These values can be different from commanded position
 due to following error, dead band, encoder resolution, or step size. For
 instance, if you command a movement to X 0.0033 on your mill, but one step of
 your stepper motor or one encoder count is 0.00125, then the <em>Commanded</em>
@@ -1028,7 +1041,7 @@ full list of keyboard shortcuts can be found in the AXIS Quick
 Reference, which can be displayed by choosing Help &gt; Quick Reference.
 Many of the shortcuts are unavailable when in MDI mode.</p></div>
 <div class="paragraph"><div class="title">Feed Override Keys</div><p>The Feed Override keys behave differently when in Manual Mode. The
-keys '12345678 will select an axis if it is programed. If you have 3
+keys '12345678 will select an axis if it is programmed. If you have 3
 axis then ' will select axis 0, 1 will select axis 1, and 2 will select
 axis 2. The remainder of the number keys will still set the Feed
 Override. When running a program '1234567890 will set the Feed Override
@@ -1341,13 +1354,25 @@ show the Z axis extending to the right and the X axis extending towards
 the bottom of the screen, and several controls (such as those for
 preset views) are removed.  The coordinate readouts for X are replaced
 with diameter and radius.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/axis-lathe.png" alt="Back Tool Lathe" />
+</div>
+</div>
 <div class="paragraph"><p>Pressing <em>V</em> zooms out to show the entire file, if one is loaded.</p></div>
 <div class="paragraph"><p>When in lathe mode, the shape of the loaded tool (if any) is shown.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/axis-lathe-tool.png" alt="Lathe Tool Shape" />
 </div>
-<div class="title">Figure 8. Lathe Tool Shape</div>
+</div>
+<div class="paragraph"><p>To change the display to a back tool lathe you need to have both <em>LATHE = 1</em>
+and <em>BACK_TOOL_LATHE = 1</em> in the [DISPLAY] section. This will invert the view
+and put the tool on the back side of the Z axis.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/axis-back-tool-lathe.png" alt="Back Tool Lathe" />
+</div>
 </div>
 </div>
 </div>
@@ -1364,7 +1389,7 @@ set the Z coordinates of these planes, which default to 0 and 1.5 machine units.
 <div class="content">
 <img src="images/axis-foam.png" alt="Foam cutting mode" />
 </div>
-<div class="title">Figure 9. Foam cutting mode</div>
+<div class="title">Figure 8. Foam cutting mode</div>
 </div>
 </div>
 </div>
@@ -1372,12 +1397,13 @@ set the Z coordinates of these planes, which default to 0 and 1.5 machine units.
 <h2 id="_advanced_configuration">12. Advanced Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>When AXIS is started it creates the HAL pins for the GUI then it executes
-the HAL file named in <em>[HAL]POSTGUI_HALFILE</em> in the ini file. Only one post
-GUI file may be used. Place all HAL commands that connect to the GUI HAL pins
-in the post gui HAL file.</p></div>
-<div class="paragraph"><p>For more information on ini file settings that can change how AXIS
-works see the <a href="../config/ini-config.html#sec:display-section">Display Section</a> of the INI
-Configuration Chapter.</p></div>
+the HAL file named in the INI file: <em>[HAL]POSTGUI_HALFILE=&lt;filename&gt;</em>.<br />
+Typically <em>&lt;filename&gt;</em> would be the configs base name + <em>_postgui</em> + <em>.hal</em><br />
+eg. <em>lathe_postgui.hal</em>, but can be any legal filename.<br />
+These commands are executed after the screen is built,
+guaranteeing the widget&#8217;s HAL pins are available.<br />
+You can have multiple line of <em>POSTGUI_HALFILE=&lt;filename&gt;</em> in the INI.<br />
+Each will be run one after the other in the order they appear.<br /></p></div>
 <div class="sect2">
 <h3 id="_program_filters">12.1. Program Filters</h3>
 <div class="paragraph"><p>AXIS has the ability to send loaded files through a <em>filter program</em>.
@@ -1413,7 +1439,7 @@ series of holes along the circumference of a circle.</p></div>
 <div class="content">
 <img src="images/holes.png" alt="Circular Holes" />
 </div>
-<div class="title">Figure 10. Circular Holes</div>
+<div class="title">Figure 9. Circular Holes</div>
 </div>
 <div class="paragraph"><p>If the environment variable AXIS_PROGRESS_BAR is set, then lines
 written to stderr of the form</p></div>
@@ -1474,10 +1500,9 @@ help2.append(("Control-Q", "Quit"))</code></pre>
 <div class="sect2">
 <h3 id="_user_command_file">12.4. USER_COMMAND_FILE</h3>
 <div class="paragraph"><p>A configuration-specific python file may be specified with an ini file
-setting <em>[DISLAY]USER_COMMAND_FILE=filename.py</em>.  Like a <code>~/.axisrc</code> file,
+setting <em>[DISPLAY]USER_COMMAND_FILE=filename.py</em>.  Like a <code>~/.axisrc</code> file,
 this file is sourced just before the AXIS GUI is displayed.  This file
-is specific to an ini file configuration not the user&#8217;s home directory.
-When this file is specified, an existing <code>~/.axisrc</code> file is ignored.</p></div>
+is specific to an ini file configuration not the user&#8217;s home directory.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_user_live_update">12.5. user_live_update()</h3>
@@ -1580,6 +1605,21 @@ bit   OUT    axisui.jog.w</code></pre>
 <pre><code>Type  Dir    Name
 float OUT               axisui.jog.increment</code></pre>
 </div></div>
+<div class="paragraph"><p>Axis has a Hal output pin that indicates when an abort has occurred. The
+<em>axisui.abort</em> pin will be <em>TRUE</em> and come back to <em>FALSE</em> after 0.3ms.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Type  Dir    Name
+bit   OUT    axisui.abort</code></pre>
+</div></div>
+<div class="paragraph"><p>Axis has a Hal output pin that indicates when an error has occurred. The
+<em>axisui.error</em> pin will remain <em>TRUE</em> until all error notifications have
+been dismissed.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Type  Dir    Name
+bit   OUT    axisui.error</code></pre>
+</div></div>
 <div class="paragraph"><p>Axis has Hal input pins to clear the pop up notifications for errors and
 information.</p></div>
 <div class="listingblock">
@@ -1589,7 +1629,7 @@ bit   IN     axisui.notifications-clear
 bit   IN     axisui.notifications-clear-error
 bit   IN     axisui.notifications-clear-info</code></pre>
 </div></div>
-<div class="paragraph"><p>Axis has a Hal input pin that disables/enables the <em>Pause/Resume</em> funtion.</p></div>
+<div class="paragraph"><p>Axis has a Hal input pin that disables/enables the <em>Pause/Resume</em> function.</p></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>Type  Dir    Name
@@ -1700,7 +1740,6 @@ by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900"># read an ini file item</span></span>
-
 machine <span style="color: #990000">=</span> inifile<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'EMC'</span><span style="color: #990000">,</span><span style="color: #FF0000">'MACHINE'</span><span style="color: #990000">)</span>
 <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #FF0000">'machine name ='</span><span style="color: #990000">,</span>machine</tt></pre></div></div>
 </div>
@@ -1712,7 +1751,6 @@ by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900"># linuxcnc status can be read from s.</span></span>
-
 <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> s<span style="color: #990000">.</span>actual_position
 <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> s<span style="color: #990000">.</span>paused</tt></pre></div></div>
 </div>
@@ -1725,7 +1763,6 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900"># set the view of the preview</span></span>
 <span style="font-style: italic"><span style="color: #9A1900"># valid views are view_x view_y view_y2 view_z view_z2 view_p</span></span>
-
 commands<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_view_z</span></span><span style="color: #990000">()</span></tt></pre></div></div>
 </div>
 <div class="sect2">
@@ -2031,6 +2068,26 @@ root_window<span style="color: #990000">.</span>tk<span style="color: #990000">.
 root_window<span style="color: #990000">.</span>tk<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'.toolbar.rotate'</span><span style="color: #990000">,</span><span style="color: #FF0000">'configure'</span><span style="color: #990000">,</span><span style="color: #FF0000">'-image'</span><span style="color: #990000">,</span><span style="color: #FF0000">''</span><span style="color: #990000">,</span><span style="color: #FF0000">'-text'</span><span style="color: #990000">,</span><span style="color: #FF0000">'Rotate'</span><span style="color: #990000">,</span><span style="color: #FF0000">'-width'</span><span style="color: #990000">,</span>buW<span style="color: #990000">,</span><span style="color: #FF0000">'-height'</span><span style="color: #990000">,</span>buH<span style="color: #990000">,</span><span style="color: #FF0000">'-borderwidth'</span><span style="color: #990000">,</span>boW<span style="color: #990000">)</span>
 root_window<span style="color: #990000">.</span>tk<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'.toolbar.clear_plot'</span><span style="color: #990000">,</span><span style="color: #FF0000">'configure'</span><span style="color: #990000">,</span><span style="color: #FF0000">'-image'</span><span style="color: #990000">,</span><span style="color: #FF0000">''</span><span style="color: #990000">,</span><span style="color: #FF0000">'-text'</span><span style="color: #990000">,</span><span style="color: #FF0000">'Clear'</span><span style="color: #990000">,</span><span style="color: #FF0000">'-width'</span><span style="color: #990000">,</span>buW<span style="color: #990000">,</span><span style="color: #FF0000">'-height'</span><span style="color: #990000">,</span>buH<span style="color: #990000">,</span><span style="color: #FF0000">'-borderwidth'</span><span style="color: #990000">,</span>boW<span style="color: #990000">)</span></tt></pre></div></div>
 </div>
+<div class="sect2">
+<h3 id="_change_plotter_colors">13.19. Change Plotter Colors</h3>
+<div class="paragraph"><p>In RGBA format, in this order:
+jog, rapid, feed, arc, toolchange, probe</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># change plotter colors</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">:</span>
+    live_plotter<span style="color: #990000">.</span>logger<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_colors</span></span><span style="color: #990000">((</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">),</span>
+                                    <span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">),</span>
+                                    <span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">),</span>
+                                    <span style="color: #990000">(</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">),</span>
+                                    <span style="color: #990000">(</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">),</span>
+                                    <span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">,</span><span style="color: #993399">255</span><span style="color: #990000">))</span>
+<span style="font-weight: bold"><span style="color: #0000FF">except</span></span> Exception as e<span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">(</span>e<span style="color: #990000">)</span></tt></pre></div></div>
+</div>
 </div>
 </div>
 </div>
@@ -2038,7 +2095,7 @@ root_window<span style="color: #990000">.</span>tk<span style="color: #990000">.
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-12-11 19:42:15 CET
+ 2021-12-19 21:09:04 CET
 </div>
 </div>
 </body>

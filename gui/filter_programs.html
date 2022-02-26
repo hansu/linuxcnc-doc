@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>Filter Programs</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Filter Programs</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Most of Linuxcnc&#8217;s screens have the ability to send loaded files through a <em>filter program</em> or<br />
+use the filter program to make Gcode.<br />
+This filter can do any desired task: Something as simple as making sure<br />
+the file ends with <em>M2</em>, or something as complicated as generating<br />
+G-Code from an image.<br /></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setting_up_the_ini_for_program_filters_br">2. Setting  up the INI for Program Filters<br /></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The <em>[FILTER]</em>  section of the ini file controls how filters work.<br />
+First, for each type of file, write a <em>PROGRAM_EXTENSION</em> line.<br />
+Then, specify the program to execute for each type of file.<br />
+This program is given the name of the input file as its first argument,<br />
+and must write rs274ngc code to standard output. This output is what <br />
+will be displayed in the text area, previewed in the display area, and<br />
+executed by LinuxCNC when <em>Run</em>. The following lines add support for the<br />
+<em>image-to-gcode</em> converter included with LinuxCNC:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[FILTER]
+PROGRAM_EXTENSION = .png,.gif Greyscale Depth Image
+png = image-to-gcode
+gif = image-to-gcode</code></pre>
+</div></div>
+<div class="paragraph"><p>It is also possible to specify an interpreter:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>PROGRAM_EXTENSION = .py Python Script
+py = python</code></pre>
+</div></div>
+<div class="paragraph"><p>In this way, any Python script can be opened, and its output is<br />
+treated as g-code. One such example script is available at<br />
+<em>nc_files/holecircle.py</em>. This script creates g-code for drilling a<br />
+series of holes along the circumference of a circle.<br /></p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/holes.png" alt="Circular Holes" />
+</div>
+<div class="title">Figure 1. Circular Holes</div>
+</div>
+<div class="paragraph"><p>If the filter program sends lines to stderr of the form:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>FILTER_PROGRESS=10</code></pre>
+</div></div>
+<div class="paragraph"><p>It will set the screens progress bar to the given (10 in this case) percentage.<br />
+This feature should be used by any filter that runs for a long time.<br /></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_making_python_based_filter_programs">3. Making Python Based Filter Programs</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Here is a very basic example of the filtering mechanics:
+When run through a Linucnc screen that offers program filtering,<br />
+it will produce and write a line of gcode every 100th of a second to standard output.<br />
+It also sends a progress message out to the Unix standard error stream.<br />
+If there was an error it would post an error message and exit with an exitcode of 1.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">import</span></span> time
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> sys
+
+<span style="font-weight: bold"><span style="color: #0000FF">for</span></span> i <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="font-weight: bold"><span style="color: #000000">range</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">:</span>
+        <span style="font-style: italic"><span style="color: #9A1900"># simulate calculation time</span></span>
+        time<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">sleep</span></span><span style="color: #990000">(.</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+        <span style="font-style: italic"><span style="color: #9A1900"># output a line of gcode</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stdout<span style="color: #990000">,</span> <span style="color: #FF0000">'G0 X1'</span>
+
+        <span style="font-style: italic"><span style="color: #9A1900"># update progress</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'FILTER_PROGRESS={}'</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>i<span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">except</span></span><span style="color: #990000">:</span>
+        <span style="font-style: italic"><span style="color: #9A1900"># This causes an error message</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'Error; But this was only a test'</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">SystemExit</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>Here is a similar program but it actually could filters.<br />
+It puts up a Pyqt5 dialog with a cancel button.<br />
+Then it reads the program line by line and passes it to standard output.<br />
+As it does along it updates any process listening to standard error output'</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> sys
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> os
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> time
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5<span style="color: #990000">.</span>QtWidgets <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">(</span>QApplication<span style="color: #990000">,</span> QDialog<span style="color: #990000">,</span> QDialogButtonBox<span style="color: #990000">,</span>
+                            QVBoxLayout<span style="color: #990000">,</span>QDialogButtonBox<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> PyQt5<span style="color: #990000">.</span>QtCore <span style="font-weight: bold"><span style="color: #000080">import</span></span> QTimer<span style="color: #990000">,</span> Qt
+
+<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="font-weight: bold"><span style="color: #000000">CustomDialog</span></span><span style="color: #990000">(</span>QDialog<span style="color: #990000">):</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> path<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #000000">super</span></span><span style="color: #990000">(</span>CustomDialog<span style="color: #990000">,</span> self<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>None<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setWindowFlags</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">windowFlags</span></span><span style="color: #990000">()</span> <span style="color: #990000">|</span> Qt<span style="color: #990000">.</span>WindowStaysOnTopHint<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setWindowTitle</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Filter-with-GUI Test"</span><span style="color: #990000">)</span>
+
+        QBtn <span style="color: #990000">=</span> QDialogButtonBox<span style="color: #990000">.</span>Cancel
+
+        self<span style="color: #990000">.</span>buttonBox <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">QDialogButtonBox</span></span><span style="color: #990000">(</span>QBtn<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span>buttonBox<span style="color: #990000">.</span>rejected<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>reject<span style="color: #990000">)</span>
+
+        self<span style="color: #990000">.</span>layout <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">QVBoxLayout</span></span><span style="color: #990000">()</span>
+        self<span style="color: #990000">.</span>layout<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addWidget</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>buttonBox<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setLayout</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>layout<span style="color: #990000">)</span>
+
+        self<span style="color: #990000">.</span>line <span style="color: #990000">=</span> <span style="color: #993399">0</span>
+        self<span style="color: #990000">.</span>_percentDone <span style="color: #990000">=</span> <span style="color: #993399">0</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #0000FF">not</span></span> os<span style="color: #990000">.</span>path<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">exists</span></span><span style="color: #990000">(</span>path<span style="color: #990000">):</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">"Path: '{}' doesn't exist:"</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>path<span style="color: #990000">)</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">SystemExit</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+        self<span style="color: #990000">.</span>infile <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">open</span></span><span style="color: #990000">(</span>path<span style="color: #990000">,</span> <span style="color: #FF0000">"r"</span><span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span>temp <span style="color: #990000">=</span> self<span style="color: #990000">.</span>infile<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">readlines</span></span><span style="color: #990000">()</span>
+
+        <span style="font-style: italic"><span style="color: #9A1900"># calculate percent update interval</span></span>
+        self<span style="color: #990000">.</span>bump <span style="color: #990000">=</span> <span style="color: #993399">100</span><span style="color: #990000">/</span><span style="font-weight: bold"><span style="color: #000000">float</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">len</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>temp<span style="color: #990000">))</span>
+
+        self<span style="color: #990000">.</span>_timer <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">QTimer</span></span><span style="color: #990000">()</span>
+        self<span style="color: #990000">.</span>_timer<span style="color: #990000">.</span>timeout<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>process<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span>_timer<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">start</span></span><span style="color: #990000">(</span><span style="color: #993399">100</span><span style="color: #990000">)</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">reject</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-style: italic"><span style="color: #9A1900"># This provides an error message</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'You asked to cancel before finished.'</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">SystemExit</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">process</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">try</span></span><span style="color: #990000">:</span>
+            <span style="font-style: italic"><span style="color: #9A1900"># get next line of code</span></span>
+            codeLine <span style="color: #990000">=</span> self<span style="color: #990000">.</span>temp<span style="color: #990000">[</span>self<span style="color: #990000">.</span>line<span style="color: #990000">]</span>
+
+            <span style="font-style: italic"><span style="color: #9A1900"># process the line somehow</span></span>
+
+            <span style="font-style: italic"><span style="color: #9A1900"># push out processed code</span></span>
+            <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stdout<span style="color: #990000">,</span> codeLine
+            self<span style="color: #990000">.</span>line <span style="color: #990000">+=</span><span style="color: #993399">1</span>
+
+            <span style="font-style: italic"><span style="color: #9A1900"># update progress</span></span>
+            self<span style="color: #990000">.</span>_percentDone <span style="color: #990000">+=</span> self<span style="color: #990000">.</span>bump
+            <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'FILTER_PROGRESS={}'</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">int</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>_percentDone<span style="color: #990000">))</span>
+
+            <span style="font-style: italic"><span style="color: #9A1900"># if done end with no error/error message</span></span>
+            <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> self<span style="color: #990000">.</span>_percentDone <span style="color: #990000">&gt;=</span> <span style="color: #993399">99</span><span style="color: #990000">:</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'FILTER_PROGRESS=-1'</span>
+                self<span style="color: #990000">.</span>infile<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">()</span>
+                <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">SystemExit</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+        <span style="font-weight: bold"><span style="color: #0000FF">except</span></span> Exception as e<span style="color: #990000">:</span>
+            <span style="font-style: italic"><span style="color: #9A1900"># This provides an error message</span></span>
+            <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">&gt;&gt;</span>sys<span style="color: #990000">.</span>stderr<span style="color: #990000">,</span> <span style="color: #FF0000">'Something bad happened:'</span><span style="color: #990000">,</span>e
+            <span style="font-style: italic"><span style="color: #9A1900"># this signals the error message should be shown</span></span>
+            <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">SystemExit</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> __name__ <span style="color: #990000">==</span> <span style="color: #FF0000">"__main__"</span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">len</span></span><span style="color: #990000">(</span>sys<span style="color: #990000">.</span>argv<span style="color: #990000">)&gt;</span><span style="color: #993399">1</span><span style="color: #990000">):</span>
+        path <span style="color: #990000">=</span> sys<span style="color: #990000">.</span>argv<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+        path <span style="color: #990000">=</span> None
+    app <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">QApplication</span></span><span style="color: #990000">(</span>sys<span style="color: #990000">.</span>argv<span style="color: #990000">)</span>
+    w <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CustomDialog</span></span><span style="color: #990000">(</span>path<span style="color: #990000">=</span>path<span style="color: #990000">)</span>
+    w<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">show</span></span><span style="color: #990000">()</span>
+    sys<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">exit</span></span><span style="color: #990000">(</span> app<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">exec_</span></span><span style="color: #990000">()</span> <span style="color: #990000">)</span>
+</tt></pre></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2021-12-19 21:09:04 CET
+</div>
+</div>
+</body>
+</html>

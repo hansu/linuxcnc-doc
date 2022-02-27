@@ -127,10 +127,10 @@ Custom component name: <code>loadusr -Wn mymodule mb2hal config=config_file.ini<
 width="100%"
 frame="void"
 cellspacing="0" cellpadding="4">
-<col width="11%" />
-<col width="7%" />
-<col width="12%" />
-<col width="67%" />
+<col width="14%" />
+<col width="9%" />
+<col width="15%" />
+<col width="60%" />
 <thead>
 <tr>
 <th align="left" valign="top">Value </th>
@@ -185,10 +185,10 @@ Warning: Any OPTIONAL parameter not specified are copied from the previous trans
 width="100%"
 frame="void"
 cellspacing="0" cellpadding="4">
-<col width="11%" />
-<col width="7%" />
+<col width="19%" />
 <col width="12%" />
-<col width="67%" />
+<col width="20%" />
+<col width="47%" />
 <thead>
 <tr>
 <th align="left" valign="top">Value            </th>
@@ -710,16 +710,16 @@ http://www.gnu.org/software/src-highlite -->
 <h2 id="_pins">4. Pins</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_fnct_01_read_coils_br">4.1. fnct_01_read_coils<br /></h3>
+<h3 id="_span_class_yellow_background_fnct_01_read_coils_span">4.1. <span class="yellow-background">fnct_01_read_coils</span></h3>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.bit <em>bit out</em>
+<span class="yellow-background">mb2hal.m.n.bit</span> <em>bit out</em>
 </p>
 </li>
 <li>
 <p>
-mb2hal.m.n.bit-inv <em>bit out</em>
+<span class="yellow-background">mb2hal.m.n.bit-inv</span> <em>bit out</em>
 </p>
 </li>
 </ul></div>
@@ -729,18 +729,18 @@ mb2hal.m.n.bit-inv <em>bit out</em>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.bit <em>bit out</em>
+mb2hal.m.n.<span class="yellow-background">bit</span> <em>bit out</em>
 </p>
 </li>
 <li>
 <p>
-mb2hal.m.n.bit-inv <em>bit out</em>
+<span class="yellow-background">mb2hal.m.n.bit-inv</span> <em>bit out</em>
 </p>
 </li>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_03_read_holding_registers">4.3. fnct_03_read_holding_registers:</h3>
+<h3 id="_fnct_03_read_holding_registers">4.3. fnct_03_read_holding_registers</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -755,7 +755,7 @@ mb2hal.m.n.int <em>s32 out</em>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_04_read_input_registers">4.4. fnct_04_read_input_registers:</h3>
+<h3 id="_fnct_04_read_input_registers">4.4. fnct_04_read_input_registers</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -770,27 +770,27 @@ mb2hal.m.n.int <em>s32 out</em>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_05_write_single_coil">4.5. fnct_05_write_single_coil:</h3>
+<h3 id="_span_class_yellow_background_fnct_05_write_single_coil_span">4.5. <span class="yellow-background">fnct_05_write_single_coil</span></h3>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.bit <em>bit in</em>
+<span class="yellow-background">mb2hal.m.n.bit</span> <em>bit in</em>
 </p>
 </li>
 </ul></div>
 <div class="paragraph"><p><code>NELEMENTS</code> needs to be 1 or <code>PIN_NAMES</code> must contain just one name.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_06_write_single_register">4.6. fnct_06_write_single_register:</h3>
+<h3 id="_fnct_06_write_single_register">4.6. fnct_06_write_single_register</h3>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.float <em>float in</em>
+mb2hal.m.n.<span class="yellow-background">float</span> <em>float in</em>
 </p>
 </li>
 <li>
 <p>
-mb2hal.m.n.int <em>s32 in</em>
+<span class="yellow-background">mb2hal.m.n.int</span> <em>s32 in</em>
 </p>
 </li>
 </ul></div>
@@ -798,26 +798,26 @@ mb2hal.m.n.int <em>s32 in</em>
 Both pin values are added and limited to 65535 (UINT16_MAX). Use one and let the other open (read as 0).</p></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_15_write_multiple_coils">4.7. fnct_15_write_multiple_coils:</h3>
+<h3 id="_fnct_15_write_multiple_coils">4.7. fnct_15_write_multiple_coils</h3>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.bit <em>bit in</em>
+mb2hal.m.n.<span class="yellow-background">bit</span> <em>bit in</em>
 </p>
 </li>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_fnct_16_write_multiple_registers">4.8. fnct_16_write_multiple_registers:</h3>
+<h3 id="_fnct_16_write_multiple_registers">4.8. fnct_16_write_multiple_registers</h3>
 <div class="ulist"><ul>
 <li>
 <p>
-mb2hal.m.n.float <em>float in</em>
+mb2hal.m.n.<span class="yellow-background">float</span> <em>float in</em>
 </p>
 </li>
 <li>
 <p>
-mb2hal.m.n.int <em>s32 in</em>
+<span class="yellow-background">mb2hal.m.n.int</span> <em>s32 in</em>
 </p>
 </li>
 </ul></div>
@@ -825,6 +825,7 @@ mb2hal.m.n.int <em>s32 in</em>
 <div class="paragraph"><p><br />
 <br />
 <br /></p></div>
+<div class="paragraph"><p><span class="yellow yellow-background">Yellow highlight</span> = New in LinuxCNC 2.9</p></div>
 <div class="paragraph"><p>m = <code>HAL_TX_NAME</code> or transaction number if not set, n = element number (<code>NELEMENTS</code>) or name from <code>PIN_NAMES</code></p></div>
 <div class="paragraph"><p>Example:</p></div>
 <div class="ulist"><ul>
@@ -847,7 +848,7 @@ mb2hal.m.n.int <em>s32 in</em>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2022-02-26 15:46:17 CET
+ 2022-02-27 13:33:28 CET
 </div>
 </div>
 </body>

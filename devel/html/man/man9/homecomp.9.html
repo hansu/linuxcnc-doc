@@ -1,0 +1,124 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Fri Mar  4 18:26:44 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HOMECOMP</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" />
+</head>
+<body>
+
+<h1 align="center">HOMECOMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">homecomp -
+homing module template</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="87%">
+
+
+<p style="margin-top: 1em">Custom Homing module loaded with
+<b>[EMCMOT]HOMEMOD=homecomp</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Example of a
+homing module buildable with halcompile. Demonstrates
+required code for #includes, function definitions, etc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An actual
+homing scheme is <b>not</b> implemented but all necessary
+functions are included as skeleton code. (All joints are
+effectively homed at all times and cannot be unhomed).</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the source
+code file: src/emc/motion/homing.c for the baseline
+implementation that includes all functions for the default
+<b>homemod</b> module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To avoid
+updates that overwrite homecomp.comp, best practice is to
+rename the file and its component name (example:
+<b>user_homecomp.comp, user_homecomp</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The (renamed)
+component can be built and installed with halcompile and
+then substituted for the default homing module
+(<b>homemod</b>) using:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ linuxcnc
+<b>-m user_homecomp</b> someconfig.ini</p>
+
+<p style="margin-left:11%; margin-top: 1em">or by inifile
+setting: <b>[EMCMOT]HOMEMOD=user_homecomp</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note:</b>If
+using a deb install:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1) halcompile
+is provided by the package linuxcnc-dev</p>
+
+<p style="margin-left:11%; margin-top: 1em">2) This source
+file for BRANCHNAME (master,2.9,etc) is downloadable from
+github:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">https://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/components/homecomp.comp</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>homecomp.</b><i>N</i><b>.is-module</b>
+bit out (default: <i>1</i>)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.4 -->
-<!-- CreationDate: Sun Feb 20 11:28:52 2022 -->
+<!-- CreationDate: Sat Mar 19 08:27:45 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,7 +30,7 @@
 <a href="#encoder">encoder</a><br>
 <a href="#Synchronous Serial Interface (SSI)">Synchronous Serial Interface (SSI)</a><br>
 <a href="#BiSS">BiSS</a><br>
-<a href="#Fanuc encoder.">Fanuc encoder.</a><br>
+<a href="#Fanuc encoder">Fanuc encoder</a><br>
 <a href="#resolver">resolver</a><br>
 <a href="#pwmgen">pwmgen</a><br>
 <a href="#3ppwmgen">3ppwmgen</a><br>
@@ -146,9 +146,9 @@ These things are called &quot;Modules&quot;. The firmware is
 configured, at firmware compile time, to provide zero or
 more instances of each of these Modules.</p>
 
-<h2>Board I/O Pins
+<h3>Board I/O Pins
 <a name="Board I/O Pins"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The HostMot2
@@ -181,9 +181,9 @@ of the owning Module, and have a more limited interface in
 HAL. This is described in the General Purpose I/O section
 below.</p>
 
-<h2>config modparam
+<h3>config modparam
 <a name="config modparam"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">All the
@@ -449,9 +449,9 @@ will be added.</p>
 raw access mode, whereby a user can peek and poke the
 firmware from HAL. See Raw Mode below.</p>
 
-<h2>dpll
+<h3>dpll
 <a name="dpll"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The hm2dpll
@@ -551,9 +551,9 @@ hm2_<i>&lt;BoardType&gt;</i>.<i>&lt;BoardNum&gt;</i>.dpll.prescale</p>
 <p style="margin-left:22%;">Prescale factor for the rate
 generator. Default 1.</p>
 
-<h2>encoder
+<h3>encoder
 <a name="encoder"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">Encoders have
@@ -782,9 +782,9 @@ created.</p>
 this feature should typically be enabled. Doing so generally
 reduces following errors.</p>
 
-<h2>Synchronous Serial Interface (SSI)
+<h3>Synchronous Serial Interface (SSI)
 <a name="Synchronous Serial Interface (SSI)"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">(Not to be
@@ -987,9 +987,9 @@ PPR might be useful for index-homing. Non-integer factors
 might be appropriate where there is a synchronous drive
 ratio between the encoder and the spindle or ballscrew.</p>
 
-<h2>BiSS
+<h3>BiSS
 <a name="BiSS"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">BiSS is a
@@ -1021,9 +1021,9 @@ can handle 512 bit packets. It should be possible to extend
 the number of packets supported by the driver if there is a
 requirement to do so.</p>
 
-<h2>Fanuc encoder.
-<a name="Fanuc encoder."></a>
-</h2>
+<h3>Fanuc encoder
+<a name="Fanuc encoder"></a>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The pins and
@@ -1051,9 +1051,9 @@ hm2_XXXX.N.fanuc.MM.valid Indicates that the absolute
 position is valid <br>
 hm2_XXXX.N.fanuc.MM.valid-not Inverted version</p>
 
-<h2>resolver
+<h3>resolver
 <a name="resolver"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">Resolvers have
@@ -1195,9 +1195,9 @@ use-position-file</p>
 <p style="margin-left:22%;">In conjunction with
 <b>joint-pos-fb</b> (qv) emulate absolute encoders.</p>
 
-<h2>pwmgen
+<h3>pwmgen
 <a name="pwmgen"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">pwmgens have
@@ -1316,9 +1316,9 @@ set the frequency too high, it will be clipped to the max
 supported frequency of the board. The default pdm_frequency
 is 20,000 Hz (20 kHz).</p>
 
-<h2>3ppwmgen
+<h3>3ppwmgen
 <a name="3ppwmgen"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">Three-Phase PWM
@@ -1415,9 +1415,9 @@ parameter that affects all instances</p>
 Maximum is approx 48kHz, minimum is 1kHz. Defaults to
 20kHz.</p>
 
-<h2>rcpwmgen
+<h3>rcpwmgen
 <a name="rcpwmgen"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The rcpwmgen is
@@ -1459,9 +1459,9 @@ offset to 1.5 mS would result in a position range of +-45
 degrees scale in degrees for 1-2 mS servos with a full
 motion range of 90 degrees</p>
 
-<h2>stepgen
+<h3>stepgen
 <a name="stepgen"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">stepgens have
@@ -1693,9 +1693,9 @@ created.</p>
 this feature should typically be enabled. Doing so generally
 reduces following errors.</p>
 
-<h2>Smart Serial Interface
+<h3>Smart Serial Interface
 <a name="Smart Serial Interface"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The Smart
@@ -1711,9 +1711,9 @@ above).</p>
 details of the smart-serial devices see <b>man
 sserial</b>.</p>
 
-<h2>BSPI
+<h3>BSPI
 <a name="BSPI"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The BSPI
@@ -1738,9 +1738,9 @@ the driver loading process and take the form hm2_&lt;board
 name&gt;.&lt;board index&gt;.bspi.&lt;index&gt; For example
 hm2_5i23.0.bspi.0</p>
 
-<h2>UART
+<h3>UART
 <a name="UART"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The UART driver
@@ -1760,9 +1760,9 @@ during the driver loading process and take the form
 hm2_&lt;board name&gt;.&lt;board index&gt;uart.&lt;index&gt;
 For example hm2_5i23.0.uart.0</p>
 
-<h2>General Purpose I/O
+<h3>General Purpose I/O
 <a name="General Purpose I/O"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">I/O pins on the
@@ -1873,9 +1873,9 @@ SV12IM_2X7I48_72, the alias
 (referring to <b>hm2_5i20.0.gpio.023.invert_output</b>) are
 both created.</p>
 
-<h2>inm and inmux
+<h3>inm and inmux
 <a name="inm and inmux"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">inm/inmuxs are
@@ -1958,9 +1958,9 @@ operating modes to 4X when True and 1X when False.</p>
 <p style="margin-left:22%;">This read only parameter
 specifies the number of inputs scanned by the module.</p>
 
-<h2>led
+<h3>led
 <a name="led"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">Creates HAL
@@ -1973,9 +1973,9 @@ pins for the LEDs on the FPGA board.</p>
 upwards with the name corresponding to the PCB silkscreen.
 Setting the bit to &quot;True&quot; or 1 lights the LED.</p>
 
-<h2>Solid State Relay
+<h3>Solid State Relay
 <a name="Solid State Relay"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">SSRs have names
@@ -2135,9 +2135,9 @@ registers. If set to -1, pre-read sampling is disabled.</p>
 for post write update of the position and velocity
 registers. If set to -1, post write update is disabled.</p>
 
-<h2>Watchdog
+<h3>Watchdog
 <a name="Watchdog"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">The HostMot2
@@ -2192,9 +2192,9 @@ milliseconds) at module load time. If more than this amount
 of time passes between calls to the hm2 write() function,
 the watchdog will bite.</p>
 
-<h2>Raw Mode
+<h3>Raw Mode
 <a name="Raw Mode"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">If the
@@ -2244,9 +2244,9 @@ it gets set to True the hostmot2 driver will write its
 representation of the board&rsquo;s internal state to the
 syslog, and set the pin back to False.</p>
 
-<h2>Setting up Smart Serial devices
+<h3>Setting up Smart Serial devices
 <a name="Setting up Smart Serial devices"></a>
-</h2>
+</h3>
 
 
 <p style="margin-left:11%; margin-top: 1em">See man
@@ -2345,7 +2345,7 @@ hm2_7i90(9)</p>
 
 <p style="margin-left:11%; margin-top: 1em">Mesa&rsquo;s
 documentation for the Anything I/O boards, at
-&lt;http://www.mesanet.com&gt;</p>
+<a href="">http://www.mesanet.com</a></p>
 
 <h2>LICENSE
 <a name="LICENSE"></a>

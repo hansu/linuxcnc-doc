@@ -29,6 +29,7 @@ asciidoc.install(2);
 <div class="sect1">
 <h2 id="cha:hal-components">1. Components</h2>
 <div class="sectionbody">
+<div class="paragraph"><p>&lt; explanation of the difference between a real-time and a userspace component &gt;</p></div>
 <div class="paragraph"><p>Most of the commands in the following list have man pages.
 Some will have expanded descriptions, some will have limited descriptions.
 From this list you know what components exist,
@@ -48,7 +49,9 @@ To view the information in the man page, in a terminal window type:</p></div>
 </tr></table>
 </div>
 <div class="sect2">
-<h3 id="_user_interface">1.1. User Interface</h3>
+<h3 id="_user_interfaces_userspace">1.1. User Interfaces (Userspace)</h3>
+<div class="sect3">
+<h4 id="_machine_control">1.1.1. Machine Control</h4>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -59,12 +62,6 @@ cellspacing="0" cellpadding="4">
 <col width="0%" />
 <col width="0%" />
 <tbody>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/5axisgui.1.html">5axisgui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">Vismach Virtual Machine GUI</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
 <tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/axis.1.html">axis</a></strong></p></td>
 <td align="left" valign="top"><p class="table">AXIS LinuxCNC (The Enhanced Machine Controller) Graphical User Interface.</p></td>
@@ -77,6 +74,58 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gmoccapy.1.html">gmoccapy</a></strong></p></td>
+<td align="left" valign="top"><p class="table">TOUCHY LinuxCNC Graphical User Interface</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gscreen.1.html">gscreen</a></strong></p></td>
+<td align="left" valign="top"><p class="table">TOUCHY LinuxCNC Graphical User Interface</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/ngcgui.1.html">ngcgui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">a framework for conversational G-code generation on the controller</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyngcgui.1.html">pyngcgui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">python implementation of ngcgui</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/touchy.1.html">touchy</a></strong></p></td>
+<td align="left" valign="top"><p class="table">axis - TOUCHY LinuxCNC Graphical User Interface</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtvcp.1.html">qtvcp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">QT based virtual control panels</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_virtual_control_panels_vcp">1.1.2. Virtual Control Panels (VCP)</h4>
+<div class="tableblock">
+<table rules="none"
+width="100%"
+frame="void"
+cellspacing="0" cellpadding="4">
+<col width="15%" />
+<col width="85%" />
+<col width="0%" />
+<col width="0%" />
+<tbody>
 <tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gladevcp.1.html">gladevcp</a></strong></p></td>
 <td align="left" valign="top"><p class="table">Virtual Control Panel for LinuxCNC based on Glade, Gtk and HAL widgets.</p></td>
@@ -96,26 +145,54 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gmoccapy.1.html">gmoccapy</a></strong></p></td>
-<td align="left" valign="top"><p class="table">TOUCHY LinuxCNC Graphical User Interface</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gremlin_view.1.html">gremlin_view</a></strong></p></td>
 <td align="left" valign="top"><p class="table">G-code graphical preview</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/gscreen.1.html">gscreen</a></strong></p></td>
-<td align="left" valign="top"><p class="table">TOUCHY LinuxCNC Graphical User Interface</p></td>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/moveoff_gui.1.html">moveoff_gui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">a gui for the moveoff component</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halui.1.html">halui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">Observe HAL pins and command LinuxCNC through NML.</p></td>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyui.1.html">pyui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">utility for panelui</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyvcp.1.html">pyvcp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Virtual Control Panel for LinuxCNC.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyvcp_demo.1.html">pyvcp_demo</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Python Virtual Control Panel demonstration component</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_vismach_virtual_machines">1.1.3. Vismach Virtual Machines</h4>
+<div class="tableblock">
+<table rules="none"
+width="100%"
+frame="void"
+cellspacing="0" cellpadding="4">
+<col width="15%" />
+<col width="85%" />
+<col width="0%" />
+<col width="0%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/5axisgui.1.html">5axisgui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Vismach Virtual Machine GUI</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
@@ -150,18 +227,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/moveoff_gui.1.html">moveoff_gui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">a gui for the moveoff component</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/ngcgui.1.html">ngcgui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">a framework for conversational G-code generation on the controller</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/panelui.1.html">panelui</a></strong></p></td>
 <td align="left" valign="top"><p class="table">short description</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
@@ -180,36 +245,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyngcgui.1.html">pyngcgui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">python implementation of ngcgui</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyui.1.html">pyui</a></strong></p></td>
-<td align="left" valign="top"><p class="table">utility for panelui</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyvcp.1.html">pyvcp</a></strong></p></td>
-<td align="left" valign="top"><p class="table">Virtual Control Panel for LinuxCNC.</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/pyvcp_demo.1.html">pyvcp_demo</a></strong></p></td>
-<td align="left" valign="top"><p class="table">Python Virtual Control Panel demonstration component</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtvcp.1.html">qtvcp</a></strong></p></td>
-<td align="left" valign="top"><p class="table">QT based virtual control panels</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/rotarydelta.1.html">rotarydelta</a></strong></p></td>
 <td align="left" valign="top"><p class="table">Vismach Virtual Machine GUI</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
@@ -218,12 +253,6 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/scaragui.1.html">scaragui</a></strong></p></td>
 <td align="left" valign="top"><p class="table">Vismach Virtual Machine GUI</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/touchy.1.html">touchy</a></strong></p></td>
-<td align="left" valign="top"><p class="table">axis - TOUCHY LinuxCNC Graphical User Interface</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
@@ -243,8 +272,63 @@ cellspacing="0" cellpadding="4">
 </table>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_hardware_drivers_userspace">1.2. Hardware Drivers (Userspace)</h3>
+<h3 id="_motion_userspace">1.2. Motion (Userspace)</h3>
+<div class="tableblock">
+<table rules="none"
+width="100%"
+frame="void"
+cellspacing="0" cellpadding="4">
+<col width="15%" />
+<col width="85%" />
+<col width="0%" />
+<col width="0%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halui.1.html">halui</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Observe HAL pins and command LinuxCNC through NML.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/io.1.html">io</a></strong></p></td>
+<td align="left" valign="top"><p class="table">iocontrol - interacts with HAL or G-code in userspace</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/iocontrol.1.html">iocontrol</a></strong></p></td>
+<td align="left" valign="top"><p class="table">interacts with HAL or G-code in userspace</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/iov2.1.html">iov2</a></strong></p></td>
+<td align="left" valign="top"><p class="table">interacts with HAL or G-code in userspace</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/milltask.1.html">milltask</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Userspace task controller for LinuxCNC</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/motion.9.html">motion</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Accepts NML motion commands, interacts with HAL in realtime.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hardware_drivers">1.3. Hardware Drivers</h3>
+<div class="sect3">
+<h4 id="_vfd_amp_communication_interfaces_userspace">1.3.1. VFD &amp; Communication Interfaces (Userspace)</h4>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -373,8 +457,9 @@ cellspacing="0" cellpadding="4">
 </table>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="sec:Realtime-Components-pilotes">1.3. Hardware Drivers (Realtime)</h3>
+<h3 id="sec:Realtime-Components-pilotes">1.4. Mesa and other I/O Cards (Realtime)</h3>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -498,7 +583,7 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect2">
-<h3 id="_utilities_realtime">1.4. Utilities (Realtime)</h3>
+<h3 id="_utilities_userspace">1.5. Utilities (Userspace)</h3>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -570,6 +655,14 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/setsserial.9.html">setsserial</a></strong></p></td>
+<td align="left" valign="top"><p class="table">a utility for setting Smart Serial NVRAM parameters.
+NOTE: This rather clunky utility is no longer needed except for flashing new smart-serial remote firmware.
+Smart-serial remote parameters can now be set in the HAL file in the normal way.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man1/sim_pin.1.html">sim_pin</a></strong></p></td>
 <td align="left" valign="top"><p class="table">gui for displaying and setting one or more Hal inputs</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
@@ -586,7 +679,9 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect2">
-<h3 id="_logic_and_bitwise_components_realtime">1.5. Logic and Bitwise components (Realtime)</h3>
+<h3 id="_signal_processing_realtime">1.6. Signal processing (Realtime)</h3>
+<div class="sect3">
+<h4 id="_logic_and_bitwise">1.6.1. Logic and Bitwise</h4>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -763,8 +858,8 @@ cellspacing="0" cellpadding="4">
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="sec:Realtime-Components-flottant">1.6. Arithmetic and float-components (Realtime)</h3>
+<div class="sect3">
+<h4 id="sec:Realtime-Components-flottant">1.6.2. Arithmetic and float</h4>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -992,8 +1087,8 @@ Limit its slew rate to less than maxv per second. Limit its second derivative to
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_type_conversion_realtime">1.7. Type conversion (Realtime)</h3>
+<div class="sect3">
+<h4 id="_type_conversion">1.6.3. Type conversion</h4>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -1092,8 +1187,9 @@ cellspacing="0" cellpadding="4">
 </table>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="sec:Realtime-Components-cinematiques">1.8. Kinematics (Realtime)</h3>
+<h3 id="sec:Realtime-Components-cinematiques">1.7. Kinematics (Realtime)</h3>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -1223,7 +1319,7 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect2">
-<h3 id="_motor_control_realtime">1.9. Motor control (Realtime)</h3>
+<h3 id="_motor_control_realtime">1.8. Motor control (Realtime)</h3>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -1293,7 +1389,7 @@ cellspacing="0" cellpadding="4">
 </div>
 </div>
 <div class="sect2">
-<h3 id="_other_realtime">1.10. Other (Realtime)</h3>
+<h3 id="_other_realtime">1.9. Other (Realtime)</h3>
 <div class="tableblock">
 <table rules="none"
 width="100%"
@@ -1307,12 +1403,6 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man9/comp.9.html">comp</a></strong></p></td>
 <td align="left" valign="top"><p class="table">Build, compile and install LinuxCNC HAL components.</p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-<td align="left" valign="top"><p class="table"></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/motion.9.html">motion</a></strong></p></td>
-<td align="left" valign="top"><p class="table">Accepts NML motion commands, interacts with HAL in realtime.</p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
@@ -1418,6 +1508,449 @@ is 0.0001 seconds and the formula would be 1/(0.0001 x 2) = 5,000 hz or 5 Khz.</
 <tr>
 <td align="left" valign="top"><p class="table"><strong><a href="../man/man9/watchdog.9.html">watchdog</a></strong></p></td>
 <td align="left" valign="top"><p class="table">Monitor one to thirty-two inputs for a <em>heartbeat</em>.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_not_categorized_auto_generated_from_man_pages">1.10. Not categorized (auto generated from man pages)</h3>
+<div class="tableblock">
+<table rules="none"
+width="100%"
+frame="void"
+cellspacing="0" cellpadding="4">
+<col width="15%" />
+<col width="85%" />
+<col width="0%" />
+<col width="0%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/axis.9.html">axis</a></strong></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/axistest.9.html">axistest</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Used to allow testing of an axis. Used IN PNCconf</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/carousel.9.html">carousel</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Orient a toolchanger carousel using various encoding schemes</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/debuglevel.1.html">debuglevel</a></strong></p></td>
+<td align="left" valign="top"><p class="table">sets the debug level for the userspace part of LinuxCNC</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/eoffset_per_angle.9.html">eoffset_per_angle</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Compute External Offset Per Angle</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/filter_kalman.9.html">filter_kalman</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Unidimensional Kalman filter, also known as linear quadratic estimation (LQE)</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/gladevcp.9.html">gladevcp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">displays Virtual control Panels built with GTK / GLADE</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/hal_input.1.html">hal_input</a></strong></p></td>
+<td align="left" valign="top"><p class="table">control HAL pins with any Linux input device, including USB HID devices</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/hal_manualtoolchange.1.html">hal_manualtoolchange</a></strong></p></td>
+<td align="left" valign="top"><p class="table">HAL userspace component to enable manual tool changes.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halcmd.1.html">halcmd</a></strong></p></td>
+<td align="left" valign="top"><p class="table">manipulate the LinuxCNC HAL from the command line</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halcmd_twopass.1.html">halcmd_twopass</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halreport.1.html">halreport</a></strong></p></td>
+<td align="left" valign="top"><p class="table">creates a report on the status of the HAL</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halrmt.1.html">halrmt</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halrun.1.html">halrun</a></strong></p></td>
+<td align="left" valign="top"><p class="table">manipulate the LinuxCNC HAL from the command line</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halsampler.1.html">halsampler</a></strong></p></td>
+<td align="left" valign="top"><p class="table">sample data from HAL in realtime</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/halstreamer.1.html">halstreamer</a></strong></p></td>
+<td align="left" valign="top"><p class="table">stream file data into HAL in real time</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/haltcl.1.html">haltcl</a></strong></p></td>
+<td align="left" valign="top"><p class="table">manipulate the LinuxCNC HAL from the command line using a tcl
+interpreter.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/histobins.9.html">histobins</a></strong></p></td>
+<td align="left" valign="top"><p class="table">histogram bins utility for scripts/hal-histogram</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/homecomp.9.html">homecomp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">homing module template</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/inivar.1.html">inivar</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Query an INI file</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/latencybins.9.html">latencybins</a></strong></p></td>
+<td align="left" valign="top"><p class="table">comp utility for scripts/latency-histogram</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/lcd.9.html">lcd</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Stream HAL data to an LCD screen</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/lincurve.9.html">lincurve</a></strong></p></td>
+<td align="left" valign="top"><p class="table">one-dimensional lookup table</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnc.1.html">linuxcnc</a></strong></p></td>
+<td align="left" valign="top"><p class="table">LinuxCNC (The Enhanced Machine Controller)</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnc_info.1.html">linuxcnc_info</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnc_module_helper.1.html">linuxcnc_module_helper</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnc_var.1.html">linuxcnc_var</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnclcd.1.html">linuxcnclcd</a></strong></p></td>
+<td align="left" valign="top"><p class="table">LinuxCNC Graphical User Interface for LCD character display</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcncmkdesktop.1.html">linuxcncmkdesktop</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcncrsh.1.html">linuxcncrsh</a></strong></p></td>
+<td align="left" valign="top"><p class="table">text-mode interface for commanding LinuxCNC over the network</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcncsvr.1.html">linuxcncsvr</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/linuxcnctop.1.html">linuxcnctop</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/matrix_kb.9.html">matrix_kb</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Convert integers to HAL pins. Optionally scan a matrix of IO ports
+to create those integers.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/mdi.1.html">mdi</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Send G-code commands from the terminal to the running LinuxCNC
+instance</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/message.9.html">message</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Display a message</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/motion-logger.1.html">motion-logger</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/moveoff.9.html">moveoff</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Component for Hal-only offsets</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/ohmic.9.html">ohmic</a></strong></p></td>
+<td align="left" valign="top"><p class="table">LinuxCNC HAL component that uses a Mesa THCAD for Ohmic sensing</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/orient.9.html">orient</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Provide a PID command input for orientation mode based on current spindle position, target angle and orient mode</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/plasmac.9.html">plasmac</a></strong></p></td>
+<td align="left" valign="top"><p class="table">A plasma cutter controller</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtplasmac-cfg2prefs.1.html">qtplasmac-cfg2prefs</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Convert plasma parameters.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtplasmac-materials.1.html">qtplasmac-materials</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Create a plasma materials file.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtplasmac-plasmac2qt.1.html">qtplasmac-plasmac2qt</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Migrate a PlasmaC configuration.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/qtplasmac-setup.1.html">qtplasmac-setup</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Switch a QtPlasmaC installation type.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/rs274.1.html">rs274</a></strong></p></td>
+<td align="left" valign="top"><p class="table">standalone G-code interpreter</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/rtapi_app.1.html">rtapi_app</a></strong></p></td>
+<td align="left" valign="top"><p class="table">short description</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/schedrmt.1.html">schedrmt</a></strong></p></td>
+<td align="left" valign="top"><p class="table">telnet based scheduler for LinuxCNC</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/scorbot-er-3.1.html">scorbot-er-3</a></strong></p></td>
+<td align="left" valign="top"><p class="table">to link the Intellitek Scorbot educational robot to LinuxCNC</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/sendkeys.1.html">sendkeys</a></strong></p></td>
+<td align="left" valign="top"><p class="table">send input events based on pins or scancodes from HAL</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/sim-torch.1.html">sim-torch</a></strong></p></td>
+<td align="left" valign="top"><p class="table">A simulated plasma torch</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/sim_axis_hardware.9.html">sim_axis_hardware</a></strong></p></td>
+<td align="left" valign="top"><p class="table">A component to simulate home and limit switches</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/sim_home_switch.9.html">sim_home_switch</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Home switch simulator</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/sim_matrix_kb.9.html">sim_matrix_kb</a></strong></p></td>
+<td align="left" valign="top"><p class="table">convert HAL pin inputs to keycodes</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/sim_parport.9.html">sim_parport</a></strong></p></td>
+<td align="left" valign="top"><p class="table">A component to simulate the pins of the hal_parport component</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/sim_spindle.9.html">sim_spindle</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Simulated spindle with index pulse</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/simple_tp.9.html">simple_tp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">This component is a single axis simple trajectory planner, same as used for jogging in linuxcnc.</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/simulate_probe.1.html">simulate_probe</a></strong></p></td>
+<td align="left" valign="top"><p class="table">simulate a probe input</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/spindle.9.html">spindle</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Control a spindle with different acceleration and deceleration and optional gear change scaling</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/spindle_monitor.9.html">spindle_monitor</a></strong></p></td>
+<td align="left" valign="top"><p class="table">spindle at-speed and underspeed detection</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/teach-in.1.html">teach-in</a></strong></p></td>
+<td align="left" valign="top"><p class="table">jog the machine to a position, and record the state</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/thcud.9.html">thcud</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Torch Height Control Up/Down Input</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/thermistor.1.html">thermistor</a></strong></p></td>
+<td align="left" valign="top"><p class="table">compute temperature indicated by a thermistor</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/tooledit.1.html">tooledit</a></strong></p></td>
+<td align="left" valign="top"><p class="table">tool table editor</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man9/tpcomp.9.html">tpcomp</a></strong></p></td>
+<td align="left" valign="top"><p class="table">Trajectory Planning (tp) module skeleton</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong><a href="../man/man1/update_ini.1.html">update_ini</a></strong></p></td>
+<td align="left" valign="top"><p class="table">A script to convert 2.7 format .ini files to 2.8 format</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_without_man_page_or_broken_link_auto_generated_from_component_list">1.11. Without man page or broken link (auto generated from component list)</h3>
+<div class="tableblock">
+<table rules="none"
+width="100%"
+frame="void"
+cellspacing="0" cellpadding="4">
+<col width="15%" />
+<col width="85%" />
+<col width="0%" />
+<col width="0%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>hal_ppmc</strong></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>pluto_servo</strong></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>pluto_step</strong></p></td>
+<td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 <td align="left" valign="top"><p class="table"></p></td>
 </tr>
@@ -1542,7 +2075,7 @@ rtapi_task_wait.3rtapi</code></pre>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2022-03-24 20:47:56 CET
+ 2022-03-26 20:33:39 CET
 </div>
 </div>
 </body>

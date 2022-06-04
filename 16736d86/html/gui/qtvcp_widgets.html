@@ -1,0 +1,3485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>QTvcp Widgets</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>QTvcp Widgets</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:qtvcp-widgets"><p>Qtscreen uses QTvcp widgets for linuxcnc integration.<br />
+Widget is the general name for the UI objects such as buttons and labels in QTpy.<br />
+You are free to use any available widgets in the QTDesigner editor.<br />
+There are also special widgets made for linuxcnc that make integration easier.<br />
+This are split in two heading on the right side of the editor.<br />
+One is for HAL only widgets.<br />
+The other is for cnc control widgets.<br />
+you are free to mix them in any way on your panel.<br /></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">This description of widget properties can easily be out of date due to further development and<br />
+lack of people to write docs (A good way to give back to the project).<br />
+The definitive descriptions are found by looking in the source code.<br /></td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hal_only_widgets">1. HAL Only Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>These Widgets usually have HAL pins and don&#8217;t react to the machine Controller</p></div>
+<div class="sect2">
+<h3 id="_xembed_widget">1.1. XEmbed Widget</h3>
+<div class="paragraph"><p>Allows one to embed program into the widget.<br />
+only programs that utilize the xembed protocol will work such as:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+gladevcp virtual control panels
+</p>
+</li>
+<li>
+<p>
+Onboard virtual keyboard
+</p>
+</li>
+<li>
+<p>
+qtvcp virtual control panels
+</p>
+</li>
+<li>
+<p>
+mplayer video player
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_slider_widget">1.2. Slider Widget</h3>
+<div class="paragraph"><p>Allows one to adjust a HAL pins using a sliding pointer.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_led_widget">1.3. LED Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_ledWidget.png" alt="QTvcp led" />
+</div>
+<div class="title">Figure 1. LED</div>
+</div>
+<div class="paragraph"><p>An indicator that optionally follows a HAL pin&#8217;s logic.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+halpin_option -selects if the LED follows an input HAL pin or program state.
+</p>
+</li>
+<li>
+<p>
+diameter -diameter of the LED
+</p>
+</li>
+<li>
+<p>
+color - Color of the LED when on.
+</p>
+</li>
+<li>
+<p>
+off_color - Color of the LED when off.
+</p>
+</li>
+<li>
+<p>
+alignment - Qt Alignment hint.
+</p>
+</li>
+<li>
+<p>
+state -current state of LED
+</p>
+</li>
+<li>
+<p>
+flashing -turns flashing option on and off.
+</p>
+</li>
+<li>
+<p>
+flashRate -sets the flash rate.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The LED properties can be defined in a stylesheet with the following code added to the .qss file.<br />
+The name_of_led would be the name defined Designer&#8217;s editor.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>LED #name_0f_led{
+qproperty-color: red;
+qproperty-diameter: 20;
+qproperty-flashRate: 150;
+}</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_checkbox_widget">1.4. Checkbox Widget</h3>
+<div class="paragraph"><p>This widget allows the user to check a box to set a HAL pin true or false.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QCheckButton</p></div>
+</div>
+<div class="sect2">
+<h3 id="_radio_button_widget">1.5. Radio Button Widget</h3>
+<div class="paragraph"><p>This widget allows a user to set HAL pins true or false.<br />
+Only one widget of a group can be true at a time.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QRadioButton</p></div>
+</div>
+<div class="sect2">
+<h3 id="_round_gauge">1.6. Round Gauge</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_round_gauge.png" alt="QTvcp round gauge" />
+</div>
+<div class="title">Figure 2. Round Gauge</div>
+</div>
+<div class="paragraph"><p>Round Gauge can be used in a linuxcnc GUI to display an input parameter on the dial face.
+There are several properties that are user settable in order to customize the appearance of the gauge.</p></div>
+<div class="paragraph"><p>There are 2 inputs that are not customizable. They can be set via HAL pins, programmatically or via signals from other widgets.
+The non customizable parameters are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Value</em> -
+This is the input value that will be displayed with the gauge needle and in the digital readout.
+It must be set to a value between 0 and the maximum value.
+</p>
+</li>
+<li>
+<p>
+<em>Setpoint</em> -
+This is a value that determines the location of a small marker on the gauge face.
+It must be set to a value between 0 and the maximum value.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The following parameters can be set either programmatically or via the designer property editor.<br />
+The custom parameters are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>halpin_option</em> -
+Setting this True will create 2 HAL pins. One is for setting the value input and the other is for setting the setpoint.
+If this option is not set, then value and setpoint must be connected programmatically, ie., in the handler file.
+</p>
+</li>
+<li>
+<p>
+<em>max_reading</em> -
+This value determines the highest number that will be displayed on the gauge face.
+</p>
+</li>
+<li>
+<p>
+<em>max_value</em> -
+This is the maximum expected value of the value input signal. In other words, it is the full scale input.
+</p>
+</li>
+<li>
+<p>
+<em>num_ticks</em> -
+This is the number of ticks, or gauge readings that will be displayed on the gauge face.
+It should be set to a number that ensures the text readings around the gauge face are readable.
+The minumum allowed value is 2.
+</p>
+</li>
+<li>
+<p>
+<em>zone1_color</em> -
+Zone1 extends from the maximum reading to the threshold point. It can be set to any RGB color.
+</p>
+</li>
+<li>
+<p>
+<em>zone2_color</em> -
+Zone2 extends from the threshold point to the minimum reading, which is 0. It can be set to any RGB color.
+</p>
+</li>
+<li>
+<p>
+<em>bezel_color</em> -
+This is the color of the outer ring of the gauge.
+</p>
+</li>
+<li>
+<p>
+<em>threshold</em> -
+The threshold is the transition point between the zones. It should be set to a value between 0 and the maximum value.
+The maximum allowed value is set to the gauge maximum value and minimum value is 0.
+</p>
+</li>
+<li>
+<p>
+<em>gauge_label</em> -
+This is the text that appears below the value readout, near the bottom of the gauge.
+The function of the gauge is then easily visible.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_halpad">1.7. HALPad</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_HALPad.png" alt="QTvcp HAL button Joypad " />
+</div>
+<div class="title">Figure 3. HALPAD</div>
+</div>
+<div class="paragraph"><p>This widget looks and acts like a 5 button D-pad, with an LED ring<br />
+Each button has an selectable type (Bit, S32 or Float) output HAL pin.<br />
+The LED center ring has selectable colors for off and on and is controlled by a Bit HAL pin.<br /></p></div>
+<div class="sect3">
+<h4 id="_enums">1.7.1. ENUMS</h4>
+<div class="paragraph"><p>There are enumerated constants used to reference indicator positions.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>    NONE
+    LEFT
+    RIGHT
+    CENTER
+    TOP
+    BOTTOM
+    LEFTRIGHT
+    TOPBOTTOM</code></pre>
+</div></div>
+<div class="paragraph"><p>There are constants for HAL pin type:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>    NONE
+    BIT
+    S32
+    FLOAT</code></pre>
+</div></div>
+<div class="paragraph"><p>You use the widget Designer name plus the reference constant.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>halpadname<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_highlight</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>halpadname<span style="color: #990000">.</span>LEFTRIGHT<span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_properties">1.7.2. Properties</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>pin_name</em>:<br />
+Optional name to use for the HAL pins basename. If left blank, the designer widget name will be used.
+</p>
+</li>
+<li>
+<p>
+<em>pin_type</em>:<br />
+Select the HAL output pin type.<br />
+This property is only used at startup.<br />
+Selection can be set in Designer:<br />
+</p>
+</li>
+</ul></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>NONE
+BIT
+S32
+FlOAT</code></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>left_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>right_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>center_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>top_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>bottom_image_path</em>:<br />
+A file path or resource path to an image to display in the described button location.<br />
+If the reset button is pressed in the Designer editor property, the image will not be displayed. (allowing optionally text)<br />
+</p>
+</li>
+<li>
+<p>
+<em>left_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>right_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>center_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>top_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>bottom_text</em>:<br />
+A text string to be displayed in the described button location.<br />
+If left blank an image can be designated to be displayed.<br />
+</p>
+</li>
+<li>
+<p>
+<em>true_color</em>:
+</p>
+</li>
+<li>
+<p>
+<em>false_color</em>:<br />
+Color selection for the center LED ring to be displayed when the <em>BASENAME.light.center</em> HAL pin is True or False.<br />
+</p>
+</li>
+<li>
+<p>
+<em>text_color</em>:<br />
+Color selection for the button text.<br />
+</p>
+</li>
+<li>
+<p>
+<em>text_font</em>:<br />
+Font slelection for the button text.<br />
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_stylesheets">1.7.3. StyleSheets</h4>
+<div class="paragraph"><p>The above properties could be set in styles sheets.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>HALPad{
+qproperty-on_color: #000;
+qproperty-off_color: #444;
+}</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_push_button_widget">1.8. Push Button Widget</h3>
+<div class="paragraph"><p>This widget allows a user to set a HAL pin true or false.<br />
+as an option it can be a toggle button.<br />
+It also has other options:<br /></p></div>
+<div class="sect3">
+<h4 id="_led_indicator_option">1.8.1. LED indicator option</h4>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_actionButton.png" alt="QTvcp led Action Button" />
+</div>
+<div class="title">Figure 4. Indicated Action Button</div>
+</div>
+<div class="paragraph"><p>Indicator_option puts a <em>LED</em> on the top of the button.<br />
+It can be a triangle, circle, top bar or side bar.<br />
+The size and position can be adjusted<br />
+It will indicated the current state of the button, the state of a HAL pin or linuxcnc status.<br />
+Use properties to customized the indicator (not all are applicable to every LED shape).<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>on_color
+off_color
+indicator_size
+circle_diameter
+shape_option
+right_edge_offset
+top_edge_offset
+height_fraction
+width_fraction
+corner_radius</code></pre>
+</div></div>
+<div class="paragraph"><p>The LED indicator color can be defined in a stylesheet with the following code added to the .qss file.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Indicated_PushButton{
+qproperty-on_color: #000;
+qproperty-off_color: #444;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>or for a particular button:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Indicated_PushButton #button_estop{
+qproperty-on_color: black;
+qproperty-off_color: yellow;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>Indicated PushButtons have exclusive options:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+indicator_HAL_pin_option
+</p>
+</li>
+<li>
+<p>
+indicator_status_option
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Indicator_HAL_pin_option will add a halpin, using the button name + <em>-led</em>, that controls the<br />
+button indicator state.<br /></p></div>
+<div class="paragraph"><p>indicator_status_option will make the LED indicate the state of these selectable linuxcnc status:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Is Estopped
+Is On
+All Homed
+Is Joint Homed
+Idle
+Paused
+Flood
+Mist
+Block Delete
+Optional Stop
+Manual
+MDI
+Auto
+Spindle Stopped
+Spindle Fwd
+Spindle Reverse
+On Limits</code></pre>
+</div></div>
+<div class="paragraph"><p>The some indicator_status_options holds a property that can be used with a stylesheet<br />
+to change the color of the button based on the state of the property in linuxcnc.<br />
+Currently these status options can be used to auto style buttons:<br />
+is_estopped_status indicated buttons change the property <em>isEstopped</em><br />
+is_on_status indicated buttons change the property <em>isStateOn</em><br />
+manual,mdi,auto _status indicated buttons change the properties <em>isManual, isMDI, isAuto</em></p></div>
+<div class="paragraph"><p>Here is a sample stylesheet entry.<br />
+It sets the background of mode button widgets when linuxcnc is in that mode.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ActionButton[isManual=true] {
+    background: red;
+}
+ActionButton[isMdi=true] {
+    background: blue;
+}
+ActionButton[isAuto=true] {
+    background: green;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>Here is how you specify a particular widget - by it&#8217;s objectName in designer.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ActionButton #estop button [isEstopped=false] {
+    color: yellow;
+}</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_text_changes_on_state">1.8.2. Text changes on state</h4>
+<div class="paragraph"><p>Choosing the checked_state_text_option allows a <em>checkable</em> button to change the text based<br />
+on it&#8217;s checked state. It uses the properties <em>true_state_string</em> and <em>false_state_string</em><br />
+to specify the text for each state.<br />
+<em>\\n</em> will be converted to a newline.</p></div>
+<div class="paragraph"><p>You can set/change these in style sheets:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ActionButton #action_aux{
+qproperty-true_state_string: "Air\\nOn";
+qproperty-false_state_string: "Air\\nOff";
+}</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_call_python_commands_on_state">1.8.3. Call python commands on state</h4>
+<div class="paragraph"><p>The python_command_option allow small snippets of python code to be run from the push of a button,<br />
+with out having to edit the handler file. (though it can call functions in the handler file)<br />
+When using the command_string properties.<br />
+<em>true_python_cmd_string</em> - a python command that will be called when the button is toggled true<br />
+<em>false_python_cmd_string</em> - a python command that will be called when the button is toggled false<br />
+<br />
+The capitalized word <em>INSTANCE</em> will give access to the widgets instances and handler functions.<br />
+eg. <em>INSTANCE.my_handler_function_call(True)</em><br />
+The capitalized word <em>ACTION</em> will give access to qtvcp&#8217;s ACTION library.<br />
+eg. <em>ACTION.TOGGLE_FLOOD()</em><br />
+The capitalized word <em>PROGRAM_LOADER</em> will give access to qtvcp&#8217;s PROGRAM_LOADER library.<br />
+eg. <em>PROGRAM_LOADER.load_halshow()</em><br />
+The capitalized word <em>HAL</em> will give access to HAL&#8217;s python module.<br />
+eg. <em>HAL.set_p('motion.probe-input</em>,<em>1</em>)'<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QpushButton</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_focus_overlay_widget">1.9. Focus Overlay Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_focusOverlay.png" alt="QTvcp foucus overlay" />
+</div>
+<div class="title">Figure 5. Focus overlay example for confirm close prompt</div>
+</div>
+<div class="paragraph"><p>This widget places a coloured overlay over the screen usually while a dialog is showing.<br />
+Used to create a <em>focused</em> feel and to draw attention to critical information.<br />
+It can also show a translucent image.<br />
+It can also display message text and buttons.<br />
+This widget can be controller with STATUS messages.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_grid_layout_widget">1.10. Grid Layout Widget</h3>
+<div class="paragraph"><p>This widget controls if the widgets inside it are enabled or disabled.<br />
+disabled widgets are typically a different colour and do not respond to actions.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QGridLayout</p></div>
+</div>
+<div class="sect2">
+<h3 id="_hal_label_widget">1.11. HAL Label Widget</h3>
+<div class="paragraph"><p>This widget displays values sent to it from HAL pins, programically or a QtSignal.<br />
+The input pin can be selected as Bit, S32, Float or no pin selected.<br />
+There is a text Template property to set the rich text and/or to format the text.<br />
+Basic formatting might be, for bool: %r, for integer: %d, for float: %0.4f.<br />
+A rich text example might be:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>my_hal_label<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span>textTemplate<span style="color: #990000">,</span><span style="color: #FF0000">"""</span>
+<span style="color: #FF0000">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:12pt;</span>
+<span style="color: #FF0000">font-weight:600; color:#f40c11;"&gt;%0.4f&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</span>
+<span style="color: #FF0000">"""</span><span style="color: #990000">)</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>The <em>setDisplay</em> slot can be connected to a integer, float or bool signal.<br />
+If the property <em>pin_name</em> is not set the widget name will be used.<br /></p></div>
+<div class="paragraph"><p>There are function calls to display values:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+[HALLabelName].setDisplay(some_value) can be used to set the display if no HAL pin is selected.
+</p>
+</li>
+<li>
+<p>
+[HALLabelName].setProperty(textTemplate,"%d") - set the template of the display.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLabel</p></div>
+</div>
+<div class="sect2">
+<h3 id="_lcd_number_widget">1.12. LCD Number Widget</h3>
+<div class="paragraph"><p>This widget displays HAL float/s32/bit values in a LCD looking way.<br />
+It can display numbers in decimal, hexadecimal, binary and octal formats
+by setting the property <em>mode</em>.<br />
+When using floats you can set a formatting string.<br />
+You must set the property <em>digitCount</em> to an appropriate setting to display the largest number.<br /></p></div>
+<div class="sect3">
+<h4 id="_properties_2">1.12.1. Properties</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>pin_name</em>:<br />
+Option string to be used as the HAL pin name. If set to an empty string the widget name will be used.<br />
+</p>
+</li>
+<li>
+<p>
+<em>bit_pin_type</em>:<br />
+Selects the input pin as type BIT.
+</p>
+</li>
+<li>
+<p>
+<em>s32_pin_type</em>:<br />
+Selects the input pin as type S32.
+</p>
+</li>
+<li>
+<p>
+<em>float_pin_type</em>:<br />
+Selects the input pin as type FLOAT.
+</p>
+</li>
+<li>
+<p>
+<em>floatTemplate</em>:<br />
+A string that will be used as a python3 format template to tailor the LCD display.<br />
+Only used when a FLOAT pin is selected.<br />
+eg <em>{:.2f}</em> will display a float rounded to 2 numbers after the decimal.<br />
+A blank setting will allow the decimal to move as required.<br />
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLCDNumber</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_doublescale_widget">1.13. DoubleScale Widget</h3>
+<div class="paragraph"><p>This widget is a spin button entry widget.<br />
+used for setting a s32 and float HAL pin.<br />
+It has an internal scale factor, set to a default of 1, that can be set programmically or using a QtSignal.<br />
+The scale defaults to 1<br />
+he <em>setInput</em> slot can be connected to a integer, or float signal.<br /></p></div>
+<div class="paragraph"><p>There is a function call to change the internal scaling factor:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+[HALLabelName].setInput(some_value)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The HAL pins will be set to the value of the internal scale times the widget displayed value.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_camview_widget">1.14. CamView Widget</h3>
+<div class="paragraph"><p>This widget displays a image from a web camera.<br />
+It overlays an adjustable circular and cross hair target over the image.<br />
+Camview was built with precise visual positioning in mind.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_generalhalinput_widget">1.15. GeneralHALInput Widget</h3>
+<div class="paragraph"><p>This widget is used to connect an arbitrary QT widget to HAL using signals/slots.<br />
+It is used for widgets that should respond to HAL pin changes.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_generalhaloutput_widget">1.16. GeneralHALOutput Widget</h3>
+<div class="paragraph"><p>This widget is used to connect an arbitrary QT widget to HAL using signals/slots.<br />
+It is used for widgets that should control HAL pins.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_widgetswitcher_widget">1.17. WidgetSwitcher Widget</h3>
+<div class="paragraph"><p>This is used to switch the view of a multi-widget layout to  show just one widget.<br />
+This might be used to flip between a large view of a widget or a smaller multi widget view.<br />
+I&#8217;ts different from a stacked widget as it can pull a widget from anywhere in the screen and<br />
+place it in it&#8217;s page with a different layout then it originally had.<br />
+The original widget must be in a layout for switcher to put it back.<br />
+<br />
+In Designer you will add the widgetswitcher widget on screen.<br />
+Right click the widgetswitcher and add a page,<br />
+then populate it with widgets/layouts you wish to see in a default form.<br />
+Then add as many pages as there are views to switch to.<br />
+on each page add a layout widget.<br />
+After adding the layout you must right click the widget switcher again<br />
+and set the layout option.<br />
+click on the widgetswitcher widget and then scroll to the bottom of the property editor.<br />
+you are looking for the dynamic property <em>widget_list</em>.<br />
+double click the to the right of the widget_list property.<br />
+A dialog will pop up allowing you to add the names of the widgets to move to the pages you added to the widgetswitcher.<br />
+<br />
+There are function calls to display specific widgets:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+[WidgetSwitcherName].show_id_widget(number)
+</p>
+</li>
+<li>
+<p>
+[WidgetSwitcherName].show_named_widget(widget_name)
+</p>
+</li>
+<li>
+<p>
+[WidgetSwitcherName].show_default()
+</p>
+</li>
+<li>
+<p>
+[WidgetSwitcherName].show_next()
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>By calling one of these functions, you control what widget<br />
+is currently displayed. show_default() shows the page 0<br />
+layout, and puts all other widgets back to where they were as initially built in Designer.<br /></p></div>
+<div class="paragraph"><p>It is based on the QStack widget.<br /></p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_machine_controller_widgets">2. Machine Controller Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>These widgets interact to the Machine Controller state.</p></div>
+<div class="sect2">
+<h3 id="_action_button_widget">2.1. Action Button Widget</h3>
+<div class="paragraph"><p>These buttons are used to control action of the machine controller.<br />
+They are built on top of indicator_buttons so can have LEDs overlaid.<br /></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">If you left double click on this widget you can launch a dialog<br />
+to set any of these action. The dialogs will help to set the<br />
+right related data to the selected action.<br />
+You can also change these properties directly in the property editor.<br /></td>
+</tr></table>
+</div>
+<div class="paragraph"><p>You can select one of these actions:<br />
+<em>Estop</em><br />
+<em>Machine On</em><br />
+<em>Auto</em><br />
+<em>mdi</em><br />
+<em>manual</em><br />
+<em>run</em><br />
+<em>run_from_line status</em> (gets line number from STATUS message gcode-line-selected)<br />
+<em>run_from_line slot</em> (gets line number from designer int/str slot setRunFromLine)<br />
+<em>abort</em><br />
+<em>pause</em><br />
+<em>load dialog</em> (requires a dialog widget present)<br />
+<em>Camview dialog</em> (requires camview dialog widget present)<br />
+<em>origin offset dialog</em> (requires origin offset dialog widget present)<br />
+<em>macro dialog</em> (requires macro dialog widget present)<br />
+<em>Launch Halmeter</em><br />
+<em>Launch Status</em><br />
+<em>Launch Halshow</em><br />
+<em>Home</em> (set the joint number to -1 for all-home)<br />
+<em>Unhome</em> (set the joint number to -1 for all-unhome)<br />
+<em>Home Selected</em> Homes the joint/axis selected by STATUS<br />
+<em>Unhome Selected</em> Unhomes the joint/axis selected by STATUS<br />
+<em>zero axis</em><br />
+<em>zero G5X</em> zeros the current user coordinate system offsets<br />
+<em>zero G92</em> zeros the optional G92 offsets<br />
+<em>zero Z rotational</em> zeros the rotation offset<br />
+<em>jog joint positive</em> (set the joint number)<br />
+<em>jog joint negative</em> (set the joint number)<br />
+<em>jog selected positive</em> (selected with a different widget or STATUS)<br />
+<em>jog selected negative</em> (selected with a different widget or STATUS)<br />
+<em>jog increment</em> (set metric/imperial/angular numbers)<br />
+<em>jog rate</em> (set the float/alt float number)<br />
+<em>feed override</em> (set the float/alt float number)<br />
+<em>rapid override</em> (set the float/alt float number)<br />
+<em>spindle override</em> (set the float/alt float number)<br />
+<em>spindle fwd</em><br />
+<em>spindle backward</em><br />
+<em>spindle stop</em><br />
+<em>spindle up</em><br />
+<em>spindle down</em><br />
+<em>view change</em> (set view_type_string)<br />
+<em>limits override</em><br />
+<em>flood</em><br />
+<em>mist</em><br />
+<em>block delete</em><br />
+<em>optional stop</em><br />
+<em>mdi command</em> (set command_string)<br />
+<em>INI mdi number</em> (set ini_mdi_number)<br />
+<em>dro absolute</em><br />
+<em>dro relative</em><br />
+<em>dro dtg</em><br />
+<em>exit screen</em> Closes down linuxcnc<br />
+<em>Override limits</em> Temporarily override hard limits<br />
+<em>launch dialogs</em> pops up dialogs if they are included in ui file.<br />
+<em>set DRO to relative</em><br />
+<em>set DRO to absolute</em><br />
+<em>set DRO to distance-to-go</em><br /></p></div>
+<div class="paragraph"><p>These set attributes of the selected action. Availability depends on the widget.<br />
+<br />
+<em>toggle float option</em> - allows jog rate and overrides to toggle between two rates<br />
+<em>joint number</em> - selects the joint/axis that the button controls<br />
+<em>incr imperial number</em> - sets the imperial jog increment (set negative to ignore)<br />
+<em>incr mm number</em> -sets the metric jog increment (set negative to ignore)<br />
+<em>incr angular number</em> -sets the angular jog increment (set negative to ignore)<br />
+<em>float number</em> - used for jograte and overrides<br />
+<em>float alternate number</em> -for jograte and overrides that can toggle between two float numbers<br />
+<em>view type string</em> - can be p, x, y, y2, z, z2, clear, zoom-in, zoom-out, pan-up, pan-down,<br />
+ pan-left, pan-right, rotate-up, rotate-down, rotate-cw, rotate-ccw<br />
+<em>command string</em> - MDI command string that will be invoked if the MDI command action is selected.<br />
+<em>ini_mdi_number</em> - a reference to the INI file [MDI_COMMAND_LIST] section.<br />
+Set an integer of select one line under the INI&#8217;s MDI_COMMAND line starting at 0.<br />
+Then in the INI file, under the heading <em>[MDI_COMMAND_LIST]</em> add a line:<br />
+<em>MDI_COMMAND=&lt;some command&gt;</em><br /></p></div>
+<div class="paragraph"><p>Action buttons are subclasssed from indicated_PushButton<br /></p></div>
+<div class="sect3">
+<h4 id="_led_indicator_option_2">2.1.1. LED indicator option</h4>
+<div class="paragraph"><p>Indicator_option puts a <em>LED</em> on the top of the button.<br />
+It can be a triangle, circle, top bar or side bar.<br />
+The size and position can be adjusted<br />
+It will indicated the current state of the button, the state of a HAL pin or linuxcnc status.<br />
+Use properties to customized the indicator (not all are applicable to every LED shape).<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>on_color
+off_color
+indicator_size
+circle_diameter
+shape_option
+right_edge_offset
+top_edge_offset
+height_fraction
+width_fraction
+corner_radius</code></pre>
+</div></div>
+<div class="paragraph"><p>The LED indicator color can be defined in a stylesheet with the following code added to the .qss file.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Indicated_PushButton{
+qproperty-on_color: #000;
+qproperty-off_color: #444;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>or for a particular button:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Indicated_PushButton #button_estop{
+qproperty-on_color: black;
+qproperty-off_color: yellow;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>Indicated PushButtons have exclusive options:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+indicator_HAL_pin_option
+</p>
+</li>
+<li>
+<p>
+indicator_status_option
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Indicator_HAL_pin_option will add a halpin, using the button name + <em>-led</em>, that controls the<br />
+button indicator state.<br /></p></div>
+<div class="paragraph"><p>indicator_status_option will make the LED indicate the state of these selectable linuxcnc status:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Is Estopped
+Is On
+All Homed
+Is Joint Homed
+Idle
+Paused
+Flood
+Mist
+Block Delete
+Optional Stop
+Manual
+MDI
+Auto
+Spindle Stopped
+Spindle Fwd
+Spindle Reverse
+On Limits</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_text_changes_on_state_2">2.1.2. Text changes on state</h4>
+<div class="paragraph"><p>Choosing the checked_state_text_option allows a <em>checkable</em> button to change the text based<br />
+on it&#8217;s checked state. It uses the properties <em>true_state_string</em> and <em>false_state_string</em><br />
+to specify the text for each state.<br />
+<em>\\n</em> will be converted to a newline.</p></div>
+<div class="paragraph"><p>You can set/change these in style sheets:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Indicated_PushButton #auxiliary {
+qproperty-true_state_string: "Air\\nOn";
+qproperty-false_state_string: "Air\\nOff";
+}</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_call_python_commands_on_state_2">2.1.3. Call python commands on state</h4>
+<div class="paragraph"><p>The python_command_option allow small snippets of python code to be run from the push of a button,<br />
+with out having to edit the handler file. (though it can call functions in the handler file)<br />
+When using the command_string properties.<br />
+<em>true_python_cmd_string</em> - a python command that will be called when the button is toggled true<br />
+<em>false_python_cmd_string</em> - a python command that will be called when the button is toggled false<br />
+<br />
+The capitalized word <em>INSTANCE</em> will give access to the widgets instances and handler functions.<br />
+eg. <em>INSTANCE.my_handler_function_call(True)</em><br />
+The capitalized word <em>ACTION</em> will give access to qtvcp&#8217;s ACTION library.<br />
+eg. <em>ACTION.TOGGLE_FLOOD()</em><br />
+The capitalized word <em>PROGRAM_LOADER</em> will give access to qtvcp&#8217;s PROGRAM_LOADER library.<br />
+eg. <em>PROGRAM_LOADER.load_halshow()</em><br />
+The capitalized word <em>HAL</em> will give access to HAL&#8217;s python module.<br />
+eg. <em>HAL.set_p('motion.probe-input</em>,<em>1</em>)'<br />
+Indicated PushButtons and Actionbuttons are based on pyQT&#8217;s QPushButton</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_actiontoolbutton">2.2. ActionToolButton</h3>
+<div class="paragraph"><p>Action tool  buttons are similar in concept to action buttons, but they use QToolButtons to allow<br />
+optional actions to be selected by pushing and holding the button till the option menu pops up.<br /></p></div>
+<div class="paragraph"><p>Currently there is only one option - user view<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QToolButton</p></div>
+<div class="sect3">
+<h4 id="_user_view">2.2.1. User View</h4>
+<div class="paragraph"><p>User view tool button allows a user to record and return to a arbitrary graphics view.<br />
+Press and hold the button to have the menu pop up and press <em>record view</em>.<br />
+This records the currently displayed graphics view.<br />
+click the button normally to return to the last recorded position.<br />
+<br />
+The position recorded position will be remembered at shutdown if a preference file option is set up.<br /></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">Do to programming limitations, the recorded position may not show exactly the same,<br />
+Particularly if you pan zoomed out and pan again zoomed in while setting the desired view.<br />
+Best practice is to select a main view, modify as desired, record, then immediately<br />
+click the button to <em>return</em> to the recorded position. If it is not as you like,<br />
+modify it&#8217;s existing position and re-record.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_roundbutton">2.3. RoundButton</h3>
+<div class="paragraph"><p>Round buttons work the same as ActionButtons other then the button is cropped round.<br />
+They are intended only to be visually different.<br />
+They have two path properties for displaying images on true and false.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_axis_tool_button">2.4. Axis Tool Button</h3>
+<div class="paragraph"><p>This allows one to select and set an AXIS.
+If the button is set checkable, it will indicate which axis is selected.<br />
+If you press and hold the button a pop up menu will show allowing one to:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Zero the axis
+</p>
+</li>
+<li>
+<p>
+divide the axis by 2
+</p>
+</li>
+<li>
+<p>
+set the axis arbitrarily
+</p>
+</li>
+<li>
+<p>
+reset the axis to the last number recorded
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>You select the axis by setting the joint number<br />
+You can select a halpin option that is set true when the axis is selected<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QToolButton</p></div>
+</div>
+<div class="sect2">
+<h3 id="_camview_widget_2">2.5. Camview Widget</h3>
+<div class="paragraph"><p>This is used to align the work piece or zero part features using a webcam.<br />
+It uses opencv vision library.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_dro_label_widget">2.6. DRO_Label Widget</h3>
+<div class="paragraph"><p>This will display the current position of an axis.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Qjoint_number - joint number of offset to display (10 will specify rotational offset)
+</p>
+</li>
+<li>
+<p>
+Qreference_type - actual, relative or distance to go (0,1,2)
+</p>
+</li>
+<li>
+<p>
+metric_template - format of display ie <em>%10.3f</em>
+</p>
+</li>
+<li>
+<p>
+imperial_template - format of display ie <em>%9.4f</em>
+</p>
+</li>
+<li>
+<p>
+angular_template  - format of display ie <em>%Rotational: 10.1f</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The DRO_Label widget holds a property <em>isHomed</em> that can be used with a stylesheet<br />
+to change the color of the DRO_Label based on home state of the joint number in linuxcnc.<br /></p></div>
+<div class="paragraph"><p>Here is a sample stylesheet entry.<br />
+It sets the font of all DRO_Label widgets.<br />
+It sets the text template (to set resolution) of the DRO<br />
+Then sets the text color based on the Qt <em>isHomed</em> Property.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>DROLabel {
+    font: 25pt "Lato Heavy";
+qproperty-imperial_template: '%9.4f';
+qproperty-metric_template: '%10.3f';
+qproperty-angular_template: '%11.2f';
+}
+
+DROLabel[isHomed=false] {
+    color: red;
+}
+
+DROLabel[isHomed=true] {
+  color: green;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>Here is how you specify a particular widget - by it&#8217;s objectName in designer.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>DROLabel #dr0_x_axis [isHomed=false] {
+    color: yellow;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLabel</p></div>
+</div>
+<div class="sect2">
+<h3 id="_gcodedisplay">2.7. GcodeDisplay</h3>
+<div class="paragraph"><p>This displays Gcode in text form. It will highlight the currently running line.<br />
+This can also display MDI history when linuxcnc is in MDI mode.<br />
+This can also display log entries when linuxcnc is in MANUAL mode.<br />
+This will also display preference file entries if you enter <em>PREFERENCE</em> in capitals<br />
+into the MDILine widget.<br />
+It has a signal percentDone(int) that that can be connected to a slot (such as a<br />
+progressBar to display percent run)</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+auto_show_mdi_status
+Set true to have the widget switch to MDI history when in MDI mode
+</p>
+</li>
+<li>
+<p>
+auto_show_manual_status
+Set true to have the widget switch to machine log when in Manual mode
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The GcodeDisplay properties can be set in a stylesheet with the following code added to the .qss file.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>EditorBase{
+qproperty-styleColorBackground: lightblue;
+qproperty-styleColor0: black;
+qproperty-styleColor1: #000000; /* black */
+qproperty-styleColor2: red;
+qproperty-styleColor3: black;
+qproperty-styleColor4: yellow;
+qproperty-styleColorMarginText: White;
+qproperty-styleColorMarginBackground: blue;
+qproperty-styleFont0: "Times,12,-1,0,90,0,0,0,0,0";
+qproperty-styleFont1: "Times,18,-1,0,90,1,0,0,0,0";
+qproperty-styleFont2: "Times,12,-1,0,90,0,0,0,0,0";
+qproperty-styleFont3: "Times,12,-1,0,90,0,0,0,0,0";
+qproperty-styleFont4: "Times,12,-1,0,90,0,0,0,0,0";
+qproperty-styleFontMargin: "Times,14,-1,0,90,0,0,0,0,0";
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>For gcodeDisplay widget&#8217;s default Gcode lexer:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+styleColor0 = Default = digit characters
+</p>
+</li>
+<li>
+<p>
+styleColor1 = Comments = characters inside of <em>msg()</em>
+</p>
+</li>
+<li>
+<p>
+styleColor2 = Key = alphabetic characters
+</p>
+</li>
+<li>
+<p>
+styleColor3 = Assignment = (<em>%</em>, <em>&lt;</em>, <em>&gt;</em>, <em>#</em>, <em>=</em>)
+</p>
+</li>
+<li>
+<p>
+styleColor4 = Value = (<em>[</em>, <em>]</em>)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Font definitions:
+"style name, size, -1, 0, bold setting (0-99), italics (0-1), underline (0-1),0,0,0"</p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s  QsciScintilla</p></div>
+</div>
+<div class="sect2">
+<h3 id="_gcodeeditor_widget">2.8. GcodeEditor Widget</h3>
+<div class="paragraph"><p>This is an extension of the gcodeDisplay widget that adds editing convenience.</p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QWidget which incorporates GcodeDisplay widget<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_gcodegraphics_widget">2.9. GCodeGraphics Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_gcodeGraphics.png" alt="QTvcp Gcode Graphics" />
+</div>
+<div class="title">Figure 6. Graphics Display</div>
+</div>
+<div class="paragraph"><p>This Displays the current Gcode in a graphical form.<br /></p></div>
+<div class="paragraph"><p>_view
+_dro
+_dtg
+_metric
+overlay
+_offsets
+background_color</p></div>
+<div class="sect3">
+<h4 id="_action_functions">2.9.1. ACTION functions</h4>
+<div class="paragraph"><p>The ACTION library can control the gcode graphics widget.<br />
+<em>ACTION.RELOAD_DISPLAY()</em> -reload the current program which recalculates the origin/offsets.<br />
+<em>ACTION.SET_GRAPHICS_VIEW(view)</em> The following commands can be sent:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>clear
+zoom-in
+zoom-out
+pan-up
+pan-down
+pan-right
+pan-left
+rotate-cw
+rotate-ccw
+rotate-up
+rotate-down
+overlay-dro-on
+overlay-dro-off
+overlay-offsets-on
+overlay-offsets-off
+alpha-mode-on
+alpha-mode-off
+inhibit-selection-on
+inhibit-selection-off
+dimensions-on
+dimensions-off
+grid-size
+record-view
+set-recorded-view
+P
+X
+Y
+Y2
+Z
+Z2</code></pre>
+</div></div>
+<div class="paragraph"><p><em>ACTION.ADJUST_PAN(X,Y)</em> -directly set the relative pan of view in x and y direction</p></div>
+<div class="paragraph"><p><em>ACTION.ADJUST_ROTATE(X,Y)</em> -directly set the relative rotation of view in x and y direction</p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s opengl widget.<br /></p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_statelabel_widget">2.10. StateLabel Widget</h3>
+<div class="paragraph"><p>This will display a label based on true/false states of the machine controller.<br />
+You can select different text based on true or false.<br />
+These states are selectable via these properties:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>css_mode_status</em><br />
+When true machine is in G96 Constant Surface Speed Mode<br />
+</p>
+</li>
+<li>
+<p>
+<em>diameter_mode_status</em><br />
+When true machine is in G7 Lathe Diameter Mode<br />
+</p>
+</li>
+<li>
+<p>
+<em>fpr_mode_status</em><br />
+When true machine is in G95 Feed per revolution Mode<br />
+</p>
+</li>
+<li>
+<p>
+<em>metric_mode_status</em><br />
+When true machine is in G21 Metric Mode+
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Other Properties:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>true_textTemplate</em><br />
+This will be the text set when the option is true.<br />
+You can use Qt rich text code for different fonts/colours etc.<br />
+Typical template for metric mode in true state, might be: <em>Metric Mode</em><br />
+</p>
+</li>
+<li>
+<p>
+<em>false_textTemplate</em><br />
+This will be the text set when the option is true.<br />
+You can use Qt rich text code for different fonts/colours etc.<br />
+Typical template for metric mode in false state, might be: <em>Imperial Mode</em><br />
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLabel</p></div>
+</div>
+<div class="sect2">
+<h3 id="_statuslabel_widget">2.11. StatusLabel Widget</h3>
+<div class="paragraph"><p>This will display a label based on variable states of the machine controller.<br />
+You can change how the state will be display by substituting <br />
+You can use Rich text for different fonts/colors etc.<br />
+These states are selectable:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>actual_spindle_speed_status</em><br />
+Used to display the actual spindle speed as reported from the HAL pin spindle.0.speed-in<br />
+It&#8217;s converted to RPM. Typically would use a textTemplate of %d
+</p>
+</li>
+<li>
+<p>
+<em>actual surface speed_status</em><br />
+Used to display the actual cutting surface speed on a lathe based on X axis and spindle speed<br />
+It&#8217;s converted to distance per minute.<br />
+Typically would use a textTemplate of %4.1f (feet per minute)<br />
+and altTextTemplate of %d (meters per minute)
+</p>
+</li>
+<li>
+<p>
+<em>blendcode_status</em><br />
+Shows the current g64 setting<br />
+</p>
+</li>
+<li>
+<p>
+<em>current_feedrate_status</em><br />
+Shows the current actual feedrate<br />
+</p>
+</li>
+<li>
+<p>
+<em>current_FPU_status</em><br />
+Shows the current actual feed per unit
+</p>
+</li>
+<li>
+<p>
+<em>fcode_status</em><br />
+Shows the current programmed F Code setting
+</p>
+</li>
+<li>
+<p>
+<em>feed_override_status</em><br />
+Shows the current feed override setting in percent
+</p>
+</li>
+<li>
+<p>
+<em>filename_status</em><br />
+Shows the last loaded file name
+</p>
+</li>
+<li>
+<p>
+<em>filepath_status</em><br />
+Shows the last loade full file path name
+</p>
+</li>
+<li>
+<p>
+<em>gcode_status</em><br />
+Shows all active G codes
+</p>
+</li>
+<li>
+<p>
+<em>gcode selected_status</em><br />
+Show the current selected Gcode line
+</p>
+</li>
+<li>
+<p>
+<em>halpin status</em><br />
+Shows the HAL pin output of a selected HAL pin
+</p>
+</li>
+<li>
+<p>
+<em>jograte_status</em><br />
+Shows the current QTvcp based Jog Rate
+</p>
+</li>
+<li>
+<p>
+<em>jograte_angular_status</em><br />
+Shows the current QTvcp based Angular Jog Rate
+</p>
+</li>
+<li>
+<p>
+<em>jogincr_status</em><br />
+Shows the current QTvcp based Jog increment
+</p>
+</li>
+<li>
+<p>
+<em>jogincr_angular_status</em><br />
+Shows the current QTvcp based Angular Jog increment
+</p>
+</li>
+<li>
+<p>
+<em>machine state_status</em><br />
+Shows the current machine interpeter state using the text described from the state_list.<br />
+The interpeter states are: Estopped, Running, Stopped, Paused, Waiting, Reading
+</p>
+</li>
+<li>
+<p>
+<em>max_velocity_override_status</em><br />
+Shows the current max axis velocity override setting
+</p>
+</li>
+<li>
+<p>
+<em>mcode_status</em><br />
+Shows all active M codes
+</p>
+</li>
+<li>
+<p>
+<em>requested_spindle_speed_status</em><br />
+Shows the requested spindle speed - actual may be different.
+</p>
+</li>
+<li>
+<p>
+<em>rapid_override_status</em><br />
+Shows the current rapid override setting in (0-100) percent
+</p>
+</li>
+<li>
+<p>
+<em>spindle_override_status</em><br />
+Shows the current spindle override setting in percent
+</p>
+</li>
+<li>
+<p>
+<em>timestamp_status</em><br />
+Shows the time based on the system settings.<br />
+An example of a useful textTemplate setting: <em>%I:%M:%S %p</em> see the python time module for more info
+</p>
+</li>
+<li>
+<p>
+<em>tool comment_status</em><br />
+returns the comment text from the current loaded tool
+</p>
+</li>
+<li>
+<p>
+<em>tool diameter_status</em><br />
+returns the diameter from the current loaded tool
+</p>
+</li>
+<li>
+<p>
+<em>tool_number_status</em><br />
+returns the tool number of the current loaded tool
+</p>
+</li>
+<li>
+<p>
+<em>tool_offset_status</em><br />
+returns the offset of the current loaded tool, indexed by <em>index_number</em> to select axis (0=x,1=y,etc)
+</p>
+</li>
+<li>
+<p>
+<em>user_system_status</em><br />
+Shows the active user coordinate system (G5x setting)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Other Properties:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>index_number</em><br />
+Integer that specifies the tool status index to display.
+</p>
+</li>
+<li>
+<p>
+<em>state_label_list</em><br />
+List of labels used for different machine states.
+</p>
+</li>
+<li>
+<p>
+<em>halpin_names</em><br />
+Name of the halpin to monitor (including HAL component basename.
+</p>
+</li>
+<li>
+<p>
+<em>textTemplate</em><br />
+This uses python formatting rules to set the text output.<br />
+This is usually used for imperial (G20) or angular numerical settings, though<br />
+not every option has imperial/metric conversion.<br />
+One can use %s for no conversion, %d for integer conversion, %f for float conversion. etc<br />
+You can also use Qt rich text code.<br />
+Typical template used for formatting imperial float numbers to text eg. <em>%9.4f</em> or <em>%9.4f inch</em><br />
+</p>
+</li>
+<li>
+<p>
+<em>alt_textTemplate</em><br />
+This uses python formatting rules to set the text output.<br />
+This is usual used for metric (G21) numerical settings.<br />
+Typical template used for formatting metric float to text eg. <em>%10.3f</em> or <em>%10.3f mm</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLabel</p></div>
+</div>
+<div class="sect2">
+<h3 id="_statusimageswicher_widget">2.12. StatusImageSwicher Widget</h3>
+<div class="paragraph"><p>Status image switcher will switch between images based on linuxcnc states.<br />
+<em>watch spindle</em> would toggle between 3 images ( stop, fwd, revs)<br />
+<em>watch axis homed</em> would toggle between 2 images ( axis not homed, axis homed)<br />
+<em>watch all homed</em> would toggle between 2 images ( not all homed, all homed)<br />
+<em>watch hard limits</em> would toggle between 2 images or one per joint<br /></p></div>
+<div class="paragraph"><p>Here is an example of using it to display an icon of Z axis homing state:<br /></p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/statusImageSwitcher.png" alt="QTvcp Status Image Switcher" />
+</div>
+</div>
+<div class="paragraph"><p>In the properties section notice that:<br />
+<em>watch axis homed</em> is checked<br />
+<em>axis letter</em> is set to Z<br /></p></div>
+<div class="paragraph"><p>If you double click the <em>image list</em> a dialog will show and allow you to add image paths to.<br />
+If you have one image as an icon and one clear image then that will look like it shows and hides the icon.<br /></p></div>
+<div class="paragraph"><p>Selecting image paths can be done by selecting the <em>pixmap</em> property and selecting an image.<br />
+Note: The pixmap setting is for test display only and will be ignored outside of Designer.<br />
+Right click the image name and you should see <em>copy path</em><br />
+Click <em>copy path</em><br />
+Now double click the <em>image list</em> property so the dialog shows.<br />
+Click the <em>New</em> button<br />
+Paste the image path in the entry box<br />
+Do that again for the next image - use a clear image to represent a hidden icon.<br /></p></div>
+<div class="paragraph"><p>You can test display the images from the image list by changing the <em>image number</em><br />
+In this case 0 is unhomed 1 would be homed<br />
+This is for test display only and will be ignored outside of Designer.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_statusstacked">2.13. StatusStacked</h3>
+<div class="paragraph"><p>This widget displays one of three panels based on linuxcnc&#8217;s mode.<br />
+This allows you to automatically display different widgets on Manual, MDI and Auto modes.<br /></p></div>
+<div class="paragraph"><p>todo<br />
+It is based on pyQT&#8217;s QStacked widget.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_jog_increments_widget">2.14. Jog Increments Widget</h3>
+<div class="paragraph"><p>This widget allows the user to select jog increment values for jogging.<br />
+The jogging values come from the INI file under: <em>[DISPLAY]</em>, <em>INCREMENTS</em><br />
+or <em>[DISPLAY]</em>, <em>ANGULAR_INCREMENTS</em><br />
+This will be available to all widgets through STATUS.<br />
+You can select linear or angular increments by the property <em>linear_option</em><br />
+in Designer property editor.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s combobox</p></div>
+</div>
+<div class="sect2">
+<h3 id="_screenoption_widget">2.15. ScreenOption widget</h3>
+<div class="paragraph"><p>This widget doesn&#8217;t add anything visually to a screen but sets up important<br />
+options. This is the preferred way to use these options<br /></p></div>
+<div class="paragraph"><p>These properties that can be set in designer, in python handler code or<br />
+(if appropriate) in stylesheets.</p></div>
+<div class="ulist"><div class="title">These include:</div><ul>
+<li>
+<p>
+<em>halCompBaseName</em>:<br />
+If left empty Qtvcp will use the screen&#8217;s name as the HAL component&#8217;s basename.<br />
+If set, Qtvcp will use this string as the HAL component&#8217;s basename.<br />
+If the -c command line option is used when loading Qtvcp,<br />
+Qtvcp will use the name specified in the command line - it overrides all above options.<br />
+If you programmically set the basename in the handlerfile - it will override all above options.<br />
+This option cannot be set in stylesheets.<br />
+</p>
+</li>
+<li>
+<p>
+<em>notify_option</em>:<br />
+Hooking into the desktop notification bubbles for error and messages
+</p>
+</li>
+<li>
+<p>
+<em>notify_max_messages</em>:<br />
+Number of messages shown on screen at one time.
+</p>
+</li>
+<li>
+<p>
+<em>catch_close_option</em>:<br />
+Catching the close event to pop up a <em>are you sure</em> prompt
+</p>
+</li>
+<li>
+<p>
+<em>close_overlay_color</em>:<br />
+Color of transparent layer shown when quitting.
+</p>
+</li>
+<li>
+<p>
+<em>catch_error_option</em>:<br />
+monitoring the linuxcnc error channel. This also sends the message<br />
+through  STATUS to anything that registers
+</p>
+</li>
+<li>
+<p>
+<em>play_sounds_option</em>:<br />
+playing sounds using <em>beep</em>, <em>espeak</em> and the system sound
+</p>
+</li>
+<li>
+<p>
+<em>use_pref_file_option</em>:<br />
+setting up a preference filepath<br />
+Using the magic word <em>WORKINGFOLDER</em> in the preference file path will be replaced with<br />
+the launched configuration path ie. WORKINFOLDER/my_preferences
+</p>
+</li>
+<li>
+<p>
+<em>use_send_zmq_option</em>:<br />
+Used to initiate ZMQ based outgoing messages.<br />
+</p>
+</li>
+<li>
+<p>
+<em>use_receive_zmq_messages</em>:<br />
+Used to initiate ZMQ based in coming messages.<br />
+These messages can be used to call functions in the handler file.<br />
+Allowing external programs to intergrate tightly with qtvcp based screens.<br />
+</p>
+</li>
+<li>
+<p>
+<em>embedded_program_option</em>:<br />
+Embed programs defined in the INI.<br />
+</p>
+</li>
+<li>
+<p>
+<em>default_emebed_tab</em><br />
+This is the property for a default location to embed external programs.<br />
+It would be set to the designer name of a tab page widget.<br />
+</p>
+</li>
+<li>
+<p>
+<em>focusOverlay_option</em>:<br />
+Focus_overlay will put a transparent image or colored panel over the main<br />
+screen to emphasize focus to an external event - typically a dialog.<br />
+</p>
+</li>
+<li>
+<p>
+<em>messageDialog_option</em>:<br />
+sets up the message dialog - used for general messages
+</p>
+</li>
+<li>
+<p>
+<em>message_overlay_color</em>:<br />
+Color of transparent layer shown when the message dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>closeDialog_option</em>:<br />
+sets up the standard close screen prompt dialog
+</p>
+</li>
+<li>
+<p>
+<em>entryDialog_option</em>:<br />
+sets up the numerical entry dialog
+</p>
+</li>
+<li>
+<p>
+<em>entryDialogSoftKey_option</em>:<br />
+    sets up a floating software keyboard when entry dialog is focused.<br />
+</p>
+</li>
+<li>
+<p>
+<em>entry_overlay_color</em>:<br />
+Color of transparent layer shown when the entry dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>toolDialog_option</em>:<br />
+sets up the manual tool change dialog, including HAL pin.
+</p>
+</li>
+<li>
+<p>
+<em>tool_overlay_color</em>:<br />
+Color of transparent layer shown when the tool dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>ToolUseDesktopNotify</em>:<br />
+option to use desktop notify dialogs for manual tool change dialog.<br />
+</p>
+</li>
+<li>
+<p>
+<em>ToolFramesless</em>:<br />
+Framesless dialogs can not be easily moved by users.<br />
+</p>
+</li>
+<li>
+<p>
+<em>fileDialog_option</em>:<br />
+sets up the file choosing dialog.
+</p>
+</li>
+<li>
+<p>
+<em>file_overlay_color</em>:<br />
+Color of transparent layer shown when the file dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>keyboardDialog_option</em>:<br />
+sets up a keyboard entry widget.<br />
+</p>
+</li>
+<li>
+<p>
+<em>keyboard_overlay_color</em>:<br />
+Color of transparent layer shown when the keyboard dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>vesaProbe_option</em>:<br />
+sets up the versa style probe dialog
+</p>
+</li>
+<li>
+<p>
+<em>versaProbe_overlay_color</em>:<br />
+Color of transparent layer shown when the versaProbe dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>macroTabeDialog_option</em>:<br />
+sets up the macro selection dialog
+</p>
+</li>
+<li>
+<p>
+<em>macoTab_overlay_color</em>:<br />
+Color of transparent layer shown when the macroTab dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>camViewDialog_option</em>:<br />
+sets up the camera alignment dialog
+</p>
+</li>
+<li>
+<p>
+<em>camView_overlay_color</em>:<br />
+Color of transparent layer shown when the camView dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>toolOffset_option</em>:<br />
+sets up the tool offset display/editor dialog
+</p>
+</li>
+<li>
+<p>
+<em>toolOffset_overlay_color</em>:<br />
+Color of transparent layer shown when the toolOffset dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>originOffset_option</em>:<br />
+sets up the origin display/editor dialog
+</p>
+</li>
+<li>
+<p>
+<em>originOffset_overlay_color</em>:<br />
+Color of transparent layer shown when the originOffset dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>calculatorDialog_option</em>:<br />
+sets up the calcylatory entry dialog
+</p>
+</li>
+<li>
+<p>
+<em>calculator_overlay_color</em>:<br />
+Color of transparent layer shown when the calculator dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>machineLogDialog_option</em>:<br />
+sets up a dialog to display logs from the machine and qtvcp
+</p>
+</li>
+<li>
+<p>
+<em>machineLog_overlay_color</em>:<br />
+Color of transparent layer shown when the machineLog dialog is shown.
+</p>
+</li>
+<li>
+<p>
+<em>runFromLineDialog_option</em>:<br />
+sets up a dialog to display starting options when starting machine<br />
+execution from a arbitrary line.<br />
+</p>
+</li>
+<li>
+<p>
+<em>runFromLine_overlay_color</em>:<br />
+Color of transparent layer shown when the runFromLine dialog is shown.
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_setting_properties_programically">2.15.1. Setting Properties Programically</h4>
+<div class="paragraph"><p>The screen designer chooses the default settings of the screenOptions widget.<br />
+Once chosen, most won&#8217;t ever need to be changed.<br />
+but if needed some can be changed in the handler file or in stylesheets.<br />
+Some settings are only checked on startup so will not cause changes after startup.<br />
+In these cases you would need to make the changes in Qtdesigner only.<br /></p></div>
+<div class="paragraph"><p>ie. In the handler file<br />
+Here we reference the widget by the QtDesigner user defined name:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># red,green,blue,alpha 0-255</span></span>
+color <span style="color: #990000">=</span> QtGui<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">QColor</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">255</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">191</span><span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>screen_options<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'close_overlay_color'</span><span style="color: #990000">,</span> color<span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>screen_options<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'play_sounds_option'</span><span style="color: #990000">,</span>False<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>ie. In style sheets<br />
+Here we can reference the widget by QtDesigner user defined name<br />
+or by widget class name.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>/* red, green, blue 0-255, alpha 0-100% or 0.0 to 1.0 */
+/* the # sign is used to refer to QtDesigner defined widget name */
+/* matches/applied to only this named widget */
+
+#screen_options {
+qproperty-close_overlay_color: rgba(0, 255, 0, 0.75) }</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>/* red, green, blue 0-255, alpha 0-100% or 0.0 to 1.0 */
+/* use widget class name - matches/applied to all widgets of this class*/
+
+ScreenOptions {
+qproperty-close_overlay_color: rgba(0, 255, 0, 0.75) }</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_preference_file_entries">2.15.2. Preference File Entries</h4>
+<div class="paragraph"><p>If the preference file option is selected, screenOption widget will make an INI based preference file.<br />
+While other Qtvcp widgets will add to this list, the screenOptions widget will add these entries:<br /></p></div>
+<div class="paragraph"><p>Under the heading: <em>SCREEN_OPTIONS</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>catch_errors =</em> -True or False
+</p>
+</li>
+<li>
+<p>
+<em>desktop_notify =</em> -True or False (whether to display errors/messages in the system&#8217;s notification mechanism)
+</p>
+</li>
+<li>
+<p>
+<em>notify_max_msgs =</em> -Integer (number of displayed errors at one time)
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_check =</em> -True or False (whether to pop a confirmation dialog)
+</p>
+</li>
+<li>
+<p>
+<em>sound_player_on =</em> -True or False (turns all sounds on or off)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Under the heading: <em>MCH_MSG_OPTIONS</em></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>mchnMsg_play_sound =</em> -True or False (to play alert sound when dialog pops)
+</p>
+</li>
+<li>
+<p>
+<em>mchnMsg_speak_errors =</em> -True or False (to use Espeak to speak error messages)
+</p>
+</li>
+<li>
+<p>
+<em>mchnMsg_speak_text =</em> -True or False (to use Espeak to speak all other messages)
+</p>
+</li>
+<li>
+<p>
+<em>mchnMsg_sound_type =</em> -sound to play when messages displayed
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Under the heading: <em>USER_MSG_OPTIONS</em></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>usermsg_play_sound =</em> -True or False (to play alert sound when dialog pops)
+</p>
+</li>
+<li>
+<p>
+<em>userMsg_sound_type =</em> -sound to play when user messages displayed
+</p>
+</li>
+<li>
+<p>
+<em>userMsg_use_focusOverlay =</em> -True or False
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Under the heading: <em>SHUTDOWN_OPTIONS</em></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>shutdown_play_sound =</em> -True or False
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_alert_sound_type =</em> -sound to play when messages displayed
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_exit_sound_type =</em> -sound to play when messages displayed
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_msg_title =</em> -Short title string to display in dialog
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_msg_focus_text =</em> -Large text string to superimpose in focus layer
+</p>
+</li>
+<li>
+<p>
+<em>shutdown_msg_detail =</em> -Longer descriptive string to display in dialog
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Under the heading: <em>NOTIFY_OPTIONS</em></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>notify_start_greeting =</em> - True or False (whether to display a greeting dialog on start up)
+</p>
+</li>
+<li>
+<p>
+<em>notify_start_title =</em> - Short Title string. If the speak option is also selected it will be spoken with Espeak.
+</p>
+</li>
+<li>
+<p>
+<em>notify_start_detail =</em> - Longer description string.
+</p>
+</li>
+<li>
+<p>
+<em>notify_start_timeout =</em> - time in seconds to display before closing.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">In Debian/Ubuntu/Mint based systems these sounds should be available as sound-type entries above:<br />
+(These Sound options require python3-gst1.0 installed.)<br /></td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+ERROR
+</p>
+</li>
+<li>
+<p>
+READY
+</p>
+</li>
+<li>
+<p>
+DONE
+</p>
+</li>
+<li>
+<p>
+ATTENTION
+</p>
+</li>
+<li>
+<p>
+RING
+</p>
+</li>
+<li>
+<p>
+LOGIN
+</p>
+</li>
+<li>
+<p>
+LOGOUT
+</p>
+</li>
+<li>
+<p>
+BELL
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>You can also specify a file path to an arbitrary audio file.<br />
+(You can use ~ in path to substitute for the user home file path)</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">If the Beep kernel module is installed and it is not disabled, these sound-type entries are available:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+BEEP
+</p>
+</li>
+<li>
+<p>
+BEEP_RING
+</p>
+</li>
+<li>
+<p>
+BEEP_START
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">If the Espeak module (python3-espeak) is install you can use the entry <em>SPEAK</em> to pronounce text:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+SPEAK <em>my message</em>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_statusslider_widget">2.16. StatusSlider Widget</h3>
+<div class="paragraph"><p>This widget allow the user to adjust linuxcnc setting via a slide.<br /></p></div>
+<div class="ulist"><div class="title">The widget can adjust:</div><ul>
+<li>
+<p>
+Jog rate
+</p>
+</li>
+<li>
+<p>
+Angular jog rate
+</p>
+</li>
+<li>
+<p>
+Feed rate
+</p>
+</li>
+<li>
+<p>
+spindle override rate
+</p>
+</li>
+<li>
+<p>
+Rapid override rate
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_properties_3">2.16.1. Properties</h4>
+<div class="paragraph"><p>StatusSlider has properties that can be set in designer, in python handler code or<br />
+(if appropriate) in stylesheets.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+halpin_option - sets option to make a HAL float pin that reflects current value.
+</p>
+</li>
+<li>
+<p>
+rapid_rate - selects a rapid override rate slider
+</p>
+</li>
+<li>
+<p>
+feed_rate - selects a feed override rate slider
+</p>
+</li>
+<li>
+<p>
+spindle_rate - selects a spindle override rate slider
+</p>
+</li>
+<li>
+<p>
+jograte_rate - selects a linear jograte slider
+</p>
+</li>
+<li>
+<p>
+jograte_angular_rate - selects a angular jograte slider
+</p>
+</li>
+<li>
+<p>
+max_velocity_rate - selects a maximum velocity rate slider
+</p>
+</li>
+<li>
+<p>
+alertState - a string to define style change. (read-only - <em>under</em>,<em>over</em> and <em>normal</em>)
+</p>
+</li>
+<li>
+<p>
+alertUnder - set the float value that signals the stylesheet for <em>under</em> warning.
+</p>
+</li>
+<li>
+<p>
+alertOver - set the float value that signals the stylesheet for <em>over</em> warning.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>ie. In handler file:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>status_slider<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'spindle_rate'</span><span style="color: #990000">,</span>True<span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>status_slider<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'alertUnder'</span><span style="color: #990000">,</span><span style="color: #993399">35</span><span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>status_slider<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'alertOver'</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>ie. In style sheets:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>/* warning colors for overrides if out of normal range*/
+/* widget object name is slider_spindle_ovr */
+
+    #slider_spindle_ovr[alertState='over'] {
+        background: red;
+    }
+    #slider_spindle_ovr[alertState='under'] {
+        background: yellow;
+    }</code></pre>
+</div></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QSlider</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_state_led_widget">2.17. State LED Widget</h3>
+<div class="paragraph"><p>This widget gives status on the selected linuxcnc state.<br /></p></div>
+<div class="paragraph"><p>The state options are:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+is_paused_status
+</p>
+</li>
+<li>
+<p>
+is_estopped_status
+</p>
+</li>
+<li>
+<p>
+is_on_status
+</p>
+</li>
+<li>
+<p>
+is_idle_status_
+</p>
+</li>
+<li>
+<p>
+is_homed_status
+</p>
+</li>
+<li>
+<p>
+is_flood_status
+</p>
+</li>
+<li>
+<p>
+is_mist_status
+</p>
+</li>
+<li>
+<p>
+is_block_delete_status
+</p>
+</li>
+<li>
+<p>
+is_optional_stop_status
+</p>
+</li>
+<li>
+<p>
+is_joint_homed_status
+</p>
+</li>
+<li>
+<p>
+is_limits_overridden_status
+</p>
+</li>
+<li>
+<p>
+is_manual_status
+</p>
+</li>
+<li>
+<p>
+is_mdi_status
+</p>
+</li>
+<li>
+<p>
+is_auto_status
+</p>
+</li>
+<li>
+<p>
+is_spindle_stopped_status
+</p>
+</li>
+<li>
+<p>
+is_spindle_fwd_status
+</p>
+</li>
+<li>
+<p>
+is_spindle_rev_status
+</p>
+</li>
+<li>
+<p>
+is_spindle_at_speed_status
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>There are properties that can be changed:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+halpin_option - Adds an output pin that reflects selected state
+</p>
+</li>
+<li>
+<p>
+invert_state_status - Invert the LED state compared to the linuxcnc state.
+</p>
+</li>
+<li>
+<p>
+diameter -Diameter of the LED
+</p>
+</li>
+<li>
+<p>
+color - Color of the LED when on.
+</p>
+</li>
+<li>
+<p>
+off_color - Color of the LED when off.
+</p>
+</li>
+<li>
+<p>
+alignment - Qt Aliment hint.
+</p>
+</li>
+<li>
+<p>
+state - Current state of LED (for testing in designer)
+</p>
+</li>
+<li>
+<p>
+flashing - Turns flashing option on and off.
+</p>
+</li>
+<li>
+<p>
+flashRate - Sets the flash rate.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The LED properties can be defined in a stylesheet with the following code added to the .qss file.<br />
+The name_of_led would be the name defined Designer&#8217;s editor.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>State_LED #name_0f_led{
+qproperty-color: red;
+qproperty-diameter: 20;
+qproperty-flashRate: 150;
+}</code></pre>
+</div></div>
+<div class="paragraph"><p>It is based on the LED widget</p></div>
+</div>
+<div class="sect2">
+<h3 id="_statusadjustmentbar">2.18. StatusAdjustmentBar</h3>
+<div class="paragraph"><p>This widget allows setting values using buttons while displaying a bar.<br />
+It also has an optional hi/low toggle button that can be held down to set the<br />
+levels.</p></div>
+<div class="ulist"><div class="title">The widget can adjust:</div><ul>
+<li>
+<p>
+Jog rate
+</p>
+</li>
+<li>
+<p>
+angular jog rate
+</p>
+</li>
+<li>
+<p>
+Feed rate
+</p>
+</li>
+<li>
+<p>
+Spindle override rate
+</p>
+</li>
+<li>
+<p>
+Rapid override rate
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QProgressBar</p></div>
+</div>
+<div class="sect2">
+<h3 id="_systemtoolbutton">2.19. SystemToolButton</h3>
+<div class="paragraph"><p>This widget allows you to manually select a user system by pressing and holding.<br />
+If you don&#8217;t set the button text it will automatically update to the current system.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QToolButton</p></div>
+</div>
+<div class="sect2">
+<h3 id="_macrotab_widget">2.20. MacroTab Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_macro.png" alt="QTvcp led" />
+</div>
+<div class="title">Figure 7. Macrotab</div>
+</div>
+<div class="paragraph"><p>This Widget allows a user to select and adjust special macro programs for
+doing small jobs.<br />
+It uses images for visual representation of the macro and for an icon.<br />
+It searches for special macros using the INI definition:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[RS274NGC]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">SUBROUTINE_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span></tt></pre></div></div>
+<div class="paragraph"><p>The macros are Oword subroutine with special comments to work with the launcher.<br />
+The first three lines must have the keywords: (The forth is optional)<br />
+Here is a sample for the first four lines in an Oword file:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>; MACROCOMMAND=Entry1,Entry2
+; MACRODEFAULTS=0,true
+; MACROIMAGE=my_image.svg,Icon layer number, Macro layer number
+; MACROOPTIONS=load:yes,save:yes,default:default.txt,path:~/macros</code></pre>
+</div></div>
+<div class="sect3">
+<h4 id="_macrocommand">2.20.1. MACROCOMMAND</h4>
+<div class="paragraph"><p>This is the first line in the Oword file.<br />
+It is a comma separated list of text to display above an entry.<br />
+There will be one for every variable required in the Oword function.<br />
+If the macro does not require variables, only add <em>; MACROCOMMAND=</em></p></div>
+</div>
+<div class="sect3">
+<h4 id="_macrodefault">2.20.2. MACRODEFAULT</h4>
+<div class="paragraph"><p>This must be the second line in the Oword file.<br />
+It is a comma separated list of the default values for each variable in the Oword function.<br />
+If you use the word <em>true</em> or <em>false</em> in the list, a checkbutton will be shown.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_macroimage">2.20.3. MACROIMAGE</h4>
+<div class="paragraph"><p>This must be the third line in the Oword file.<br />
+if using a SVG image file, the must end b .svg<br />
+The image must be added to an svg layer.<br />
+It uses layers to define different images for macro and icon.<br />
+The first entry will be the SVG image file name.<br />
+It is assumed to be in the same folder as the Oword file.<br />
+The second item will be the image layer.<br />
+the optional third entry will be the icon layer.<br />
+If the third entry is missing, the same image will be used for macro and icon.<br /></p></div>
+<div class="paragraph"><p>If using a png/jpg image file .<br />
+The first entry is the image filename.<br />
+It is assumed the image file are in the same folder an the macro.<br />
+The optional second entry will be the icon filename.<br />
+If the second entry is missing the same image will be used for macro and image.<br /></p></div>
+<div class="paragraph"><p>If the keyword is present but the entries are missing , no images will be used.<br /></p></div>
+</div>
+<div class="sect3">
+<h4 id="_macrodefault_2">2.20.4. MACRODEFAULT</h4>
+<div class="paragraph"><p>This optional line must be the forth line in the Oword file.<br />
+It is a comma separated list of keyword and data.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>LOAD:yes</em> - show a load button
+</p>
+</li>
+<li>
+<p>
+<em>SAVE:yes</em> -show a save button
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mdiline_widget">2.21. MDILine Widget</h3>
+<div class="paragraph"><p>One can enter MDI commands here. A popup keyboard is available<br />
+There are also embedded commands available from this Widget.<br />
+Type, in all capitals, any of these commands to load the respective program:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+HALMETER<br />
+</p>
+</li>
+<li>
+<p>
+HALSHOW<br />
+</p>
+</li>
+<li>
+<p>
+HALSCOPE<br />
+</p>
+</li>
+<li>
+<p>
+STATUS<br />
+</p>
+</li>
+<li>
+<p>
+CALIBRATION<br />
+</p>
+</li>
+<li>
+<p>
+CLASSICLADDER<br />
+</p>
+</li>
+<li>
+<p>
+PREFERENCE - Loads the preference file onto the gcodeEditor<br />
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QLineEdit<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_mdihistory">2.22. MDIHistory</h3>
+<div class="paragraph"><p>Displays a scrollable list of past MDI command.<br />
+A edit line is embedded for MDI commands.<br />
+There are also embedded commands available from this Widget<br />
+Type, in all capitals, any of these commands to load the respective program:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+HALMETER<br />
+</p>
+</li>
+<li>
+<p>
+HALSHOW<br />
+</p>
+</li>
+<li>
+<p>
+HALSCOPE<br />
+</p>
+</li>
+<li>
+<p>
+STATUS<br />
+</p>
+</li>
+<li>
+<p>
+CALIBRATION<br />
+</p>
+</li>
+<li>
+<p>
+CLASSICLADDER<br />
+</p>
+</li>
+<li>
+<p>
+PREFERENCE - Loads the preference file onto the gcodeEditor<br />
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The history is recorded on a file defined in the INI.<br />
+under the heading [DISPLAY] (this shows the default)<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">MDI_HISTORY_FILE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> '~/.axis_mdi_history'</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_mditouchy">2.23. MDITouchy</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_mdiTouchy.png" alt="QTvcp MDI Touchy" />
+</div>
+<div class="title">Figure 8. MDI Touchy</div>
+</div>
+<div class="paragraph"><p>This widget display button and entry lines for use with entering MDI commands.<br />
+It is based on Linuxcnc&#8217;s Touchy screen&#8217;s MDI entry process.<br />
+It&#8217;s large buttons are most useful for touch screens.<br />
+<br />
+To use MDITouchy, first press one of the <em>G/XY</em>, <em>G/RO</em>, <em>M</em> or <em>T</em> button.<br />
+On the left, will show the current line that can be filled out, then press <em>Next</em> for the next line.<br />
+<em>Calc</em> will pop up a calculator dialog.<br />
+<em>Clear</em> clears th ecurrent entry.<br />
+<em>Back</em> allows you to change previous line entries.<br />
+<br />
+The widget requires an explicied call to MDITouchu&#8217;s python code to actually run the MDI command<br />
+For handler file code: if the widget was named mditouchy in designer, this command would<br />
+run the displayed MDI command.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>mditouchy<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">run_command</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>For action button use: if the widget was named mditouchy in designer,<br />
+use the action button&#8217;s <em>Call python commands</em> option and enter:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>INSTANCE<span style="color: #990000">.</span>mditouchy<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">run_command</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>The macro button will cycle though macro&#8217;s defined in the INI heading [DISPLAY]<br />
+add one or more 'MACRO = ' lines.  Each should be of the format:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">MACRO </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> increment xinc yinc</span></tt></pre></div></div>
+<div class="paragraph"><p>In this example, increment is the name of the macro, and it accepts two
+parameters, named xinc and yinc.</p></div>
+<div class="paragraph"><p>Now, place the macro in a file named <em>increment.ngc</em>, in the<br />
+<em>PROGRAM_PREFIX</em> directory or any directory in the <em>SUBROUTINE_PATH</em>.<br />
+(specified in the INI file)<br /></p></div>
+<div class="paragraph"><p>It should look like:<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>O&lt;increment&gt; sub
+G91 G0 X#1 Y#2
+G90
+O&lt;increment&gt; endsub</code></pre>
+</div></div>
+<div class="paragraph"><p>Notice the name of the sub matches the file name and macro name exactly,<br />
+including case.<br /></p></div>
+<div class="paragraph"><p>When you invoke the macro by pressing the Macro button<br />
+you can enter values for xinc and yinc.  These are<br />
+passed to the macro as <em>#1</em> and <em>#2</em> respectively.  Parameters you<br />
+leave empty are passed as value 0.<br /></p></div>
+<div class="paragraph"><p>If there are several different macros, press the Macro button<br />
+repeatedly to cycle through them.<br /></p></div>
+<div class="paragraph"><p>In this simple example, if you enter -1 for xinc and invoke the running of the<br />
+MDI cycle, a rapid <em>G0</em> move will be invoked, moving one unit to<br />
+the left.<br /></p></div>
+<div class="paragraph"><p>This macro capability is useful for edge/hole probing and other setup<br />
+tasks, as well as perhaps hole milling or other simple operations<br />
+that can be done from the panel without requiring specially-written<br />
+gcode programs.<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_originoffsetview_widget">2.24. OriginOffsetView Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_originoffsetview.png" alt="QTvcp Origin Offset View" />
+</div>
+<div class="title">Figure 9. origin Offset View</div>
+</div>
+<div class="paragraph"><p>This widget allows one to modify User System origin offsets directly<br />
+It will update linuxcnc&#8217;s Parameter file for changes made or found.<br />
+The settings can only be changed in linuxcnc after homing and<br />
+when the motion controller is idle.<br />
+The display and entry will change between metric and imperial based<br />
+on linuxcnc&#8217;s current G20/G21 setting.<br />
+The current in-use user system will be highlighted<br />
+Extra actions can be integrated to manipulate settings.<br />
+These actions depend on extra code added either to a combined widget like<br />
+originoffsetview dialog or the screens handler code.<br />
+Typical actions might be <em>Clear Current User offsets</em>, <em>Zero X</em><br />
+Clicking on the columns and rows allows one to adjust the settings.<br />
+A dialog can be made to popup for data or text entry.<br />
+The comments section will be recorded in the preference file.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QTableView, QAbstractTableModel, and ItemEditorFactory.<br />
+Properties, functions and styles of the pyQT base objects are always available.<br /></p></div>
+<div class="sect3">
+<h4 id="_properties_4">2.24.1. Properties</h4>
+<div class="paragraph"><p>OriginOfsetView has properties that can be set in designer, in python handler code or<br />
+(if appropriate) in stylesheets.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+dialog_code_string - sets which dialog will pop up with numerical entry.
+</p>
+</li>
+<li>
+<p>
+test_dialog_code_string - sets which dialog will pop up with text entry.
+</p>
+</li>
+<li>
+<p>
+metric_template - metric numerical data format.
+</p>
+</li>
+<li>
+<p>
+imperial_template - imperial numerical data format.
+</p>
+</li>
+<li>
+<p>
+styleCodeHighlight - current in-use user system highlight color.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>ie. In the handler file:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>originoffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'dialog_code'</span><span style="color: #990000">,</span><span style="color: #FF0000">'CALCULATOR'</span><span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>originoffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'metric_template'</span><span style="color: #990000">,</span><span style="color: #FF0000">'%10.3f'</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>ie. In style sheets:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>OriginOffsetView{
+qproperty-styleColorHighlist: lightblue;
+}</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_state_enable_gridlayout_widgets">2.25. State Enable Gridlayout Widgets</h3>
+<div class="paragraph"><p>This is a container that other widgets can be placed in.<br />
+It will <em>grey-out</em> (disable) the widgets inside it depending on linuxcnc&#8217;s current state.<br />
+It can selectably react to:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+machine on
+</p>
+</li>
+<li>
+<p>
+interpreter idle
+</p>
+</li>
+<li>
+<p>
+estop off
+</p>
+</li>
+<li>
+<p>
+all-homed
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QGridLayout<br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_machinelog">2.26. MachineLog</h3>
+<div class="paragraph"><p>It is based on pyQT&#8217;s</p></div>
+</div>
+<div class="sect2">
+<h3 id="_jointenablewidget">2.27. JointEnableWidget</h3>
+<div class="paragraph"><p>It is based on pyQT&#8217;s</p></div>
+</div>
+<div class="sect2">
+<h3 id="_statusimageswitcher">2.28. StatusImageSwitcher</h3>
+<div class="paragraph"><p>This widget will display images based on linuxcnc status.<br />
+You can watch:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the state of the spindle.
+</p>
+</li>
+<li>
+<p>
+the state of all homed
+</p>
+</li>
+<li>
+<p>
+the state of a certain axis homed
+</p>
+</li>
+<li>
+<p>
+the state of hard limits
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s</p></div>
+</div>
+<div class="sect2">
+<h3 id="_filemanager">2.29. FileManager</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_fileManager.png" alt="QTvcp File Manager Widget" />
+</div>
+<div class="title">Figure 10. FileManager</div>
+</div>
+<div class="paragraph"><p>This widget is used to select files to load.<br />
+It has a the ability to scroll the names with hardware such as a MPG.<br /></p></div>
+<div class="paragraph"><p>one can class patch the function <em>load(self,fname):</em> to customize file loading.<br /></p></div>
+<div class="paragraph"><p>the function <em>getCurrentSelected()</em> will return a python tuple, containing<br />
+the file path and whether it&#8217;s a file.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>temp <span style="color: #990000">=</span> FILEMANAGER<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getCurrentSelected</span></span><span style="color: #990000">()</span>
+<span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #FF0000">'filepath={}'</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>temp<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">])</span>
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> temp<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]:</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #FF0000">'Is a file'</span></tt></pre></div></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s</p></div>
+</div>
+<div class="sect2">
+<h3 id="_radioaxisselector">2.30. RadioAxisSelector</h3>
+<div class="paragraph"><p>It is based on pyQT&#8217;s</p></div>
+</div>
+<div class="sect2">
+<h3 id="_tooloffsetview">2.31. ToolOffsetView</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_tooloffsetview.png" alt="QTvcp Tool Offset View" />
+</div>
+<div class="title">Figure 11. Tool Offset View</div>
+</div>
+<div class="paragraph"><p>This widget will display and allows one to modify tool offsets<br />
+It will update linuxcnc&#8217;s tool table for changes made or found.<br />
+The tool settings can only be changed in linuxcnc after homing and<br />
+when the motion controller is idle.<br />
+The display and entry will change between metric and imperial based<br />
+on linuxcnc&#8217;s current G20/G21 setting.<br />
+The current in-use tool will be highlighted<br />
+The current selected tool will be highlighted in a different color.<br />
+The checkbox beside each tool can be used to select a tool(s) for an action.<br />
+This action depends on extra code added either to a combined widget like<br />
+tooloffsetview dialog or the screens handler code.<br />
+Typical actions are <em>load selected tool</em>, <em>delete selected tools</em><br />
+Clicking on the columns and rows allows one to adjust the settings.<br />
+A dialog can be made to popup for data or text entry.<br />
+The comments section will typically be displayed in the manual tool change dialog.<br />
+If using a lathe configuration, there can be columns for X and Z wear.<br />
+To use these columns to adjust the tool for wear, requires a remapped tool change<br />
+routine.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QTableView, QAbstractTableModel, and ItemEditorFactory.<br />
+Properties, functions and styles of the pyQT base objects are always available.<br /></p></div>
+<div class="sect3">
+<h4 id="_properties_5">2.31.1. Properties</h4>
+<div class="paragraph"><p>ToolOfsetView has properties that can be set in designer, in python handler code or<br />
+(if appropriate) in stylesheets.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+dialog_code_string - sets which dialog will pop up with numerical entry.
+</p>
+</li>
+<li>
+<p>
+test_dialog_code_string - sets which dialog will pop up with text entry.
+</p>
+</li>
+<li>
+<p>
+metric_template - metric numerical data format.
+</p>
+</li>
+<li>
+<p>
+imperial_template - imperial numerical data format.
+</p>
+</li>
+<li>
+<p>
+styleCodeHighlight - current tool-in-use highlight color.
+</p>
+</li>
+<li>
+<p>
+styleCodeSelected - selected highlight color
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>ie. In handler file:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'dialog_code'</span><span style="color: #990000">,</span><span style="color: #FF0000">'CALCULATOR'</span><span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'metric_template'</span><span style="color: #990000">,</span><span style="color: #FF0000">'%10.3f'</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>ie. In style sheets:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ToolOffsetView{
+qproperty-styleColorHighlist: lightblue;
+qproperty-styleColorSelected: #444;
+}</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_functions">2.31.2. Functions</h4>
+<div class="paragraph"><p>ToolOffsetView has some function that are useful for screen builders to add actions.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+add_tool() - adds a blank dummy tool (99) that the user can edit to suit.
+</p>
+</li>
+<li>
+<p>
+delete_tools() - deletes the currently checkbox selected tools
+</p>
+</li>
+<li>
+<p>
+get_checked_list() - returns a list of tools selected by checkboxs.
+</p>
+</li>
+<li>
+<p>
+set_all_unchecked() - uncheck all selected tools.
+</p>
+</li>
+</ul></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_tool</span></span><span style="color: #990000">()</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delete_tools</span></span><span style="color: #990000">()</span>
+toolList <span style="color: #990000">=</span> self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get_checked_list</span></span><span style="color: #990000">()</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>tooloffsetview<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_all_unchecked</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_basicprobe">2.32. BasicProbe</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_basicProbe.png" alt="QTvcp basicProbe widget" />
+</div>
+<div class="title">Figure 12. BasicProbe</div>
+</div>
+<div class="paragraph"><p>Widget for probing on a mill. Used by the QtDragon screen.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dialog_widgets">3. Dialog Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Dialogs are used to present or request immediately required information in a focused way.<br />
+The typical used dialogs can be loaded using the screenoptions widget.<br />
+You can also add them directly to the ui - but each dialog must have a unique launch name<br />
+or you will see multiple dialogs displayed, one after another.<br />
+You can show dialogs directly with python code but a safer way is to use STATUS messages to<br />
+request the dialog to launch and to return the gathered information.<br /></p></div>
+<div class="paragraph"><p>To set this up first register to catch the <em>general</em> message from STATUS:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'general'</span><span style="color: #990000">,</span>self<span style="color: #990000">.</span>return_value<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Add a function to call a dialog:<br />
+This function must build a message DICT to send to the dialog.<br />
+This message will be passed back in the general message with the addition<br />
+of the RETURN variable. It is possible to add extra user information to the message.<br />
+The dialog will ignore these and pass them back.<br />
+<em>NAME</em> = launch code name of dialog to show.<br />
+<em>ID</em> = a unique id so we process only a dialog that we requested.<br />
+<em>TITLE</em> = the title to use on the dialog</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">show_dialog</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+            mess <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #FF0000">'NAME'</span><span style="color: #990000">:</span><span style="color: #FF0000">'ENTRY'</span><span style="color: #990000">,</span><span style="color: #FF0000">'ID'</span><span style="color: #990000">:</span><span style="color: #FF0000">'__test1__'</span><span style="color: #990000">,</span>
+                    <span style="color: #FF0000">'TITLE'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Test Entry'</span><span style="color: #990000">}</span>
+            ACTION<span style="color: #990000">.</span>CALL_DIALOG<span style="color: #990000">,</span> mess<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Add a callback function that processes the general message:<br />
+This function should check the the name and id is the same as<br />
+we sent, then it can extract the return value and any user variables.<br />
+Keep in mind this function will get all general messages so the DICT keynames<br />
+are not guaranteed to be there. Using the .get() function and or using try/except<br />
+is advisable.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-style: italic"><span style="color: #9A1900"># process the STATUS return message</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">return_value</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> w<span style="color: #990000">,</span> message<span style="color: #990000">):</span>
+        rtn <span style="color: #990000">=</span> message<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'RETURN'</span><span style="color: #990000">)</span>
+        code <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">bool</span></span><span style="color: #990000">(</span>message<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'ID'</span><span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="color: #FF0000">'__test1__'</span><span style="color: #990000">)</span>
+        name <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">bool</span></span><span style="color: #990000">(</span>message<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'NAME'</span><span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="color: #FF0000">'ENTRY'</span><span style="color: #990000">)</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> code <span style="font-weight: bold"><span style="color: #0000FF">and</span></span> name <span style="font-weight: bold"><span style="color: #0000FF">and</span></span> <span style="font-weight: bold"><span style="color: #0000FF">not</span></span> rtn <span style="font-weight: bold"><span style="color: #0000FF">is</span></span> None<span style="color: #990000">:</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">'Entry return value from {} = {}'</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>code<span style="color: #990000">,</span> rtn<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="sect2">
+<h3 id="_lcnc_dialog">3.1. Lcnc_Dialog</h3>
+<div class="paragraph"><p>This is a general message dialog widget.<br />
+If there is an Focus Overlay widget present, it can signal it to display.<br />
+If the sound library is set up it can play sounds.<br />
+There are options that can be set when requesting a dialog, these would be added to<br />
+the message dict.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>TITLE</em>:'Attention'      -Title of the dialog window
+</p>
+</li>
+<li>
+<p>
+<em>MESSAGE</em>:'your text'    -Title message text in bold
+</p>
+</li>
+<li>
+<p>
+<em>MORE</em>:'your more text' - standard text under the heading
+</p>
+</li>
+<li>
+<p>
+<em>DETAILS</em>:'hidden text' - initial hidden text
+</p>
+</li>
+<li>
+<p>
+<em>TYPE</em>:'OK' -type can be <em>OK</em>, <em>YESNO</em>, <em>OKCANCEL</em>
+</p>
+</li>
+<li>
+<p>
+<em>ICON</em>:'INFO' -icon can be <em>QUESTION</em>,<em>INFO</em>,<em>CRITICAL</em>,<em>WARNING</em>
+</p>
+</li>
+<li>
+<p>
+<em>PINNAME</em> -not implemented yet
+</p>
+</li>
+<li>
+<p>
+<em>FOCUSTEXT</em>:None -text to display if focus overlay is used. Use None for no text.
+</p>
+</li>
+<li>
+<p>
+<em>FOCUSCOLOR</em>:QColor(0, 0, 0, 150) - color to use if focus overlay is used
+</p>
+</li>
+<li>
+<p>
+<em>PLAYALERT</em> :'SPEAK alert!'- sound to play if sound is available
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>MESSAGE</em><br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QMessagebox</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_tool_change_widget">3.2. Dialog Tool Change Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_toolChange.png" alt="QTvcp Manual Tool Change Dialog" />
+</div>
+<div class="title">Figure 13. Manual Tool Change</div>
+</div>
+<div class="paragraph"><p>This is used as a manual tool change prompt.<br />
+It has HAL pins to connect to the machine controller<br />
+The pins are named the same as the original AXIS manual tool prompt and works the same.<br />
+the tool change dialog can only be launched by HAL pins.<br />
+If there is a Focus Overlay widget present, it will signal it to display.<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QMessagebox</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_file_chooser_widget">3.3. Dialog File Chooser Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_fileDialog.png" alt="QTvcp file dialog" />
+</div>
+<div class="title">Figure 14. File Dialog</div>
+</div>
+<div class="paragraph"><p>This is used to load Gcode files<br />
+If there is a Focus Overlay widget present, it will signal it to display.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch names are <em>LOAD</em> or <em>SAVE</em><br /></p></div>
+<div class="paragraph"><p>There are options that can be set when requesting a dialog, these would be added to<br />
+the message dict.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+EXTENSIONS
+</p>
+</li>
+<li>
+<p>
+FILENAME
+</p>
+</li>
+<li>
+<p>
+DIRECTORY
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>An example python call, for a load dialog:<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>mess <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #FF0000">'NAME'</span><span style="color: #990000">:</span><span style="color: #FF0000">'LOAD'</span><span style="color: #990000">,</span><span style="color: #FF0000">'ID'</span><span style="color: #990000">:</span><span style="color: #FF0000">'_MY_DIALOG_'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'TITLE'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Load Some text File'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'FILENAME'</span><span style="color: #990000">:</span><span style="color: #FF0000">'~/linuxcnc/nc_files/someprogram.txt'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'EXTENSIONS'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Text Files (*.txt);;ALL Files (*.*)'</span>
+            <span style="color: #990000">}</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_DIALOG</span></span><span style="color: #990000">(</span>mess<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>And for saving<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>mess <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #FF0000">'NAME'</span><span style="color: #990000">:</span><span style="color: #FF0000">'SAVE'</span><span style="color: #990000">,</span><span style="color: #FF0000">'ID'</span><span style="color: #990000">:</span><span style="color: #FF0000">'_MY_DIALOG_'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'TITLE'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Save Some text File'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'FILENAME'</span><span style="color: #990000">:</span><span style="color: #FF0000">'~/linuxcnc/nc_files/someprogram.txt'</span><span style="color: #990000">,</span>
+            <span style="color: #FF0000">'EXTENSIONS'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Text Files (*.txt);;ALL Files (*.*)'</span>
+            <span style="color: #990000">}</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_DIALOG</span></span><span style="color: #990000">(</span>mess<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QMessagebox</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_origin_offset_widget">3.4. Dialog Origin Offset Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_offsetpage.png" alt="QTvcp origin Offset Page" />
+</div>
+<div class="title">Figure 15. Offsets</div>
+</div>
+<div class="paragraph"><p>This widget allows one to modify User System origin offsets directly<br />
+It is in a dialog form<br />
+If there is an Focus Overlay widget present, it will signal it to display.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>ORIGINOFFSET</em><br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_tool_offset_widget">3.5. Dialog tool Offset Widget</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_toolOffset.png" alt="QTvcp Tool Offset Page" />
+</div>
+<div class="title">Figure 16. Tool Offsets</div>
+</div>
+<div class="paragraph"><p>This widget allows one to modify Tool offsets directly<br />
+It is in a dialog form<br />
+If there is an Focus Overlay widget present, it will signal it to display.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>TOOLOFFSET</em><br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_macrotab">3.6. Dialog MacroTab</h3>
+<div class="paragraph"><p>This is a dialog for displaying the macrotab widget.<br />
+Macrotab displays a choice of macro programs to run using icons.<br />
+If there is a Focus Overlay widget present, it will signal it to display.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>MACROTAB</em><br /></p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_camview">3.7. Dialog camview</h3>
+<div class="paragraph"><p>This is a dialog to display the camview object for Webcam part alignment.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>CAMVIEW</em><br />
+It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_entry">3.8. Dialog entry</h3>
+<div class="paragraph"><p>This is a dialog to display an edit line for information entry, such as origin offset.<br />
+It returns the entry via STATUS messages using a python DICT.<br />
+The DICT contains at minimum, the name of the dialog requested and an id code.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>ENTRY</em><br />
+<br /></p></div>
+<div class="paragraph"><p>It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_calculator">3.9. Dialog Calculator</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_calculator.png" alt="QTvcp Calculator" />
+</div>
+<div class="title">Figure 17. Calculator</div>
+</div>
+<div class="paragraph"><p>This is a dialog to display a calculator for numeric entry, such as origin offset.<br />
+It returns the entry via STATUS messages using a python DICT.<br />
+The DICT contains at minimum, the name of the dialog requested and an id code.<br />
+When using STATUS&#8217;s <em>request-dialog</em> function, the default launch name is <em>CALCULATOR</em><br />
+It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_run_from_line">3.10. Dialog Run From Line</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_runFromLine.png" alt="QTvcp Run-from-line" />
+</div>
+<div class="title">Figure 18. Run-from-line Dialog</div>
+</div>
+<div class="paragraph"><p>Dialog to preset  spindle settings before running a program from a specific line.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_versaprobe">3.11. Dialog VersaProbe</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_versaProbe.png" alt="QTvcp Versa Probe" />
+</div>
+<div class="title">Figure 19. Versa Probe Dialog</div>
+</div>
+<div class="paragraph"><p>This is a dialog to display A probing screen based on Versa Probe.<br />
+It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialog_machinelogdialog">3.12. Dialog MachineLogDialog</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_machineLog.png" alt="QTvcp MachineLog Dialog" />
+</div>
+<div class="title">Figure 20. Machine Log Dialog</div>
+</div>
+<div class="paragraph"><p>This is a dialog to display the user machine log and qtvcp&#8217;s debugging log.<br />
+It is based on pyQT&#8217;s QDialog</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other">4. Other</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Other available widgets</p></div>
+<div class="sect2">
+<h3 id="_nurbs_editor">4.1. Nurbs Editor</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/qtvcp_nurbsEditor.png" alt="QTvcp nurbs editor" />
+</div>
+<div class="title">Figure 21. Nurbs Editor</div>
+</div>
+<div class="paragraph"><p>The Nurbs editor allows you to manipulate a nurbs based geometry on screen and then<br />
+convert this to gcode. you can edit the gcode on screen and then send it to linuxcnc.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_joypad">4.2. JoyPad</h3>
+<div class="paragraph"><p>It is the base class for the HALPad widget.<br />
+This widget looks and acts like a 5 button D-pad, with an LED like indicators in a ring<br />
+You can put text or icons in each of the button positions.<br />
+You can connect to output signals when the buttons are pressed.<br />
+There are also input slots to change the color of the indicator(s).<br /></p></div>
+<div class="sect3">
+<h4 id="_enums_2">4.2.1. ENUMS</h4>
+<div class="paragraph"><p>There are enumerated constants used to reference indicator positions.<br />
+They are used in the Designer editor&#8217;s property editor or used if using python code.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>    NONE
+    LEFT
+    RIGHT
+    CENTER
+    TOP
+    BOTTOM
+    LEFTRIGHT
+    TOPBOTTOM</code></pre>
+</div></div>
+<div class="paragraph"><p>For python handler code, you use the widget Designer name plus the reference constant.<br /></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>joypadname<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_highlight</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>joypadname<span style="color: #990000">.</span>LEFT<span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_useful_override_able_functions">4.2.2. Useful Override-able Functions</h4>
+<div class="paragraph"><p>As coded they issue signals for the button pressed or released.<br />
+On signal outputs a string code for the button, one signal outputs a bool value.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>    def _pressedOutput(self, btncode):
+        self.joy_btn_pressed.emit(btncode)
+        self['joy_{}_pressed'.format(btncode.lower())].emit(True)
+
+    def _releasedOutput(self, btncode):
+        self.joy_btn_released.emit(btncode)
+        self['joy_{}_pressed'.format(btncode.lower())].emit(False)</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_callable_functions">4.2.3. Callable Functions</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>reset_highlight()</em>:<br />
+Clears the highlight indicator.<br />
+</p>
+</li>
+<li>
+<p>
+<em>set_highlight(button, state=True)</em>:<br />
+Set the highlight indicator in position <em>button</em> to state <em>state</em>
+You can use strings letters (LRCTBXA) or position ENUMS for the button argument.<br />
+</p>
+</li>
+<li>
+<p>
+<em>set_button_icon(button, pixmap)</em>:<br />
+Sets the button&#8217;s icon pixmap.<br />
+</p>
+</li>
+<li>
+<p>
+<em>set_button_text(button, text)</em>:<br />
+Sets the button&#8217;s icon text.<br />
+</p>
+</li>
+<li>
+<p>
+<em>set_tooltip(button, text)</em>:<br />
+Sets the buttons popup tooltip descriptive text.<br />
+</p>
+</li>
+<li>
+<p>
+<em>setLight(state)</em>:<br />
+Sets the highlight indicator to the true color or false color.<br />
+The set_highlight() function must be used prior to set the indicator to use.<br />
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_signals">4.2.4. signals</h4>
+<div class="paragraph"><p>These signals will be sent when buttons are pressed.<br />
+They can be connected to in the Designer editor or python code.<br />
+The first two output a string the indicates the button pressed.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>    joy_btn_pressed = QtCore.pyqtSignal(str)
+    joy_btn_released = QtCore.pyqtSignal(str)
+    joy_l_pressed = QtCore.pyqtSignal(bool)
+    joy_l_released = QtCore.pyqtSignal(bool)
+    joy_r_pressed = QtCore.pyqtSignal(bool)
+    joy_r_released = QtCore.pyqtSignal(bool)
+    joy_c_pressed = QtCore.pyqtSignal(bool)
+    joy_c_released = QtCore.pyqtSignal(bool)
+    joy_t_pressed = QtCore.pyqtSignal(bool)
+    joy_t_released = QtCore.pyqtSignal(bool)
+    joy_b_pressed = QtCore.pyqtSignal(bool)
+    joy_b_released = QtCore.pyqtSignal(bool)</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_slots">4.2.5. slots</h4>
+<div class="paragraph"><p>Slots can be connected to in the Designer editor or python code.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>set_colorStateTrue()
+set_colorStateFalse()
+set_colorState(bool)
+
+set_true_color(str)
+set_true_color(qcolor)
+
+set_false_color(str)
+set_false_color(qcolor)</code></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_properties_6">4.2.6. Properties</h4>
+<div class="paragraph"><p>These can be set in stylesheets or python code to change it&#8217;s properties.<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>highlightPosition</em>:<br />
+Set the indicator position.<br />
+</p>
+</li>
+<li>
+<p>
+<em>setColorState</em>:<br />
+Select the color state of the indicator.<br />
+</p>
+</li>
+<li>
+<p>
+<em>left_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>right_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>center_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>top_image_path</em>:
+</p>
+</li>
+<li>
+<p>
+<em>bottom_image_path</em>:<br />
+A file path or resource path to an image to display in the described button location.<br />
+If the reset button is pressed in the Designer editor property, the image will not be displayed. (allowing optionally text)<br />
+</p>
+</li>
+<li>
+<p>
+<em>left_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>right_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>center_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>top_text</em>:
+</p>
+</li>
+<li>
+<p>
+<em>bottom_text</em>:<br />
+A text string to be displayed in the described button location.<br />
+If left blank an image can be designated to be displayed.<br />
+</p>
+</li>
+<li>
+<p>
+<em>true_color</em>:
+</p>
+</li>
+<li>
+<p>
+<em>false_color</em>:<br />
+Color selection for the center LED ring to be displayed when the <em>BASENAME.light.center</em> HAL pin is True or False.<br />
+</p>
+</li>
+<li>
+<p>
+<em>text_color</em>:<br />
+Color selection for the button text.<br />
+</p>
+</li>
+<li>
+<p>
+<em>button_font</em>:<br />
+Font selection for the button text.<br />
+</p>
+</li>
+</ul></div>
+<div class="sect4">
+<h5 id="_stylesheets_2">StyleSheets</h5>
+<div class="paragraph"><p>The above properties could be set in styles sheets.
+You would usally use the designer widget name with <em>#</em> to set individual<br />
+widget properties, other wise you the class name <em>JoyPad</em> to set all<br />
+JoyPad widgets the same.<br /></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>#joypadname{
+qproperty-true_color: #000;
+qproperty-false_color: #444;
+}</code></pre>
+</div></div>
+</div>
+<div class="sect4">
+<h5 id="_python_code">Python Code</h5>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>joypadename<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'true_color'</span><span style="color: #990000">,</span><span style="color: #FF0000">'green'</span><span style="color: #990000">)</span>
+self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>joypadename<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setProperty</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'false_color'</span><span style="color: #990000">,</span><span style="color: #FF0000">'red'</span><span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_import_only_widgets">5. Import only Widgets</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>These widgets are usually the base class widget for other QTvcp widgets.<br />
+They are not available directly from the Designer editor but could be imported and manually inserted.<br />
+They could also be subclassed to make a similar widget with new features.<br /></p></div>
+<div class="sect2">
+<h3 id="_todo">5.1. TODO</h3>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2022-06-04 10:50:02 CEST
+</div>
+</div>
+</body>
+</html>

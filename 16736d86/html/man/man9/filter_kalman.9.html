@@ -1,0 +1,192 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Jun  4 08:53:30 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FILTER_KALMAN</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" />
+</head>
+<body>
+
+<h1 align="center">FILTER_KALMAN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">filter_kalman -
+Unidimensional Kalman filter, also known as linear quadratic
+estimation (LQE)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>loadrt filter_kalman
+[count=</b><i>N</i><b>|names=</b><i>name1</i><b>[,</b><i>name2...</i><b>]]</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Useful for
+reducing input signal noise (e.g. from the voltage or
+temperature sensor).</p>
+
+<p style="margin-left:11%; margin-top: 1em">More
+information can be found at
+https://en.wikipedia.org/wiki/Kalman_filter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Adjusting
+<b>Qr</b> and <b>Qk</b> covariances:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Default values
+of <b>Rk</b> and <b>Qk</b> are given for informational
+purpose only. The nature of the filter requires the
+parameters to be individually computed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+possible and quite practical method (probably far from being
+the best) of estimating the <b>Rk</b> covariance is to
+collect the raw data from the sensor by either asserting the
+<b>debug</b> pin or using <b>halscope</b> and then compute
+the covariance using <b>cov()</b> function from
+<b>Octave</b> package. Ready to use script can be found at
+https://github.com/dwrobel/TrivialKalmanFilter/blob/master/examples/DS18B20Test/covariance.m.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Adjusting
+<b>Qk</b> covariance mostly depends on the required response
+time of the filter. There is a relationship between
+<b>Qk</b> and response time of the filter that the lower the
+<b>Qk</b> covariance is the slower the response of the
+filter is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Common practice
+is also to conservatively set <b>Rk</b> and <b>Qk</b>
+slightly larger then computed ones to get robustness.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>filter-kalman.</b><i>N</i>
+(requires a floating-point thread)</p>
+
+<p style="margin-left:22%;">Update <b>xk-out</b> based on
+<b>zk</b> input.</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>filter-kalman.</b><i>N</i><b>.debug</b>
+bit in (default: <i>FALSE</i>)</p>
+
+<p style="margin-left:22%;">When asserted, prints out
+measured and estimated values.</p>
+
+
+<p style="margin-left:11%;"><b>filter-kalman.</b><i>N</i><b>.passthrough</b>
+bit in (default: <i>FALSE</i>)</p>
+
+<p style="margin-left:22%;">When asserted, copies measured
+value into estimated value.</p>
+
+
+<p style="margin-left:11%;"><b>filter-kalman.</b><i>N</i><b>.reset</b>
+bit in (default: <i>FALSE</i>)</p>
+
+<p style="margin-left:22%;">When asserted, resets filter to
+its initial state and returns 0 as an estimated value
+(<b>reset</b> pin has higher priority than
+<b>passthrough</b> pin).</p>
+
+
+<p style="margin-left:11%;"><b>filter-kalman.</b><i>N</i><b>.zk</b>
+float in</p>
+
+<p style="margin-left:22%;">Measured value.</p>
+
+
+<p style="margin-left:11%;"><b>filter-kalman.</b><i>N</i><b>.xk-out</b>
+float out</p>
+
+<p style="margin-left:22%;">Estimated value.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>filter-kalman.</b><i>N</i><b>.Rk</b>
+float rw (default: <i>1.17549e-38</i>)</p>
+
+<p style="margin-left:22%;">Estimation of the noise
+covariances (process).</p>
+
+
+<p style="margin-left:11%;"><b>filter-kalman.</b><i>N</i><b>.Qk</b>
+float rw (default: <i>1.17549e-38</i>)</p>
+
+<p style="margin-left:22%;">Estimation of the noise
+covariances (observation).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dmian Wrobel
+&lt;dwrobel@ertelnet.rybnik.pl&gt;</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">GPL-2.0-or-later</p>
+<hr>
+</body>
+</html>

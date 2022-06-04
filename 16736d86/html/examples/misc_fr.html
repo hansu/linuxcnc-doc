@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
+<title>Entrée de palpeur de mesure</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Entrée de palpeur de mesure</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>Pour utiliser une sonde de mesure avec G38 un palpeur doit être
+raccordé à <strong>motion.probe-input</strong>. Dans cet exemple, la broche 15 du port
+parallèle est utilisée. Dans votre fichier .hal ajoutez la ligne
+suivante. Elle doit bien sur être adaptée à l&#8217;entrée sur laquelle votre
+palpeur est raccordé.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>net probe-in motion.probe-input &lt;= parport.0.pin-15-in</code></pre>
+</div></div>
+<div class="paragraph"><p>Pour d&#8217;autres informations concernant la sonde de mesure voir la documentation
+du G-code, les chapitres relatifs à G38.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2022-06-04 10:50:02 CEST
+</div>
+</div>
+</body>
+</html>

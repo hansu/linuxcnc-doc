@@ -1,0 +1,110 @@
+== Pin listings
+=== Compact
+
+1
+
+* **halui.joint.**_N_**.select** _(bit, in)_ - Pin for selecting joint N
+* **halui.joint.**_N_**.is-selected** _(bit, out)_ - Status pin that joint N is selected
+* **halui.joint.**_N_**.has-fault** _(bit, out)_ - Status pin telling that joint N has a fault
+
+2
+
+* *halui.joint._N_.select* _(bit, in)_ - Pin for selecting joint N
+* *halui.joint._N_.is-selected* _(bit, out)_ - Status pin that joint N is selected
+* *halui.joint._N_.has-fault* _(bit, out)_ - Status pin telling that joint N has a fault
+
+3
+
+* halui.joint._N_.select _(bit, in)_ - Pin for selecting joint N
+* halui.joint._N_.is-selected _(bit, out)_ - Status pin that joint N is selected
+* halui.joint._N_.has-fault _(bit, out)_ - Status pin telling that joint N has a fault
+
+4
+
+* halui.joint.N.select _(bit, in)_ - Pin for selecting joint N
+* halui.joint.N.is-selected _(bit, out)_ - Status pin that joint N is selected
+* halui.joint.N.has-fault _(bit, out)_ - Status pin telling that joint N has a fault
+
+5
+
+* `halui.joint.N.select` _(bit, in)_ - Pin for selecting joint N
+* `halui.joint.N.is-selected` _(bit, out)_ - Status pin that joint N is selected
+* `halui.joint.N.has-fault` _(bit, out)_ - Status pin telling that joint N has a fault
+
+6
+
+* `halui.joint.N.select` (bit, in) - Pin for selecting joint N
+* `halui.joint.N.is-selected` (bit, out) - Status pin that joint N is selected
+* `halui.joint.N.has-fault` (bit, out) - Status pin telling that joint N has a fault
+
+7
+
+* _halui.joint.N.select_ (bit, in) - Pin for selecting joint N
+* _halui.joint.N.is-selected_ (bit, out) - Status pin that joint N is selected
+* _halui.joint.N.has-fault_ (bit, out) - Status pin telling that joint N has a fault
+
+.Aligned
+
+8
+
+[horizontal]
+*halui.joint.N.select*:: (bit, in) - Pin for selecting joint N
+*halui.joint.N.is-selected*:: (bit, out) - Status pin that joint N is selected
+*halui.joint.N.has-fault*:: (bit, out) - Status pin telling that joint N has a fault
+
+9
+
+[horizontal]
+a.short.pin:: (bit, in) - Pin for selecting joint N
+halui.joint.N.is-selected:: (bit, out) - Status pin that joint N is selected
+a-veeeeeeeeeeery.looooooooooong.pin:: (bit, out) - Status pin telling that joint N has a fault
+
+=== Long
+
+1
+
+pid._N_.Pgain:: (float, in) - Proportional gain. Results in a contribution to the output that is the error multiplied by Pgain.
+
+pid._N_.Igain:: (float, in) - Integral gain. Results in a contribution to the output that is the integral of the error multiplied by Igain. For example an error of 0.02 that lasted 10 seconds would result in an integrated error (errorI) of 0.2, and if Igain is 20, the integral term would add 4.0 to the output.
+
+pid._N_.Dgain:: (float, in)- Derivative gain. Results in a contribution to the output that is the rate of change (derivative) of the error multiplied by Dgain. For example an error that changed from 0.02 to 0.03 over 0.2 seconds would result in an error derivative (errorD) of of 0.05, and if Dgain is 5, the derivative term would add 0.25 to the output.
+
+2
+
+*pid._N_.Pgain*:: _(float, in)_ - Proportional gain. Results in a contribution to the output that is the error multiplied by Pgain.
+
+*pid._N_.Igain*:: _(float, in)_ - Integral gain. Results in a contribution to the output that is the integral of the error multiplied by Igain. For example an error of 0.02 that lasted 10 seconds would result in an integrated error (errorI) of 0.2, and if Igain is 20, the integral term would add 4.0 to the output.
+
+*pid._N_.Dgain*:: _(float, in)_- Derivative gain. Results in a contribution to the output that is the rate of change (derivative) of the error multiplied by Dgain. For example an error that changed from 0.02 to 0.03 over 0.2 seconds would result in an error derivative (errorD) of of 0.05, and if Dgain is 5, the derivative term would add 0.25 to the output.
+
+
+3
+
+*pid._N_.Pgain* _(float, in)_:: Proportional gain. Results in a contribution to the output that is the error multiplied by Pgain.
+
+*pid._N_.Igain* _(float, in)_:: Integral gain. Results in a contribution to the output that is the integral of the error multiplied by Igain. For example an error of 0.02 that lasted 10 seconds would result in an integrated error (errorI) of 0.2, and if Igain is 20, the integral term would add 4.0 to the output.
+
+*pid._N_.Dgain* _(float, in)_:: Derivative gain. Results in a contribution to the output that is the rate of change (derivative) of the error multiplied by Dgain. For example an error that changed from 0.02 to 0.03 over 0.2 seconds would result in an error derivative (errorD) of of 0.05, and if Dgain is 5, the derivative term would add 0.25 to the output.
+
+
+.Aligned
+4
+
+[horizontal]
+*pid._N_.Pgain*:: _(float, in)_ - Proportional gain. Results in a contribution to the output that is the error multiplied by Pgain.
+
+*pid._N_.Igain*:: _(float, in)_ - Integral gain. Results in a contribution to the output that is the integral of the error multiplied by Igain. For example an error of 0.02 that lasted 10 seconds would result in an integrated error (errorI) of 0.2, and if Igain is 20, the integral term would add 4.0 to the output.
+
+*pid._N_.Dgain*:: _(float, in)_- Derivative gain. Results in a contribution to the output that is the rate of change (derivative) of the error multiplied by Dgain. For example an error that changed from 0.02 to 0.03 over 0.2 seconds would result in an error derivative (errorD) of of 0.05, and if Dgain is 5, the derivative term would add 0.25 to the output.
+
+5
+
+[horizontal]
+*pid._N_.Pgain*:: _(float, in)_ +
+Proportional gain. Results in a contribution to the output that is the error multiplied by Pgain.
+
+*pid._N_.Igain*:: _(float, in)_ +
+Integral gain. Results in a contribution to the output that is the integral of the error multiplied by Igain. For example an error of 0.02 that lasted 10 seconds would result in an integrated error (errorI) of 0.2, and if Igain is 20, the integral term would add 4.0 to the output.
+
+*pid._N_.Dgain*:: _(float, in)_ +
+Derivative gain. Results in a contribution to the output that is the rate of change (derivative) of the error multiplied by Dgain. For example an error that changed from 0.02 to 0.03 over 0.2 seconds would result in an error derivative (errorD) of of 0.05, and if Dgain is 5, the derivative term would add 0.25 to the output.

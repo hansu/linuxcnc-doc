@@ -1,0 +1,211 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sun Jun 18 09:50:00 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>mb2hal</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">mb2hal</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#fnct_01_read_coils:">fnct_01_read_coils:</a><br>
+<a href="#fnct_02_read_discrete_inputs:">fnct_02_read_discrete_inputs:</a><br>
+<a href="#fnct_03_read_holding_registers:">fnct_03_read_holding_registers:</a><br>
+<a href="#fnct_04_read_input_registers:">fnct_04_read_input_registers:</a><br>
+<a href="#fnct_05_write_single_coil:">fnct_05_write_single_coil:</a><br>
+<a href="#fnct_06_write_single_register:">fnct_06_write_single_register:</a><br>
+<a href="#fnct_15_write_multiple_coils:">fnct_15_write_multiple_coils:</a><br>
+<a href="#fnct_16_write_multiple_registers:">fnct_16_write_multiple_registers:</a><br>
+<a href="#Each transaction">Each transaction</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal</b> -
+HAL non-realtime component for Modbus</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Default
+component name:</p>
+
+<p style="margin-left:22%;">loadusr -W mb2hal
+config=config_file.ini</p>
+
+<p style="margin-left:11%;">Custom component name:</p>
+
+<p style="margin-left:22%;">loadusr -Wn mymodule mb2hal
+config=config_file.ini</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">MB2HAL is a
+generic non-realtime HAL component to communicate with one
+or more Modbus devices. It supoorts Modbus RTU and Modbus
+TCP.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<a href="http://linuxcnc.org/docs/html/drivers/mb2hal.html">http://linuxcnc.org/docs/html/drivers/mb2hal.html</a>
+for more information.</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+<h3>fnct_01_read_coils:
+<a name="fnct_01_read_coils:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.bit</b>
+bit out <b><br>
+mb2hal.m.n.bit-inv</b> bit out</p>
+
+<h3>fnct_02_read_discrete_inputs:
+<a name="fnct_02_read_discrete_inputs:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.bit</b>
+bit out <b><br>
+mb2hal.m.n.bit-inv</b> bit out</p>
+
+<h3>fnct_03_read_holding_registers:
+<a name="fnct_03_read_holding_registers:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.float</b>
+float out <b><br>
+mb2hal.m.n.int</b> s32 out</p>
+
+<h3>fnct_04_read_input_registers:
+<a name="fnct_04_read_input_registers:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.float</b>
+float out <b><br>
+mb2hal.m.n.int</b> s32 out</p>
+
+<h3>fnct_05_write_single_coil:
+<a name="fnct_05_write_single_coil:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.bit</b>
+bit in</p>
+
+<p style="margin-left:22%;">NELEMENTS needs to be 1 or
+PIN_NAMES must contain just one name.</p>
+
+<h3>fnct_06_write_single_register:
+<a name="fnct_06_write_single_register:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.float</b>
+float in <b><br>
+mb2hal.m.n.int</b> s32 in</p>
+
+<p style="margin-left:22%;">NELEMENTS needs to be 1 or
+PIN_NAMES must contain just one name. Both pin values are
+added and limited to 65535 (UINT16_MAX). Use one and let the
+other open (read as 0).</p>
+
+<h3>fnct_15_write_multiple_coils:
+<a name="fnct_15_write_multiple_coils:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.bit</b>
+bit in</p>
+
+<h3>fnct_16_write_multiple_registers:
+<a name="fnct_16_write_multiple_registers:"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.n.float</b>
+float in <b><br>
+mb2hal.m.n.int</b> s32 in</p>
+
+<p style="margin-left:22%;">Both pin values are added and
+limited to 65535 (UINT16_MAX). Use one and let the other
+open (read as 0).</p>
+
+<h3>Each transaction
+<a name="Each transaction"></a>
+</h3>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mb2hal.m.num_errors</b>
+u32 in</p>
+
+<p style="margin-left:22%;">Error counter</p>
+
+<p style="margin-left:11%; margin-top: 1em">m = HAL_TX_NAME
+or transaction number if not set, n = element number
+(NELEMENTS) <br>
+Example: <br>
+mb2hal.00.01.int (TRANSACTION_00, second register) <br>
+mb2hal.readStatus.01.bit (HAL_TX_NAME=readStatus, first
+bit)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Victor
+Rocco</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

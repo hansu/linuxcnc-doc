@@ -1,0 +1,278 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sun Jun 18 09:50:01 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>QTVCP</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">QTVCP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">qtvcp -
+Qt-based virtual control panels</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>qtvcp</b>
+[<i>OPTIONS</i>] myfile.ui</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>QtVCP</b> is
+a system for creating user interfaces for LinuxCNC.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation at
+http://linuxcnc.org/docs/html/gui/qtvcp.html</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h,
+--help</b></p>
+
+<p style="margin-left:22%;">Show this help message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-c</b>
+[<i>&lt;NAME&gt;</i>]</p>
+
+<p style="margin-left:22%;">Set component name to NAME.
+Default is basename of UI file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="53%">
+
+
+<p>Set the window to always be on top.</p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="53%">
+
+
+<p>Enable debug output.</p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="53%">
+
+
+<p>Enable verbose debug output.</p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="53%">
+
+
+<p>Enable only error debug output.</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-g</b>
+[<i>&lt;GEOMETRY&gt;</i>]</p>
+
+<p style="margin-left:22%;">Set geometry
+WIDTHxHEIGHT+XOFFSET+YOFFSET. Values are in pixel units,
+XOFFSET/YOFFSET is referenced from top left of screen. Use
+-g WIDTHxHEIGHT for just setting size or -g +XOFFSET+YOFFSET
+for just position.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example: -g
+200x400+0+100.</p>
+
+<p style="margin-left:11%;"><b>-H</b>
+[<i>&lt;FILE&gt;</i>]</p>
+
+<p style="margin-left:22%;">Execute HAL statements from
+FILE with halcmd after the component is set up and
+ready.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-i</b></p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Enable info output.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Force panel window to maximize.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-f</b></p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Force panel window to fullscreen.</p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-t</b>
+[<i>&lt;THEME&gt;</i>]</p>
+
+<p style="margin-left:22%;">Set Qt style. Default is system
+theme.</p>
+
+<p style="margin-left:11%;"><b>-x</b>
+[<i>&lt;XID&gt;</i>]</p>
+
+<p style="margin-left:22%;">Reparent QtVCP into an existing
+window XID instead of creating a new top level window.</p>
+
+<p style="margin-left:11%;"><b>--push_xid</b></p>
+
+<p style="margin-left:22%;">Reparent window into a plug add
+push the plug xid number to standardout.</p>
+
+<p style="margin-left:11%;"><b>-u</b>
+[<i>&lt;USERMOD&gt;</i>]</p>
+
+<p style="margin-left:22%;">File path of user defined
+handler file.</p>
+
+<p style="margin-left:11%;"><b>-o</b>
+[<i>&lt;USEROPTS&gt;</i>]</p>
+
+<p style="margin-left:22%;">Pass USEROPTS strings to
+handler under self.w.USEROPTIONS_ list variable.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LinuxCNC(1)</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Much more
+information about LinuxCNC and HAL is available in the
+LinuxCNC and HAL User Manuals, found at
+/usr/share/doc/LinuxCNC/.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None known at
+this time.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This man page
+written by andypugh, as part of the LinuxCNC project.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs at
+https://github.com/LinuxCNC/linuxcnc/issues</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2020 andypugh. <br>
+This is free software; see the source for copying
+conditions. There is NO warranty; not even for
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<hr>
+</body>
+</html>

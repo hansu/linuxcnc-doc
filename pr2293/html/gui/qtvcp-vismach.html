@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>QtVismach</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>QtVismach</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:qtvcp:vismach"><p><strong>Vismach</strong> is a set of <strong>Python functions that can be used to create and animate models of machines</strong>.</p></div>
+<div class="paragraph"><p>This chapter is about the Qt embedded version of <a href="vismach.html#cha:vismach">Vismach</a>,
+also see: <a href="https://sa-cnc.com/linuxcnc-vismach/">https://sa-cnc.com/linuxcnc-vismach/</a> .</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:intro">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Vismach displays the model in a <strong>3D viewport</strong>
+and the <strong>model parts are animated as the values of associated HAL pins change</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach.png" alt="QtVismach 3D Viewport"/>
+<figcaption class="title"> Figure 1. QtVismach 3D Viewport</figcaption>
+</figure>
+</div>
+</div>
+<div class="paragraph"><p>The Vismach 3D viewport view can be manipulated as follows:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>zoom</strong> by <em>scroll wheel</em>
+</p>
+</li>
+<li>
+<p>
+<strong>pan</strong> by <em>middle button drag</em>
+</p>
+</li>
+<li>
+<p>
+<strong>rotate</strong> by <em>right-button drag</em>
+</p>
+</li>
+<li>
+<p>
+<strong>tilt</strong> by <em>left button drag</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A <strong>Vismach model</strong> takes the form of a <em>Python script</em> and can use standard Python syntax.</p></div>
+<div class="paragraph"><p>This means that there is more than one way to lay out the script,
+but in the examples given in this document the simplest and most basic of them will be used.</p></div>
+<div class="paragraph"><p>The basic sequence in creating the Vismach model is:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Create the parts
+</p>
+</li>
+<li>
+<p>
+Define how they move
+</p>
+</li>
+<li>
+<p>
+Assemble into movement groups
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:hierarchy">2. Hierarchy of Machine Design</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The model follows <strong>logical tree design</strong>.</p></div>
+<div class="paragraph"><p>Picture the tree, with root/trunk, branches and smaller branches off it.
+If you move the larger branch, smaller branches will move with it,
+but if you move the smaller branch, the larger will not.</p></div>
+<div class="paragraph"><p><em>Machine design follows that conceptual design</em>.</p></div>
+<div class="paragraph"><p>Taking the mill shown in the 3D Viewport picture above for example:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+If you move X, it can move on its own,
+</p>
+</li>
+<li>
+<p>
+but if you move Y, it will also move X assembly, as it is attached to Y assembly.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>So for this machine, the tree looks like this:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>model
+  |
+  |---frame
+  |     |
+  |     |---base
+  |     |
+  |     |---column
+  |     |
+  |     |---top
+  |
+  |---yassembly
+  |      |
+  |      |---xassembly
+  |      |      |
+  |      |      |---xbase
+  |      |      |
+  |      |      |---work
+  |      |
+  |      |---ybase
+  |
+  |---zassembly
+          |
+          |---zframe
+          |     |
+          |     |---zbody
+          |     |
+          |     |---spindle
+          |
+          |---toolassembly
+                    |
+                    |---cat30
+                    |
+                    |---tool
+                         |
+                         |---tooltip
+                         |
+                         |---(tool cylinder function)</code></pre>
+</div></div>
+<div class="paragraph"><p>As you can see, the <em>lowest parts must exist</em> first <em>before those can be grouped with others into an assembly</em>.
+So you <em>build upwards</em> from lowest point in tree and assemble them together.</p></div>
+<div class="paragraph"><p>The same is applicable for any design of machine:
+look at the machine arm example and you will see that it starts with the tip and adds to the larger part of the arm,
+then it finally groups with the base.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:start">3. Start the script</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>It is useful for testing to include the <code>#!/usr/bin/env python3</code> shebang line
+to _allow the file to be executed directly from the command line.</p></div>
+<div class="paragraph"><p>The first thing to do is to <em>import the required libraries</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/usr/bin/env python3</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> hal
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> math
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> sys
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>qt_vismach<span style="color: #990000">.</span>qt_vismach <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:hal">4. HAL pins.</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Originally the vismach library required creating a component and
+connecting HAL pins to control the simulation.</p></div>
+<div class="paragraph"><p><code>qt_vismach</code> can read the HAL system pins directly or if you wish,
+to use separate HAL pins that you must define in a HAL component:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>c <span style="color: #990000">=</span> hal<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">component</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"samplegui"</span><span style="color: #990000">)</span>
+c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newpin</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"joint0"</span><span style="color: #990000">,</span> hal<span style="color: #990000">.</span>HAL_FLOAT<span style="color: #990000">,</span> hal<span style="color: #990000">.</span>HAL_IN<span style="color: #990000">)</span>
+c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">newpin</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"joint1"</span><span style="color: #990000">,</span> hal<span style="color: #990000">.</span>HAL_FLOAT<span style="color: #990000">,</span> hal<span style="color: #990000">.</span>HAL_IN<span style="color: #990000">)</span>
+c<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ready</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:parts">5. Creating Parts</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:import">5.1. Import STL or OBJ Files</h3>
+<div class="paragraph"><p>It is probably easiest to:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>create geometry in a CAD package</em>
+</p>
+</li>
+<li>
+<p>
+<em>import into the model script using the <code>AsciiSTL()</code> or <code>AsciiOBJ()</code> functions</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Both functions can take one of two named arguments, either a <em>filename</em> or <em>data</em>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>part <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiSTL</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">=</span><span style="color: #FF0000">"path/to/file.stl"</span><span style="color: #990000">)</span>
+part <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiSTL</span></span><span style="color: #990000">(</span>data<span style="color: #990000">=</span><span style="color: #FF0000">"solid part1 facet normal ..."</span><span style="color: #990000">)</span>
+part <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiOBJ</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">=</span><span style="color: #FF0000">"path/to/file.obj"</span><span style="color: #990000">)</span>
+part <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiOBJ</span></span><span style="color: #990000">(</span>data<span style="color: #990000">=</span><span style="color: #FF0000">"v 0.123 0.234 0.345 1.0 ..."</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+STL model parts are added to the Vismach space in the <em>same locations as they were created in the STL or OBJ space</em>,
+  ie ideally with a rotational point at their origin.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">It is much easier to move while building if the origin of the model is at
+a rotational pivot point.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:primitives">5.2. Build from Geometric Primitives</h3>
+<div class="paragraph"><p>Alternatively parts can be <em>created inside the model script from a range of shape primitives</em>.</p></div>
+<div class="paragraph"><p>Many shapes are <em>created at the origin</em> and need to be <em>moved to the required location</em> after creation.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>cylinder = CylinderX(x1, r1, x2, r2)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>cylinder = CylinderY(y1, r1, y2, r2)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>cylinder = CylinderZ(z1, r1, z2, r2)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>(optionally tapered) cylinder on the given axis</em> with the given radii at the given points on the axis.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>sphere = Sphere(x, y, z, r)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>sphere of radius r at (x,y,z)</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>triangle = TriangleXY(x1, y1, x2, y2, x3, y3, z1, z2)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>triangle = TriangleXZ(x1, z1, x2, z2, x3, z3, y1, y2)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>triangle = TriangleYZ(y1, z1, y2, z2, y3, z3, x1, x2)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>triangular plate between planes</em> defined by the last two values parallel to the specified plane,
+  with vertices given by the three coordinate pairs.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>arc = ArcX(x1, x2, r1, r2, a1, a2)</code></strong>
+</dt>
+<dd>
+<p>
+  Create an <em>arc shape</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>box = Box(x1, y1, z1, x2, y2, z2)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>rectangular prism with opposite corners</em> at the specified positions and edges parallel to the XYZ axes.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>box = BoxCentered(xw, yw, zw)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates an xw by yw by zw <em>box centred on the origin</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>box = BoxCenteredXY(xw, yw, z)</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>box ground on WY plane</em> of width xw / yw and height z.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>Composite parts may be created by assembling these primitives either at creation time or subsequently:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span><span style="font-weight: bold"><span style="color: #000000">Sphere</span></span><span style="color: #990000">(</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">50</span><span style="color: #990000">),</span> <span style="font-weight: bold"><span style="color: #000000">CylinderX</span></span><span style="color: #990000">(</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">40</span><span style="color: #990000">,</span><span style="color: #993399">150</span><span style="color: #990000">,</span><span style="color: #993399">30</span><span style="color: #990000">)])</span>
+part2 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Box</span></span><span style="color: #990000">(</span><span style="color: #993399">50</span><span style="color: #990000">,</span><span style="color: #993399">40</span><span style="color: #990000">,</span><span style="color: #993399">75</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">75</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">)</span>
+part3 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>part2<span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">TriangleXY</span></span><span style="color: #990000">(</span><span style="color: #993399">10</span><span style="color: #990000">,</span><span style="color: #993399">10</span><span style="color: #990000">,</span><span style="color: #993399">20</span><span style="color: #990000">,</span><span style="color: #993399">10</span><span style="color: #990000">,</span><span style="color: #993399">15</span><span style="color: #990000">,</span><span style="color: #993399">20</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">,</span><span style="color: #993399">101</span><span style="color: #990000">)])</span>
+part4 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>part1<span style="color: #990000">,</span> part2<span style="color: #990000">])</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:move">6. Moving Model Parts</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Parts may need to be moved in the Vismach space to assemble the model.
+The origin does not move - Translate() and Rotate() move the Collection
+as you add parts, relative to a stationary origin.</p></div>
+<div class="paragraph"><p>They may also need to be moved to create the animation as the animation
+rotation axis is created at the origin (but moves with the Part).</p></div>
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:translate">6.1. Translating Model parts</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part1 = Translate([part1], x, y, z)</code></strong>
+</dt>
+<dd>
+<p>
+Move part1 the specified distances in x, y and z.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:rotate">6.2. Rotating Model Parts</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part1 = Rotate([part1], theta, x, y, z)</code></strong>
+</dt>
+<dd>
+<p>
+  Rotate the part by angle theta [degrees] about an axis between the origin and
+  x, y, z.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:animate">7. Animating Parts</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To <strong>animate the model controlled by the values of HAL pins</strong> there are four functions:
+<code>HalTranslate</code>, <code>HalRotate</code>, <code>HalToolCylinder</code> and <code>HalToolTriangle</code>.</p></div>
+<div class="paragraph"><p><em>For parts to move inside an assembly they need to have their HAL motions defined before being assembled with the "Collection" command</em>.</p></div>
+<div class="paragraph"><p>The <strong>rotation axis and translation vector move with the part</strong>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+as it is moved by the Vismach script during model assembly, or
+</p>
+</li>
+<li>
+<p>
+as it moves in response to the HAL pins as the model is animated.
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:haltranslate">7.1. <code>HalTranslate</code></h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part = HalTranslate([part], hal_comp, hal_pin, xs, ys, zs)</code></strong>
+</dt>
+<dd>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<code>part</code>
+</dt>
+<dd>
+<p>
+A <em>collection or part</em>.<br />
+    It can be pre-created earlier in the script, or could be created at this point if preferred, e.g.,<br />
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>`part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalTranslate</span></span><span style="color: #990000">([</span><span style="font-weight: bold"><span style="color: #000000">Box</span></span><span style="color: #990000">(....)],</span> <span style="color: #990000">...)</span>`<span style="color: #990000">.</span> <span style="color: #990000">+</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<code>hal_comp</code>
+</dt>
+<dd>
+<p>
+The <em>HAL component</em> is the next argument.<br />
+    In QtVCP if you are reading <em>system pins</em> directly then the component argument is set to <code>None</code>.<br />
+</p>
+</dd>
+<dt class="hdlist1">
+<code>hal_pin</code>
+</dt>
+<dd>
+<p>
+The <em>name of the HAL pin</em> that will animate the motion.<br />
+    This needs to match an existing HAL pin that describes the joint position such as:
+</p>
+<div class="listingblock">
+<div class="content">
+<pre><code>"joint.2.pos-fb"</code></pre>
+</div></div>
+<div class="paragraph"><p>Otherwise the component instance would be specified and the pin name of that component would be specified.
+  <code>xs, ys, zs</code>;; The <em>X, Y, Z scales</em>.<br />
+    For a Cartesian machine created at 1:1 scale this would typically be <code>1,0,0</code> for a motion in the positive X direction.<br />
+    However if the STL file happened to be in cm and the machine was in inches,
+    this could be fixed at this point by using 0.3937 ( = 1&#8239;cm/1&#8239;inch = 1&#8239;cm /2.54&#8239;cm ) as the scale.</p></div>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:vismach:halrotate">7.2. <code>HalRotate</code></h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part = HalRotate([part], hal_comp, hal_pin, angle_scale, x, y, z)</code></strong>
+</dt>
+<dd>
+<p>
+  This command is similar in its operation to <code>HalTranslate</code>,
+  except that it is typically necessary to move the part to the origin first to define the axis.<br />
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<code>x, y, z</code>
+</dt>
+<dd>
+<p>
+Defines the <em>axis of rotation</em> from the origin the point of coordinates (x,y,z).<br />
+    When the part is moved back away from the origin to its correct location,
+    the axis of rotation can be considered to remain "embedded" in the part.
+</p>
+</dd>
+<dt class="hdlist1">
+<code>angle_scale</code>
+</dt>
+<dd>
+<p>
+<em>Rotation angles</em> are in degrees, so for a rotary joint with a 0-1 scaling you would need to use an angle scale of 360.
+</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_em_haltoolcylinder_em">7.3. <em>HalToolCylinder</em></h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>tool = HalToolCylinder()</code></strong>
+</dt>
+<dd>
+<p>
+ Make a cylinder to represent a cylindrical mill tool, based on the tool table and current loaded tool.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>tool <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalToolCylinder</span></span><span style="color: #990000">()</span>
+toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">],[</span>tool<span style="color: #990000">])</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># or more compact:</span></span>
+toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">],</span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">HalToolCylinder</span></span><span style="color: #990000">()])</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_em_haltooltriangle_em">7.4. <em>HalToolTriangle</em></h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>tool = HalToolTriangle()</code></strong>
+</dt>
+<dd>
+<p>
+ Make a triangle to represent a triangular lathe tool, based on the tool table and current loaded tool.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>tool <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalToolTriangle</span></span><span style="color: #990000">()</span>
+toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">],[</span>tool<span style="color: #990000">])</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># or more compact:</span></span>
+toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">],[</span><span style="font-weight: bold"><span style="color: #000000">HalToolTriangle</span></span><span style="color: #990000">()])</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:assembly">8. Assembling the model</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In order for parts to move together they need to be assembled with the <strong><code>Collection()</code> command</strong>.</p></div>
+<div class="paragraph"><p>It is important to <strong>assemble the parts and define their motions in the correct sequence</strong>.</p></div>
+<div class="paragraph"><p>For example to create a moving head milling machine with a rotating spindle and an animated draw bar you would:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Create the head main body.
+</p>
+</li>
+<li>
+<p>
+Create the spindle at the origin.
+</p>
+</li>
+<li>
+<p>
+Define the rotation.
+</p>
+</li>
+<li>
+<p>
+Move the head to the spindle or spindle to the head.
+</p>
+</li>
+<li>
+<p>
+Create the draw bar.
+</p>
+</li>
+<li>
+<p>
+Define the motion of the draw bar.
+</p>
+</li>
+<li>
+<p>
+Assemble the three parts into a head assembly.
+</p>
+</li>
+<li>
+<p>
+Define the motion of the head assembly.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In this example the spindle rotation is indicated by rotation of a set of drive dogs:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#Drive dogs</span></span>
+dogs <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Box</span></span><span style="color: #990000">(-</span><span style="color: #993399">6</span><span style="color: #990000">,-</span><span style="color: #993399">3</span><span style="color: #990000">,</span><span style="color: #993399">94</span><span style="color: #990000">,</span><span style="color: #993399">6</span><span style="color: #990000">,</span><span style="color: #993399">3</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">)</span>
+dogs <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">],[</span>dogs<span style="color: #990000">])</span>
+dogs <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalRotate</span></span><span style="color: #990000">([</span>dogs<span style="color: #990000">],</span>c<span style="color: #990000">,</span><span style="color: #FF0000">"spindle"</span><span style="color: #990000">,</span><span style="color: #993399">360</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+dogs <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Translate</span></span><span style="color: #990000">([</span>dogs<span style="color: #990000">],-</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">49</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#Drawbar</span></span>
+draw <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CylinderZ</span></span><span style="color: #990000">(</span><span style="color: #993399">120</span><span style="color: #990000">,</span><span style="color: #993399">3</span><span style="color: #990000">,</span><span style="color: #993399">125</span><span style="color: #990000">,</span><span style="color: #993399">3</span><span style="color: #990000">)</span>
+draw <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,.</span><span style="color: #993399">5</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">],[</span>draw<span style="color: #990000">])</span>
+draw <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Translate</span></span><span style="color: #990000">([</span>draw<span style="color: #990000">],-</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">49</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+draw <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalTranslate</span></span><span style="color: #990000">([</span>draw<span style="color: #990000">],</span>c<span style="color: #990000">,</span><span style="color: #FF0000">"drawbar"</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># head/spindle</span></span>
+head <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiSTL</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">=</span><span style="color: #FF0000">"./head.stl"</span><span style="color: #990000">)</span>
+head <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">0.3</span><span style="color: #990000">,</span><span style="color: #993399">0.3</span><span style="color: #990000">,</span><span style="color: #993399">0.3</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">],[</span>head<span style="color: #990000">])</span>
+head <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Translate</span></span><span style="color: #990000">([</span>head<span style="color: #990000">],</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">4</span><span style="color: #990000">)</span>
+head <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>head<span style="color: #990000">,</span> tool<span style="color: #990000">,</span> dogs<span style="color: #990000">,</span> draw<span style="color: #990000">])</span>
+head <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalTranslate</span></span><span style="color: #990000">([</span>head<span style="color: #990000">],</span>c<span style="color: #990000">,</span><span style="color: #FF0000">"Z"</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0.1</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># base</span></span>
+base <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">AsciiSTL</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">=</span><span style="color: #FF0000">"./base.stl"</span><span style="color: #990000">)</span>
+base <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">0.5</span><span style="color: #990000">,</span><span style="color: #993399">0.5</span><span style="color: #990000">,</span><span style="color: #993399">0.5</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">],[</span>base<span style="color: #990000">])</span>
+<span style="font-style: italic"><span style="color: #9A1900"># mount head on it</span></span>
+base <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>head<span style="color: #990000">,</span> base<span style="color: #990000">])</span></tt></pre></div></div>
+<div class="paragraph"><p>Finally a <strong>single collection of all the machine parts, floor and work</strong> (if any) needs to be created.</p></div>
+<div class="paragraph"><p>For a <em>serial machine</em> each new part will be added to the collection of the previous part.</p></div>
+<div class="paragraph"><p>For a <em>parallel machine</em> there may be several "base" parts.</p></div>
+<div class="paragraph"><p>Thus, for example, in <code>scaragui.py</code> link3 is added to link2, link2 to link1 and link1 to link0,
+so the final model is created by:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>model <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>link0<span style="color: #990000">,</span> floor<span style="color: #990000">,</span> table<span style="color: #990000">])</span></tt></pre></div></div>
+<div class="paragraph"><p>Whereas a VMC model with separate parts moving on the base might have</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>model <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>base<span style="color: #990000">,</span> saddle<span style="color: #990000">,</span> head<span style="color: #990000">,</span> carousel<span style="color: #990000">])</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:functions">9. Other functions</h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part = Color([_colorspec_], [_part_])</code></strong>
+</dt>
+<dd>
+<p>
+  Sets the <em>display color of the part</em>.<br />
+  Note that unlike the other functions, the part definition comes second in this case.<br />
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<code>_colorspec_</code>
+</dt>
+<dd>
+<p>
+Three RGB values and opacity.<br />
+  For example [1,0,0,0.5] for a 50% opacity red.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>myhud = Hud()</code></strong>
+</dt>
+<dd>
+<p>
+  Creates a <em>heads-up display</em> in the Vismach GUI to display items such as axis positions, titles, or messages.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>myhud <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Hud</span></span><span style="color: #990000">()</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">show</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Mill_XYZ"</span><span style="color: #990000">)</span>`</tt></pre></div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>myhud = HalHud()</code></strong>
+</dt>
+<dd>
+<p>
+  A more advanced version of the Hud that allows HAL pins to be displayed. eg.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>myhud <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalHud</span></span><span style="color: #990000">()</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_background_color</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">,.</span><span style="color: #993399">1</span><span style="color: #990000">,.</span><span style="color: #993399">2</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">show_top</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Mill_XYZ"</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">show_top</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"------------"</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_pin</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'axis-x: '</span><span style="color: #990000">,</span><span style="color: #FF0000">"{:10.4f}"</span><span style="color: #990000">,</span><span style="color: #FF0000">"axis.x.pos-cmd"</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_pin</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'axis-y: '</span><span style="color: #990000">,</span><span style="color: #FF0000">"{:10.4f}"</span><span style="color: #990000">,</span><span style="color: #FF0000">"axis.y.pos-cmd"</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_pin</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'axis-z: '</span><span style="color: #990000">,</span><span style="color: #FF0000">"{:10.4f}"</span><span style="color: #990000">,</span><span style="color: #FF0000">"axis.z.pos-cmd"</span><span style="color: #990000">)</span>
+myhud<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">show</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"-------------"</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>part = Capture()</code></strong>
+</dt>
+<dd>
+<p>
+  This sets the current position in the model.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>main(model, tooltip, work, size=10, hud=myhud, rotation_vectors=None, lat=0, lon=0)</code></strong>
+</dt>
+<dd>
+<p>
+  This is the command that makes it all happen, creates the display, etc. if invoked directly from Python.
+  Usually this file is imported by QtVCP and the <code>window()</code> object is instantiated and embedded into another screen.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<code>_model_</code>
+</dt>
+<dd>
+<p>
+Should be a collection that contains all the machine parts.
+</p>
+</dd>
+<dt class="hdlist1">
+<code>_tooltip_</code> and <code>_work_</code>
+</dt>
+<dd>
+<p>
+Need to be created by <code>Capture()</code> to visualize their motion in the backplot.
+    See <code>mill_xyz.py</code> for an example of how to connect the tool tip to a tool and the tool to the model.
+</p>
+</dd>
+<dt class="hdlist1">
+<code>_size_</code>
+</dt>
+<dd>
+<p>
+Sets the extent of the volume visualized in the initial view.<br />
+    hud refers to a head-up display of axis positions.
+</p>
+</dd>
+<dt class="hdlist1">
+<code>_rotation_vectors_</code> or <code>_lat, lon_</code>
+</dt>
+<dd>
+<p>
+Can be used to set the original viewpoint.
+    It is advisable to do as the default initial viewpoint is rather unhelpful from immediately overhead.
+</p>
+</dd>
+</dl></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tips">10. Tips</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Create an axes origin marker to be able to see parts relative to it, for construction purposes.
+You can remove it when you are done.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># build axis origin markers</span></span>
+X <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CylinderX</span></span><span style="color: #990000">(-</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+X <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">],</span> <span style="color: #990000">[</span>X<span style="color: #990000">])</span>
+Y <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CylinderY</span></span><span style="color: #990000">(-</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+Y <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">],</span> <span style="color: #990000">[</span>Y<span style="color: #990000">])</span>
+Z <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CylinderZ</span></span><span style="color: #990000">(-</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">500</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+Z <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">],</span> <span style="color: #990000">[</span>Z<span style="color: #990000">])</span>
+origin <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>X<span style="color: #990000">,</span>Y<span style="color: #990000">,</span>Z<span style="color: #990000">])</span></tt></pre></div></div>
+<div class="paragraph"><p>Add it to the Window class Collection so it is never moved from the origin.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>v<span style="color: #990000">.</span>model <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>origin<span style="color: #990000">,</span> model<span style="color: #990000">,</span> world<span style="color: #990000">])</span></tt></pre></div></div>
+<div class="paragraph"><p>Start from the cutting tip and work your way back.
+Add each collection to the model at the origin and run the script to confirm the location,
+then rotate/translate and run the script to confirm again.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:structure">11. Basic structure of a <code>QtVismach</code> script</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># imports</span></span>
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> hal
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>qt_vismach<span style="color: #990000">.</span>qt_vismach <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># create HAL pins here if needed</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#c = hal.component("samplegui")</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#c.newpin("joint0", hal.HAL_FLOAT, hal.HAL_IN)</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># create the floor, tool and work</span></span>
+floor <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Box</span></span><span style="color: #990000">(-</span><span style="color: #993399">50</span><span style="color: #990000">,</span> <span style="color: #990000">-</span><span style="color: #993399">50</span><span style="color: #990000">,</span> <span style="color: #990000">-</span><span style="color: #993399">3</span><span style="color: #990000">,</span> <span style="color: #993399">50</span><span style="color: #990000">,</span> <span style="color: #993399">50</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+work <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Capture</span></span><span style="color: #990000">()</span>
+tooltip <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Capture</span></span><span style="color: #990000">()</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Build and assemble the model</span></span>
+part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span><span style="font-weight: bold"><span style="color: #000000">Box</span></span><span style="color: #990000">(-</span><span style="color: #993399">6</span><span style="color: #990000">,-</span><span style="color: #993399">3</span><span style="color: #990000">,</span><span style="color: #993399">94</span><span style="color: #990000">,</span><span style="color: #993399">6</span><span style="color: #990000">,</span><span style="color: #993399">3</span><span style="color: #990000">,</span><span style="color: #993399">100</span><span style="color: #990000">)])</span>
+part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">],[</span>part1<span style="color: #990000">])</span>
+part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">HalRotate</span></span><span style="color: #990000">([</span>part1<span style="color: #990000">],</span>None<span style="color: #990000">,</span><span style="color: #FF0000">"joint.0.pos-fb"</span><span style="color: #990000">,</span><span style="color: #993399">360</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+part1 <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Translate</span></span><span style="color: #990000">([</span>dogs<span style="color: #990000">],-</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">49</span><span style="color: #990000">,</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># create a top-level model</span></span>
+model <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>base<span style="color: #990000">,</span> saddle<span style="color: #990000">,</span> head<span style="color: #990000">,</span> carousel<span style="color: #990000">])</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># we want to either embed into qtvcp or display directly with PyQt5</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># so build a window to display the model</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> <span style="font-weight: bold"><span style="color: #000000">Window</span></span><span style="color: #990000">(</span>QWidget<span style="color: #990000">):</span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+        <span style="font-weight: bold"><span style="color: #000000">super</span></span><span style="color: #990000">(</span>Window<span style="color: #990000">,</span> self<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">__init__</span></span><span style="color: #990000">()</span>
+        self<span style="color: #990000">.</span>glWidget <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">GLWidget</span></span><span style="color: #990000">()</span>
+        v <span style="color: #990000">=</span> self<span style="color: #990000">.</span>glWidget
+        v<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_latitudelimits</span></span><span style="color: #990000">(-</span><span style="color: #993399">180</span><span style="color: #990000">,</span> <span style="color: #993399">180</span><span style="color: #990000">)</span>
+
+        world <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Capture</span></span><span style="color: #990000">()</span>
+
+        <span style="font-style: italic"><span style="color: #9A1900"># uncomment if there is a HUD</span></span>
+        <span style="font-style: italic"><span style="color: #9A1900"># HUD needs to know where to draw</span></span>
+        <span style="font-style: italic"><span style="color: #9A1900">#v.hud = myhud</span></span>
+        <span style="font-style: italic"><span style="color: #9A1900">#v.hud.app = v</span></span>
+
+        v<span style="color: #990000">.</span>model <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>model<span style="color: #990000">,</span> world<span style="color: #990000">])</span>
+        size <span style="color: #990000">=</span> <span style="color: #993399">600</span>
+        v<span style="color: #990000">.</span>distance <span style="color: #990000">=</span> size <span style="color: #990000">*</span> <span style="color: #993399">3</span>
+        v<span style="color: #990000">.</span>near <span style="color: #990000">=</span> size <span style="color: #990000">*</span> <span style="color: #993399">0.01</span>
+        v<span style="color: #990000">.</span>far <span style="color: #990000">=</span> size <span style="color: #990000">*</span> <span style="color: #993399">10.0</span>
+        v<span style="color: #990000">.</span>tool2view <span style="color: #990000">=</span> tooltip
+        v<span style="color: #990000">.</span>world2view <span style="color: #990000">=</span> world
+        v<span style="color: #990000">.</span>work2view <span style="color: #990000">=</span> work
+
+        mainLayout <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">QHBoxLayout</span></span><span style="color: #990000">()</span>
+        mainLayout<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addWidget</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>glWidget<span style="color: #990000">)</span>
+        self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setLayout</span></span><span style="color: #990000">(</span>mainLayout<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># if you call this file directly from python3, it will display a PyQt5 window</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># good for confirming the parts of the assembly.</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> __name__ <span style="color: #990000">==</span> <span style="color: #FF0000">'__main__'</span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">main</span></span><span style="color: #990000">(</span>model<span style="color: #990000">,</span> tooltip<span style="color: #990000">,</span> work<span style="color: #990000">,</span> size<span style="color: #990000">=</span><span style="color: #993399">600</span><span style="color: #990000">,</span> hud<span style="color: #990000">=</span>None<span style="color: #990000">,</span> lat<span style="color: #990000">=-</span><span style="color: #993399">75</span><span style="color: #990000">,</span> lon<span style="color: #990000">=</span><span style="color: #993399">215</span><span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:vismach:panels">12. Builtin Vismach Sample Panels</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><a href="qtvcp-vcp-panels.html#sub:qtvcp:panels:vismach">QtVCP builtin Vismach Panels</a></p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-06-18 10:43:37 CEST
+</div>
+</div>
+</body>
+</html>

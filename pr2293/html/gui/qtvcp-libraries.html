@@ -1,0 +1,2210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>QtVCP Libraries modules</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>QtVCP Libraries modules</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:qtvcp:libraries"><p>Libraries are <strong>prebuilt Python modules that give added features to QtVCP</strong>.
+In this way you can select what features you want - yet don&#8217;t have to build common ones yourself.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_status_code">1. <code>Status</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Status</code></strong> is a library that <strong>sends GObject messages based on LinuxCNC&#8217;s current state</strong>.
+It is an <em>extension of GladeVCP&#8217;s <a href="gstat.html#cha:gstat">GStat</a> object</em>.</p></div>
+<div class="paragraph"><p>It also has some functions to report status on such things as internal jog rate.</p></div>
+<div class="paragraph"><p>You <em>connect a function</em> call to the <code>STATUS</code> message you are interested in,
+and QtVCP will call this function when the message is sent from <code>STATUS</code>.</p></div>
+<div class="sect2">
+<h3 id="_usage">1.1. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Status</code> modules</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Status</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>Status</code> module</strong><br />
+  Add this Python code to your instantiate section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>STATUS <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Status</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Connect to <code>STATUS</code> messages</strong><br />
+  Use <em>GObject syntax</em>.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_example">1.2. Example</h3>
+<div class="paragraph"><p>For example, you can catch machine on and off messages.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">The example below shows the <em>two common ways of connecting signals</em>, one of them <em>using lambda</em>.
+<strong><code>lambda</code></strong> is <em>used to strip off or manipulate arguments</em> from the status message before calling the function.
+You can see the difference in the called function signature:
+The one that uses lambda does not accept the status object - lambda did not pass it to the function.</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Place these commands into the <code>[INITIALIZE]</code> section of the Python handler file:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'state-on'</span><span style="color: #990000">,</span> self<span style="color: #990000">.</span>on_state_on<span style="color: #990000">)</span>
+STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">connect</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'state-off'</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">lambda</span></span><span style="color: #990000">:</span> w<span style="color: #990000">,</span> self<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">on_state_off</span></span><span style="color: #990000">())</span></tt></pre></div></div>
+<div class="paragraph"><p>In this example code, when LinuxCNC is in <em>"machine on" state</em> the function <code>self.on_state_on</code> will be called.<br />
+When LinuxCNC is in <em>"machine off" state</em> the function <code>self.on_state_off</code> will be called.<br /></p></div>
+</li>
+<li>
+<p>
+These would call functions that looks like these:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">on_state_on</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> status_object<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'LinuxCNC machine is on'</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">on_state_off</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'LinuxCNC machine is off'</span><span style="color: #990000">)</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_info_code">2. <code>Info</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Info</code></strong> is a library to <strong>collect and filter data from the INI file</strong>.</p></div>
+<div class="sect2">
+<h3 id="_available_data_and_defaults">2.1. Available data and defaults</h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>LINUXCNC_IS_RUNNING
+LINUXCNC_VERSION
+INIPATH
+INI = linuxcnc.ini(INIPATH)
+MDI_HISTORY_PATH = '~/.axis_mdi_history'
+QTVCP_LOG_HISTORY_PATH = '~/qtvcp.log'
+MACHINE_LOG_HISTORY_PATH = '~/.machine_log_history'
+PREFERENCE_PATH = '~/.Preferences'
+SUB_PATH = None
+SUB_PATH_LIST = []
+self.MACRO_PATH = None
+MACRO_PATH_LIST = []
+INI_MACROS = self.INI.findall("DISPLAY", "MACRO")
+
+IMAGE_PATH = IMAGEDIR
+LIB_PATH = os.path.join(HOME, "share","qtvcp")
+
+PROGRAM_FILTERS = None
+PARAMETER_FILE = None
+MACHINE_IS_LATHE = False
+MACHINE_IS_METRIC = False
+MACHINE_UNIT_CONVERSION = 1
+MACHINE_UNIT_CONVERSION_9 = [1]*9
+TRAJ_COORDINATES =
+JOINT_COUNT = int(self.INI.find("KINS","JOINTS")or 0)
+AVAILABLE_AXES = ['X','Y','Z']
+AVAILABLE_JOINTS = [0,1,2]
+GET_NAME_FROM_JOINT = {0:'X',1:'Y',2:'Z'}
+GET_JOG_FROM_NAME = {'X':0,'Y':1,'Z':2}
+NO_HOME_REQUIRED = False
+HOME_ALL_FLAG
+JOINT_TYPE = self.INI.find(section, "TYPE") or "LINEAR"
+JOINT_SEQUENCE_LIST
+JOINT_SYNC_LIST
+
+JOG_INCREMENTS = None
+ANGULAR_INCREMENTS = None
+GRID_INCREMENTS
+
+DEFAULT_LINEAR_JOG_VEL = 15 units per minute
+MIN_LINEAR_JOG_VEL = 60 units per minute
+MAX_LINEAR_JOG_VEL = 300 units per minute
+
+DEFAULT_ANGULAR_JOG_VEL =
+MIN_ANGULAR_JOG_VEL =
+MAX_ANGULAR_JOG_VEL =
+
+MAX_FEED_OVERRIDE =
+MAX_TRAJ_VELOCITY =
+
+AVAILABLE_SPINDLES = int(self.INI.find("TRAJ", "SPINDLES") or 1)
+DEFAULT_SPINDLE_0_SPEED = 200
+MAX_SPINDLE_0_SPEED = 2500
+MAX_SPINDLE_0_OVERRIDE = 100
+MIN_SPINDLE_0_OVERRIDE = 50
+
+MAX_FEED_OVERRIDE = 1.5
+MAX_TRAJ_VELOCITY</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_user_message_dialog_info">2.2. User message dialog info</h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>USRMESS_BOLDTEXT = self.INI.findall("DISPLAY", "MESSAGE_BOLDTEXT")
+USRMESS_TEXT = self.INI.findall("DISPLAY", "MESSAGE_TEXT")
+USRMESS_TYPE = self.INI.findall("DISPLAY", "MESSAGE_TYPE")
+USRMESS_PINNAME = self.INI.findall("DISPLAY", "MESSAGE_PINNAME")
+USRMESS_DETAILS = self.INI.findall("DISPLAY", "MESSAGE_DETAILS")
+USRMESS_ICON = self.INI.findall("DISPLAY", "MESSAGE_ICON")
+ZIPPED_USRMESS =
+
+self.GLADEVCP = (self.INI.find("DISPLAY", "GLADEVCP")) or None</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_embedded_program_info">2.3. Embedded program info</h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>TAB_NAMES = (self.INI.findall("DISPLAY", "EMBED_TAB_NAME")) or None
+TAB_LOCATION = (self.INI.findall("DISPLAY", "EMBED_TAB_LOCATION")) or []
+TAB_CMD = (self.INI.findall("DISPLAY", "EMBED_TAB_COMMAND")) or None
+ZIPPED_TABS =
+
+MDI_COMMAND_LIST =      (heading: [MDI_COMMAND_LIST], title: MDI_COMMAND")
+TOOL_FILE_PATH =        (heading: [EMCIO], title:TOOL_TABLE)
+POSTGUI_HALFILE_PATH =  (heading: [HAL], title: POSTGUI_HALFILE)</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_helpers">2.4. Helpers</h3>
+<div class="paragraph"><p>There are some <em>helper functions</em> - mostly used for widget support:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>get_error_safe_setting(_self_, _heading_, _detail_, default=_None_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_metric_to_machine(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_imperial_to_machine(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_9_metric_to_machine(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_9_imperial_to_machine(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_units(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>convert_units_9(_data_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>get_filter_program(_fname_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>get_qt_filter_extensions()</code></strong>
+</dt>
+<dd>
+<p>
+Get filter extensions in Qt format.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_2">2.5. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Info</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Info</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>Info</code> module</strong>.<br />
+  Add this Python code to your instantiate section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+INFO <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Info</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Access <code>INFO</code> data</strong> Use this general syntax:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>home_state <span style="color: #990000">=</span> INFO<span style="color: #990000">.</span>NO_HOME_REQUIRED
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> INFO<span style="color: #990000">.</span>MACHINE_IS_METRIC <span style="font-weight: bold"><span style="color: #0000FF">is</span></span> True<span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Metric based'</span><span style="color: #990000">)</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_action_code">3. <code>Action</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Action</code></strong> library is used to <strong>command LinuxCNC&#8217;s motion controller</strong>.</p></div>
+<div class="paragraph"><p>It tries to hide incidental details and add convenience methods for developers.</p></div>
+<div class="sect2">
+<h3 id="_helpers_2">3.1. Helpers</h3>
+<div class="paragraph"><p>There are some <strong>helper functions</strong>, mostly used for this library&#8217;s support:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>get_jog_info (_num_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>jnum_check(_num_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>ensure_mode(_modes_)</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>open_filter_program(_filename_, _filter_)</code></strong>
+</dt>
+<dd>
+<p>
+Open G-code filter program.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_3">3.2. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Action</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Action</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>Action</code> module</strong><br />
+  Add this Python code to your instantiate section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+ACTION <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Action</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Access <code>ACTION</code> commands</strong><br />
+  Use general syntax such as these:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_ESTOP_STATE</span></span><span style="color: #990000">(</span>state<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_STATE</span></span><span style="color: #990000">(</span>state<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_HOMING</span></span><span style="color: #990000">(</span>joint<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_UNHOMED</span></span><span style="color: #990000">(</span>joint<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_LIMITS_OVERRIDE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MDI_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MANUAL_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_AUTO_MODE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_LIMITS_OVERRIDE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_MDI</span></span><span style="color: #990000">(</span>code<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_MDI_WAIT</span></span><span style="color: #990000">(</span>code<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_INI_MDI</span></span><span style="color: #990000">(</span>number<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_OWORD</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">OPEN_PROGRAM</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SAVE_PROGRAM</span></span><span style="color: #990000">(</span>text_source<span style="color: #990000">,</span> fname<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_AXIS_ORIGIN</span></span><span style="color: #990000">(</span>axis<span style="color: #990000">,</span>value<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_TOOL_OFFSET</span></span><span style="color: #990000">(</span>axis<span style="color: #990000">,</span>value<span style="color: #990000">,</span>fixture <span style="color: #990000">=</span> False<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RUN</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ABORT</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PAUSE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MAX_VELOCITY_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_RAPID_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FEED_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_INCR</span></span><span style="color: #990000">(</span>incr<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_RATE_ANGULAR</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_INCR_ANGULAR</span></span><span style="color: #990000">(</span>incr<span style="color: #990000">,</span> text<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_ROTATION</span></span><span style="color: #990000">(</span>direction <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> rpm <span style="color: #990000">=</span> <span style="color: #993399">100</span><span style="color: #990000">,</span> number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_FASTER</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_SLOWER</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_STOP</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_USER_SYSTEM</span></span><span style="color: #990000">(</span>system<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_G92_OFFSET</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_ROTATIONAL_OFFSET</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_G5X_OFFSET</span></span><span style="color: #990000">(</span>num<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RECORD_CURRENT_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RESTORE_RECORDED_MODE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SELECTED_AXIS</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">DO_JOG</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">,</span> direction<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">JOG</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">,</span> direction<span style="color: #990000">,</span> rate<span style="color: #990000">,</span> distance<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_FLOOD</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FLOOD_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FLOOD_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_MIST</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MIST_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MIST_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RELOAD_TOOLTABLE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">UPDATE_VAR_FILE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_OPTIONAL_STOP</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_OPTIONAL_STOP_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_OPTIONAL_STOP_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_BLOCK_DELETE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_BLOCK_DELETE_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_BLOCK_DELETE_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RELOAD_DISPLAY</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_GRAPHICS_VIEW</span></span><span style="color: #990000">(</span>view<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">UPDATE_MACHINE_LOG</span></span><span style="color: #990000">(</span>text<span style="color: #990000">,</span> option<span style="color: #990000">=</span>None<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_DIALOG</span></span><span style="color: #990000">(</span>command<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">HIDE_POINTER</span></span><span style="color: #990000">(</span>state<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_SOUND</span></span><span style="color: #990000">(</span>path<span style="color: #990000">):</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_ERROR</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_DONE</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_READY</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_ATTENTION</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_LOGIN</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PLAY_LOGOUT</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SPEAK</span></span><span style="color: #990000">(</span>speech<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP_RING</span></span><span style="color: #990000">():</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">BEEP_START</span></span><span style="color: #990000">():</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_DISPLAY_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_ERROR_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_tool_code">4. <code>Tool</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This library <strong>handles tool offset file changes</strong>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content"><strong>LinuxCNC doesn&#8217;t handle third party manipulation of the tool file well.</strong></td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_helpers_3">4.1. Helpers</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>GET_TOOL_INFO(_toolnumber_)</code></strong>
+</dt>
+<dd>
+<p>
+  This will return a Python <strong>list of information on the requested tool number</strong>.<br />
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>GET_TOOL_ARRAY()</code></strong>
+</dt>
+<dd>
+<p>
+  This return a single Python <strong>list of Python lists of tool information</strong>.
+</p>
+<div class="paragraph"><p>This is a raw list formed <em>from the system tool file</em>.</p></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>ADD_TOOL(_newtool_ = [_-99, 0,'0','0','0','0','0','0','0','0','0','0','0','0', 0,'New Tool'_])</code></strong>
+</dt>
+<dd>
+<p>
+  This will return a Python <strong>tuple of two Python lists of Python lists of tool information</strong>:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong><code>[0]</code></strong> will be <em>real tools information</em>
+</p>
+</li>
+<li>
+<p>
+<strong><code>[1]</code></strong> will be <em>wear tools information</em> (tool numbers will be over 10000; Fanuc style tool wear)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>By default, adds a blank tool entry with tool number -99.<br />
+You can preload the <code>newtool</code> array with tool information.</p></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>DELETE_TOOLS(_toolnumber_)</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Delete the numbered tool</strong>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>SAVE_TOOLFILE(_toolarray_)</code></strong>
+</dt>
+<dd>
+<p>
+  This will <strong>parse the <code>toolarray</code> and save it to the tool file</strong> specified in the <em>INI file</em> as the tool path.
+</p>
+<div class="paragraph"><p>This tool <em>array must contain all the available tools information</em>.</p></div>
+<div class="paragraph"><p>This array is expected to use the LinuxCNC <em>raw tool array</em>, i.e. it does not feature tool wear entries.</p></div>
+</dd>
+</dl></div>
+<div class="paragraph"><p>It will return True if there was an error.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>CONVERT_TO_WEAR_TYPE(_toolarray_)</code></strong>
+</dt>
+<dd>
+<p>
+  This function <strong>converts a LinuxCNC raw tool array to a QtVCP tool array</strong>.
+</p>
+<div class="paragraph"><p><em>QtVCP&#8217;s tool array includes entries for X and Z axis tool wear</em>.</p></div>
+<div class="paragraph"><p><em>LinuxCNC supports tool wear</em> by adding <strong>tool wear information into tool entries above 10000</strong>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">This also <strong>requires remap code to add the wear offsets at tool change time</strong>.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<strong><code>CONVERT_TO_STANDARD_TYPE(_toolarray_)</code></strong>
+</dt>
+<dd>
+<p>
+  This function <strong>converts QtVCP&#8217;s tool array into a LinuxCNC raw tool array</strong>.
+</p>
+<div class="paragraph"><p><em>QtVCP&#8217;s array includes entries for X and Z axis tool wear</em>.</p></div>
+<div class="paragraph"><p><em>LinuxCNC supports tool wear</em> by adding <strong>tool wear information into tool entries above 10000</strong>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">This also <strong>requires remap code to add the wear offsets t tool change time</strong>.</td>
+</tr></table>
+</div>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_path_code">5. <code>Path</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Path</code></strong> module gives <strong>reference to important files paths</strong>.</p></div>
+<div class="sect2">
+<h3 id="_referenced_paths">5.1. Referenced Paths</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>PATH.PREFS_FILENAME</code></strong>
+</dt>
+<dd>
+<p>
+  The preference file path.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.WORKINGDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The directory QtVCP was launched from.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.IS_SCREEN</code></strong>
+</dt>
+<dd>
+<p>
+  Is this a screen or a VCP?
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.CONFIGPATH</code></strong>
+</dt>
+<dd>
+<p>
+  Launched configuration folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.RIPCONFIGDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The Run-in-place config folder for QtVCP screens.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.BASEDIR</code></strong>
+</dt>
+<dd>
+<p>
+  Base folder for LinuxCNC.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.BASENAME</code></strong>
+</dt>
+<dd>
+<p>
+  The Qt Designer files name (no ending).
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.IMAGEDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP image folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.SCREENDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP builtin Screen folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.PANELDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP builtin VCP folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.HANDLER</code></strong>
+</dt>
+<dd>
+<p>
+  Handler file Path.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.HANDLERDIR</code></strong>
+</dt>
+<dd>
+<p>
+  Directory where the Python handler file was found.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.XML</code></strong>
+</dt>
+<dd>
+<p>
+  QtVCP UI file path.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.HANDLERDIR</code></strong>
+</dt>
+<dd>
+<p>
+  Directory where the UI file was found.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.QSS</code></strong>
+</dt>
+<dd>
+<p>
+  QtVCP QSS file path.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.PYDIR</code></strong>
+</dt>
+<dd>
+<p>
+  LinuxCNC&#8217;s Python library.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.LIBDIR</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP library folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.WIDGET</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP widget folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.PLUGIN</code></strong>
+</dt>
+<dd>
+<p>
+  The QtVCP widget plugin folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.VISMACHDIR</code></strong>
+</dt>
+<dd>
+<p>
+  Directory where prebuilt Vismach files are found.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>Not currently used:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>PATH.LOCALEDIR</code></strong>
+</dt>
+<dd>
+<p>
+  Locale translation folder.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PATH.DOMAIN</code></strong>
+</dt>
+<dd>
+<p>
+  Translation domain.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_helpers_4">5.2. Helpers</h3>
+<div class="paragraph"><p>There are some helper functions available:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_list <span style="color: #990000">=</span> PATH<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find_vismach_files</span></span><span style="color: #990000">()</span>
+directory_list <span style="color: #990000">=</span> PATH<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find_screen_dirs</span></span><span style="color: #990000">()</span>
+directory_list <span style="color: #990000">=</span> PATH<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find_panel_dirs</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_4">5.3. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Path</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Path</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>Path</code> module</strong><br />
+  Add this Python code to your instantiate section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+PATH <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Path</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_vcpwindow_code">6. <code>VCPWindow</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>VCPWindow</code></strong> module gives <strong>reference to the <code>MainWindow</code> and widgets</strong>.</p></div>
+<div class="paragraph"><p>Typically this would be used for a library (e.g., the toolbar library uses it)
+as the widgets get a reference to the <code>MainWindow</code> from the <code>_hal_init()</code> function.</p></div>
+<div class="sect2">
+<h3 id="_usage_5">6.1. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>VCPWindow</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>qt_makegui <span style="font-weight: bold"><span style="color: #000080">import</span></span> VCPWindow</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>VCPWindow</code> module</strong>+
+  Add this Python code to your instantiate section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+WIDGETS <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">VCPWindow</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_aux_program_loader_code">7. <code>Aux_program_loader</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Aux_program_loader</code></strong> module allows an easy way to <strong>load auxiliary programs LinuxCNC often uses</strong>.</p></div>
+<div class="sect2">
+<h3 id="_helpers_5">7.1. Helpers</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>load_halmeter()</code></strong>
+</dt>
+<dd>
+<p>
+  <em>Halmeter</em> is used to <strong>display one HAL pin data</strong>.<br />
+  Load a <code>halmeter</code> with:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_halmeter</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_ladder()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>ClassicLadder</em> PLC program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_ladder</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_status()</code></strong>
+</dt>
+<dd>
+<p>
+  Load LinuxCNC <code>status</code> program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_status</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_halshow()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>HALshow</em>, configure display program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_halshow</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_halscope()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>HALscope</em> program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_halscope</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_tooledit()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>Tooledit</em> program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_tooledit</span></span><span style="color: #990000">(&lt;</span>TOOLEFILE_PATH<span style="color: #990000">&gt;)</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>load_calibration()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>Calibration</em> program:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">load_calibration</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>keyboard_onboard()</code></strong>
+</dt>
+<dd>
+<p>
+  Load <em>onboard/Matchbox keyboard</em>
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>AUX_PRGM<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">keyboard_onboard</span></span><span style="color: #990000">(&lt;</span>ARGS<span style="color: #990000">&gt;)</span></tt></pre></div></div>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_6">7.2. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Aux_program_loader</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+</li>
+</ul></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>aux_program_loader <span style="font-weight: bold"><span style="color: #000080">import</span></span> Aux_program_loader</tt></pre></div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Instantiate <code>Aux_program_loader</code> module</strong><br />
+  Add this Python code to your instantiate section:
+</p>
+</li>
+</ul></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+AUX_PRGM <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Aux_program_loader</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_keylookup_code">8. <code>Keylookup</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Keylookup</code></strong> module is used to <strong>allow keypresses to control behaviors</strong> such as jogging.</p></div>
+<div class="paragraph"><p>It&#8217;s used inside the handler file to facilitate creation of <strong>key bindings</strong> such as keyboard jogging, etc.</p></div>
+<div class="sect2">
+<h3 id="_usage_7">8.1. Usage</h3>
+<div class="paragraph"><div class="title">Import <code>Keylookup</code> module</div><p>To import this modules add this Python code to your import section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>keybindings <span style="font-weight: bold"><span style="color: #000080">import</span></span> Keylookup</tt></pre></div></div>
+<div class="paragraph"><div class="title">Instantiate <code>Keylookup</code> module</div><p>To instantiate <code>Keylookup</code> module* so you can use it, add this Python code to your instantiate section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+KEYBIND <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Keylookup</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="title">Add Key Bindings</div><code>Keylookup</code> requires code under the <code>processed_key_event</code> function to call <code>KEYBIND.call()</code>.<br />
+Most handler files already have this code.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>In the handler file, under the <em>initialized function</em> use this general syntax to <strong>create keybindings</strong>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>KEYBIND<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"DEFINED_KEY"</span><span style="color: #990000">,</span><span style="color: #FF0000">"FUNCTION TO CALL"</span><span style="color: #990000">,</span> USER DATA<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Here we add a keybinding for <code>F10</code>, <code>F11</code> and <code>F12</code>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># Special Functions called from QtVCP</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># at this point:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># the widgets are instantiated.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># the HAL pins are built but HAL is not set ready</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">initialized__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+    KEYBIND<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Key_F10'</span><span style="color: #990000">,</span><span style="color: #FF0000">'on_keycall_F10'</span><span style="color: #990000">,</span>None<span style="color: #990000">)</span>
+    KEYBIND<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Key_F11'</span><span style="color: #990000">,</span><span style="color: #FF0000">'on_keycall_override'</span><span style="color: #990000">,</span><span style="color: #993399">10</span><span style="color: #990000">)</span>
+    KEYBIND<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add_call</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Key_F12'</span><span style="color: #990000">,</span><span style="color: #FF0000">'on_keycall_override'</span><span style="color: #990000">,</span><span style="color: #993399">20</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>And then we need to <strong>add the functions that get called</strong>.<br />
+In the handler file, under the <code>KEY BINDING CALLS</code> section, add this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#####################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># KEY BINDING CALLS #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#####################</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">on_keycall_F12</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span>event<span style="color: #990000">,</span>state<span style="color: #990000">,</span>shift<span style="color: #990000">,</span>cntrl<span style="color: #990000">,</span>value<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> state<span style="color: #990000">:</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'F12 pressed'</span><span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">on_keycall_override</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span>event<span style="color: #990000">,</span>state<span style="color: #990000">,</span>shift<span style="color: #990000">,</span>cntrl<span style="color: #990000">,</span>value<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> state<span style="color: #990000">:</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'value = {}'</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>value<span style="color: #990000">))</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_key_defines">8.2. Key Defines</h3>
+<div class="paragraph"><p>Here is a list of recognized key words. Use the quoted text.<br />
+Letter keys use <em>Key_</em> with the upper or lower letter added.<br />
+ie. <em>Key_a</em> and <em>Key_A</em></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    keys <span style="color: #990000">=</span> <span style="color: #990000">{</span>
+        Qt<span style="color: #990000">.</span>Key_Escape<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Escape"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Tab<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Tab"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Backtab<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Backtab"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Backspace<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Backspace"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Return<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Return"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Enter<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Enter"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Insert<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Insert"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Delete<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Delete"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Pause<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Pause"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Print<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Print"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_SysReq<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_SysReq"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Clear<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Clear"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Home<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Home"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_End<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_End"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Left<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Left"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Up<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Up"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Right<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Right"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Down<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Down"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_PageUp<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_PageUp"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_PageDown<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_PageDown"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Shift<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Shift"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Control<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Control"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Meta<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Meta"</span><span style="color: #990000">,</span>
+        <span style="font-style: italic"><span style="color: #9A1900"># Qt.Key_Alt: "Key_Alt",</span></span>
+        Qt<span style="color: #990000">.</span>Key_AltGr<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_AltGr"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_CapsLock<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_CapsLock"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_NumLock<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_NumLock"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_ScrollLock<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_ScrollLock"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F1<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F1"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F2<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F2"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F3<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F3"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F4<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F4"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F5<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F5"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F6<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F6"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F7<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F7"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F8<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F8"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F9<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F9"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F10<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F10"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F11<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F11"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F12<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F12"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F13<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F13"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F14<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F14"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F15<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F15"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F16<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F16"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F17<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F17"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F18<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F18"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F19<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F19"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F20<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F20"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F21<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F21"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F22<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F22"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F23<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F23"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F24<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F24"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F25<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F25"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F26<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F26"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F27<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F27"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F28<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F28"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F29<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F29"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F30<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F30"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F31<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F31"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F32<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F32"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F33<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F33"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F34<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F34"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_F35<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_F35"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Super_L<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Super_L"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Super_R<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Super_R"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Menu<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Menu"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Hyper_L<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_HYPER_L"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Hyper_R<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Hyper_R"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Help<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Help"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Direction_L<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Direction_L"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Direction_R<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Direction_R"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Space<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Space"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Any<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Any"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Exclam<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Exclam"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_QuoteDbl<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_QuoteDdl"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_NumberSign<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_NumberSign"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Dollar<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Dollar"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Percent<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Percent"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Ampersand<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Ampersand"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Apostrophe<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Apostrophe"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_ParenLeft<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_ParenLeft"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_ParenRight<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_ParenRight"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Asterisk<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Asterisk"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Plus<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Plus"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Comma<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Comma"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Minus<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Minus"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Period<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Period"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Slash<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Slash"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_0<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_0"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_1<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_1"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_2<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_2"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_3<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_3"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_4<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_4"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_5<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_5"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_6<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_6"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_7<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_7"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_8<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_8"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_9<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_9"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Colon<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Colon"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Semicolon<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Semicolon"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Less<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Less"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Equal<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Equal"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Greater<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Greater"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Question<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Question"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_At<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_At"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_BracketLeft<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_BracketLeft"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Backslash<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Backslash"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_BracketRight<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_BracketRight"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_AsciiCircum<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_AsciiCircum"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Underscore<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Underscore"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_QuoteLeft<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_QuoteLeft"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_BraceLeft<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_BraceLeft"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_Bar<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_Bar"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_BraceRight<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_BraceRight"</span><span style="color: #990000">,</span>
+        Qt<span style="color: #990000">.</span>Key_AsciiTilde<span style="color: #990000">:</span> <span style="color: #FF0000">"Key_AsciiTilde"</span><span style="color: #990000">,</span>
+
+    <span style="color: #990000">}</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_messages_code">9. <code>Messages</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Messages</code></strong> module is used to <strong>display pop up dialog messages on the screen</strong>.</p></div>
+<div class="paragraph"><p>These messages are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>defined in the INI file under the <code>[DISPLAY]</code> heading</em>, and
+</p>
+</li>
+<li>
+<p>
+<em>controlled by HAL pins</em>.
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_properties">9.1. Properties</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>_BOLDTEXT</code></strong>
+</dt>
+<dd>
+<p>
+Generally is a title.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>_TEXT</code></strong>
+</dt>
+<dd>
+<p>
+Text below title, and usually longer.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>_DETAIL</code></strong>
+</dt>
+<dd>
+<p>
+Text hidden unless clicked on.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>_PINNAME</code></strong>
+</dt>
+<dd>
+<p>
+Basename of the HAL pin(s).
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>_TYPE</code></strong>
+</dt>
+<dd>
+<p>
+Specifies whether it is a:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Status message</strong> - shown in the <em>status bar and the notify dialog</em>.<br />
+Requires no user intervention.
+</p>
+</li>
+<li>
+<p>
+<strong>OK message</strong> - <em>requiring the user to click OK to close the dialog</em>.<br />
+OK messages have <em>two HAL pins</em>:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+One HAL pin to launch the dialog, and
+</p>
+</li>
+<li>
+<p>
+One to signify it&#8217;s waiting for response.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<strong>Yes/No message</strong> - <em>requiring the user to select yes or no buttons to close the dialog</em>.<br />
+Yes/No messages have <em>three HAL pins</em>:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+One to show the dialog,
+</p>
+</li>
+<li>
+<p>
+One for waiting, and
+</p>
+</li>
+<li>
+<p>
+one for the answer.
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+<div class="paragraph"><p>By default it will send <code>STATUS</code> messages for <code>focus_overlay</code> and alert sound.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_examples">9.2. Examples</h3>
+<div class="paragraph"><p>Here are sample INI message definition code blocks that would be found under the <code>[DISPLAY]</code> heading:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Status bar and desktop notify pop up message:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_BOLDTEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> NONE</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> This is a statusbar test</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_DETAILS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> STATUS DETAILS</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TYPE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> status</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_PINNAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> statustest</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+Pop up dialog asking a Yes/No question:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_BOLDTEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> NONE</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> This is a yes no dialog test</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_DETAILS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> Y/N DETAILS</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TYPE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> yesnodialog</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_PINNAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> yndialogtest</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+Pop up dialog asking an OK answer + Status bar and desktop notification:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_BOLDTEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> This is the short text</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> This is the longer text of the both type test. It can be longer then the status bar text</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_DETAILS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> BOTH DETAILS</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_TYPE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> okdialog status</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MESSAGE_PINNAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> bothtest</span></tt></pre></div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p>The <code>ScreenOptions</code> widget can automatically set up the message system.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_notify_code">10. <code>Notify</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Notify</code></strong> module is used to <strong>send messages that are integrated into the desktop</strong>.</p></div>
+<div class="paragraph"><p>It uses the <code>pynotify</code> library.</p></div>
+<div class="paragraph"><p>Ubuntu/Mint does not follow the standard so you can&#8217;t set how long the message stays up for.<br />
+I suggest fixing this with the <code>notify-osd</code> package available from
+<a href="https://launchpad.net/~leolik/+archive/leolik?field.series_filter=lucid">this PPA</a>
+(DISCONTINUED due to move of Ubuntu to Gnome).</p></div>
+<div class="paragraph"><p>Notify <em>keeps a list of all the alarm messages since starting</em> in <strong><code>self.alarmpage</code></strong>.<br />
+If you click <em>'Show all messages'</em> in the notify popup, it will print them to the terminal.</p></div>
+<div class="paragraph"><p>The <code>ScreenOptions</code> widget can automatically set up the notify system.</p></div>
+<div class="paragraph"><p>Typically <code>STATUS</code> <em>messages</em> are used to sent notify messages.<br /></p></div>
+<div class="sect2">
+<h3 id="_properties_2">10.1. Properties</h3>
+<div class="paragraph"><p>You can set the:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>title</code></strong>
+</dt>
+<dd>
+<p>
+Notification message title text.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>message</code></strong>
+</dt>
+<dd>
+<p>
+Notification message content text.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>icon</code></strong>
+</dt>
+<dd>
+<p>
+Notification message icon.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>timeout</code></strong>
+</dt>
+<dd>
+<p>
+How long the message stays up for.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_preferences_code">11. <code>Preferences</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Preferences</code></strong> module allows one to <strong>load and save preference data permanently to storage media</strong>.</p></div>
+<div class="paragraph"><p>The <code>ScreenOptions</code> widget can automatically set up the preference system.</p></div>
+<div class="paragraph"><p>QtVCP searches for the <code>ScreenOptions</code> widget first and, if found, calls <strong><code>_pref_init()</code></strong>.<br />
+This will <em>create the preferences object</em> and return it to QtVCP to pass to all the widgets and add it to the window object attributes.<br />
+In this case the preferences object would be accessible from the handler file&#8217;s <code>initialized_</code> method as <strong><code>self.w.PREFS_</code></strong>.</p></div>
+<div class="paragraph"><p>Also all widgets can have access to a specific preferences file at initialization time.</p></div>
+<div class="paragraph"><p>The <code>ScreenOptions</code> widget can automatically set up the preference file.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_player_code">12. <code>Player</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This module <strong>allows playing sounds using Gstreamer, beep and Espeak</strong>.</p></div>
+<div class="paragraph"><p>It can:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>play sound/music files</strong> using <em>Gstreamer</em> (non blocking),
+</p>
+</li>
+<li>
+<p>
+<strong>play sounds</strong> using the <code>beep</code> library (currently blocks while beeping),
+</p>
+</li>
+<li>
+<p>
+<strong>speak words</strong> using the <code>espeak</code> library (non blocking while speaking).
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>There are <em>default alert sounds</em> using Mint or FreeDesktop default sounds.</p></div>
+<div class="paragraph"><p>You can play arbitrary sounds or even songs by specifying the path.</p></div>
+<div class="paragraph"><p><code>STATUS</code> has <em>messages to control <code>Player</code> module</em>.</p></div>
+<div class="paragraph"><p>The <code>ScreenOptions</code> widget can automatically set up the audio system.</p></div>
+<div class="sect2">
+<h3 id="_sounds">12.1. Sounds</h3>
+<div class="paragraph"><div class="title">Alerts</div><p>There are default <strong>alerts</strong> to choose from:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ERROR</code>
+</p>
+</li>
+<li>
+<p>
+<code>READY</code>
+</p>
+</li>
+<li>
+<p>
+<code>ATTENTION</code>
+</p>
+</li>
+<li>
+<p>
+<code>RING</code>
+</p>
+</li>
+<li>
+<p>
+<code>DONE</code>
+</p>
+</li>
+<li>
+<p>
+<code>LOGIN</code>
+</p>
+</li>
+<li>
+<p>
+<code>LOGOUT</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><div class="title">Beeps</div><p>There are three <strong>beeps</strong>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>BEEP_RING</code>
+</p>
+</li>
+<li>
+<p>
+<code>BEEP_START</code>
+</p>
+</li>
+<li>
+<p>
+<code>BEEP</code>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_8">12.2. Usage</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Import <code>Player</code> module</strong><br />
+  Add this Python code to your import section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>audio_player <span style="font-weight: bold"><span style="color: #000080">import</span></span> Player</tt></pre></div></div>
+</li>
+<li>
+<p>
+<strong>Instantiate <code>Player</code> module</strong><br />
+  Add this Python code to your instantiated section:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+SOUND <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Player</span></span><span style="color: #990000">()</span>
+SOUND<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">_register_messages</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>The <strong><code>_register_messages()</code></strong> function connects the audio player to the <code>STATUS</code> library
+so sounds can be played with the <code>STATUS</code> message system.</p></div>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_example_2">12.3. Example</h3>
+<div class="paragraph"><p>To play sounds upon <code>STATUS</code> messages, use these general syntaxes:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">emit</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'play-alert'</span><span style="color: #990000">,</span><span style="color: #FF0000">'LOGOUT'</span><span style="color: #990000">)</span>
+STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">emit</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'play-alert'</span><span style="color: #990000">,</span><span style="color: #FF0000">'BEEP'</span><span style="color: #990000">)</span>
+STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">emit</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'play-alert'</span><span style="color: #990000">,</span><span style="color: #FF0000">'SPEAK This is a test screen for Q t V C P'</span><span style="color: #990000">)</span>
+STATUS<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">emit</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'play-sound'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'PATH TO SOUND'</span><span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_virtual_keyboard">13. Virtual Keyboard</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This library allows you to <strong>use <code>STATUS</code> messages to launch a virtual keyboard</strong>.</p></div>
+<div class="paragraph"><p>It uses <a href="https://launchpad.net/onboard"><code>Onboard</code></a> or <a href="https://git.yoctoproject.org/matchbox-keyboard/"><code>Matchbox</code></a> libraries for the keyboard.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_toolbar_actions">14. Toolbar Actions</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This library supplies <strong>prebuilt submenus and actions for toolbar menus and toolbar buttons</strong>.</p></div>
+<div class="paragraph"><p>Toolbuttons, menu and toolbar menus are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>built in Qt Designer</em>, and
+</p>
+</li>
+<li>
+<p>
+<em>assigned actions/submenus in the handler file</em>.
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_actions">14.1. Actions</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>estop</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>power</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>reload</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>gcode_properties</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>run</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>pause</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>abort</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>block_delete</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>optional_stop</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>touchoffworkplace</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>touchofffixture</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>runfromline</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load_calibration</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load_halmeter</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load_halshow</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load_status</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>load_halscope</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>about</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>zoom_in</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>zoom_out</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_x</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_y</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_y2</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_z</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_z2</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_p</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>view_clear</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>show_offsets</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>quit</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>system_shutdown</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>tooloffsetdialog</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>originoffsetdialog</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>calculatordialog</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>alphamode</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>inhibit_selection</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>show_dimensions</code></strong>
+</dt>
+<dd>
+<p>
+Toggles dimensions display.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_submenus">14.2. Submenus</h3>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>recent_submenu</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>home_submenu</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>unhome_submenu</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>zero_systems_submenu</code></strong>
+</dt>
+<dt class="hdlist1">
+<strong><code>grid_size_submenu</code></strong>
+</dt>
+<dd>
+<p>
+Menu to set graphic grid size
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_9">14.3. Usage</h3>
+<div class="paragraph"><p>Here is the typical code to add to the relevant <em>handler file</em> sections:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> qtvcp<span style="color: #990000">.</span>lib<span style="color: #990000">.</span>toolbar_actions <span style="font-weight: bold"><span style="color: #000080">import</span></span> ToolBarActions
+
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** instantiate libraries section **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+TOOLBAR <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">ToolBarActions</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_examples_2">14.4. Examples</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+Assigning Tool Actions To Toolbar Buttons
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># Special Functions called from QtVCP</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># At this point:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   * the widgets are instantiated,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   * the HAL pins are built but HAL is not set ready.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">initialized__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+    TOOLBAR<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configure_submenu</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>menuHoming<span style="color: #990000">,</span> <span style="color: #FF0000">'home_submenu'</span><span style="color: #990000">)</span>
+    TOOLBAR<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configure_action</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>actionEstop<span style="color: #990000">,</span> <span style="color: #FF0000">'estop'</span><span style="color: #990000">)</span>
+    TOOLBAR<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configure_action</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>actionQuit<span style="color: #990000">,</span> <span style="color: #FF0000">'quit'</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">lambda</span></span> d<span style="color: #990000">:</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">close</span></span><span style="color: #990000">())</span>
+    TOOLBAR<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configure_action</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>actionEdit<span style="color: #990000">,</span> <span style="color: #FF0000">'edit'</span><span style="color: #990000">,</span> self<span style="color: #990000">.</span>edit<span style="color: #990000">)</span>
+    <span style="font-style: italic"><span style="color: #9A1900"># Add a custom function</span></span>
+    TOOLBAR<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configure_action</span></span><span style="color: #990000">(</span>self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>actionMyFunction<span style="color: #990000">,</span> <span style="color: #FF0000">'my_Function'</span><span style="color: #990000">,</span> self<span style="color: #990000">.</span>my_function<span style="color: #990000">)</span></tt></pre></div></div>
+</li>
+<li>
+<p>
+Add a custom toolbar function:
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#####################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># GENERAL FUNCTIONS #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#####################</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">my_function</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span> widget<span style="color: #990000">,</span> state<span style="color: #990000">):</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'My function State = ()'</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">format</span></span><span style="color: #990000">(</span>state<span style="color: #990000">))</span></tt></pre></div></div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_qt_vismach_machine_graphics_library">15. Qt Vismach Machine Graphics library</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong><code>Qt_vismach</code></strong> is a <em>set of Python functions</em> that can be <strong>used to create and animate models of machines</strong>.</p></div>
+<div class="paragraph"><p><em>Vismach</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>displays the model</em> in a <strong>3D viewport</strong>
+</p>
+</li>
+<li>
+<p>
+<em>animates the model parts</em> as the values of associated HAL pins change.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This is the <em>Qt based version</em> of the library, there is also a tkinter version available in LinuxCNC.</p></div>
+<div class="paragraph"><p>The Qt version <em>allows embedding the simulation in other screens</em>.</p></div>
+<div class="sect2">
+<h3 id="_builtin_samples">15.1. Builtin Samples</h3>
+<div class="paragraph"><p>There are included <em>sample panels</em> in QtVCP for:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+a 3-Axis XYZ mill,
+</p>
+</li>
+<li>
+<p>
+a 5-Axis gantry mill,
+</p>
+</li>
+<li>
+<p>
+a 3-Axis mill with an A axis/spindle, and
+</p>
+</li>
+<li>
+<p>
+a scara mill.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Most of these samples, if loaded after a running LinuxCNC configuration
+(including non-QtVCP based screens), will react to machine movement.<br />
+Some require HAL pins to be connected for movement.</p></div>
+<div class="paragraph"><p>From a terminal (pick one):</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>qtvcp vismach_mill_xyz
+qtvcp vismach_scara
+qtvcp vismach_millturn
+qtvcp vismach_5axis_gantry</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_primitives_library">15.2. Primitives Library</h3>
+<div class="paragraph"><p>Provides the <strong>basic building blocks of a simulated machine</strong>.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>Collection</code></strong>
+</dt>
+<dd>
+<p>
+A <code>collection</code> is an <strong>object of individual machine parts</strong>.
+</p>
+<div class="paragraph"><p>This holds a <strong>hierarchical list</strong> of primitive shapes or <em>STL objects</em> that operations can be applied to.</p></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>Translate</code></strong>
+</dt>
+<dd>
+<p>
+This object will perform an <strong>OpenGL translation</strong> calculation <em>on a Collection object</em>.
+</p>
+<div class="paragraph"><p>Translation refers to <em>moving an object in straight line</em> to a different position on screen.</p></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>Scale</code></strong>
+</dt>
+<dd>
+<p>
+This object will perform an <strong>OpenGL scale</strong> function <em>on a collection object</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>HalTranslate</code></strong>
+</dt>
+<dd>
+<p>
+This object will perform an <strong>OpenGL translation</strong> calculation <em>on a Collection object</em>, <strong>offset by the HAL pin value</strong>.
+</p>
+<div class="paragraph"><p>Translation refers to moving an object in straight line to a different position on screen.</p></div>
+<div class="paragraph"><p>You can either:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>read a pin from a component owned by the Vismach object</em>, or
+</p>
+</li>
+<li>
+<p>
+<em>read a HAL system pin directly</em> if the component argument is set to <code>None</code>.
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>Rotate</code></strong>
+</dt>
+<dd>
+<p>
+This object will perform an <strong>OpenGL rotation</strong> calculation <em>on a Collection object</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>HalRotate</code></strong>
+</dt>
+<dd>
+<p>
+This object will perform an <strong>OpenGL rotation</strong> calculation <em>on a Collection object</em>, <strong>offset by the HAL pin value</strong>.
+</p>
+<div class="paragraph"><p>You can either:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>read a pin from a component owned by the vismach</em> object, or
+</p>
+</li>
+<li>
+<p>
+<em>read a HAL system pin directly</em> if the component argument is set to <code>None</code>.
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>HalToolCylinder</code></strong>
+</dt>
+<dd>
+<p>
+This object will build a <em>CylinderZ object</em> that will <strong>change size and length based on loaded tool dimensition</strong> (from the tool table)<br />
+</p>
+<div class="paragraph"><p>It reads the <code>halui.tool.diameter</code> and <code>motion.tooloffset.z</code> <em>HAL pins</em>.</p></div>
+<div class="paragraph"><p>Example from mill_xyz sample:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">CylinderZ</span></span><span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+toolshape <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Color</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">,</span> <span style="color: #990000">.</span><span style="color: #993399">5</span><span style="color: #990000">],</span> <span style="color: #990000">[</span>toolshape<span style="color: #990000">])</span>
+tool <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Collection</span></span><span style="color: #990000">([</span>
+    <span style="font-weight: bold"><span style="color: #000000">Translate</span></span><span style="color: #990000">([</span><span style="font-weight: bold"><span style="color: #000000">HalTranslate</span></span><span style="color: #990000">([</span>tooltip<span style="color: #990000">],</span> None<span style="color: #990000">,</span> <span style="color: #FF0000">"motion.tooloffset.z"</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #990000">-</span>MODEL_SCALING<span style="color: #990000">)],</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">,</span> <span style="color: #993399">0</span><span style="color: #990000">),</span>
+    <span style="font-weight: bold"><span style="color: #000000">HalToolCylinder</span></span><span style="color: #990000">(</span>toolshape<span style="color: #990000">)</span>
+<span style="color: #990000">])</span></tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>Track</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Move and rotate an object to point from one <code>capture()</code> 'd coordinate system to another</strong>.
+</p>
+<div class="paragraph"><p>Base object to <em>hold coordinates for primitive shapes</em>.</p></div>
+</dd>
+<dt class="hdlist1">
+<strong><code>CylinderX</code>, <code>CylinderY</code>, <code>CylinderZ</code></strong>
+</dt>
+<dd>
+<p>
+<strong>Build a cylinder on the X, Y or Z axis</strong> by giving <em>endpoint</em> (X, Y, or Z) and <em>radii</em> coordinates.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>Sphere</code></strong>
+</dt>
+<dd>
+<p>
+<strong>Build a sphere</strong> from <em>center</em> and <em>radius</em> coordinates.
+</p>
+</dd>
+</dl></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>TriangleXY</code>, <code>TriangleXZ</code>, <code>TriangleYZ</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Build a triangle</strong> in the <em>specified plane</em> by giving the <em>corners Z coordinates</em> for each side.
+</p>
+</dd>
+</dl></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>ArcX</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Build an arc</strong> by specifying
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>Box</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Build a box</strong> specified by the <em>6 vertex coordinates</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>BoxCentered</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Build a box centered on origin</strong> by specifying the <em>width in X and Y</em>, and the <em>height in Z</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>BoxCenteredXY</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Build a box centered in X and Y, and running from Z=0</strong>, by specifying the <em>width in X and Y</em>, and running up or down to the specified <em>height in Z</em>.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>Capture</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Capture current transformation matrix of a collection</strong>.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">This <em>transforms from the current coordinate system to the viewport system</em>, NOT to the world system.</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<strong><code>Hud</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Heads up display</strong> draws a <em>semi-transparent text box</em>.
+</p>
+<div class="paragraph"><p>Use:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>HUD.strs</code> for things that must be <em>updated constantly</em>,
+</p>
+</li>
+<li>
+<p>
+<code>HUD.show("stuff")</code> for one-shot things like error messages.
+</p>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>Color</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Applies a color</strong> to the <em>parts of a collection</em>.
+</p>
+</dd>
+</dl></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>AsciiSTL</code>, <code>AsciiOBJ</code></strong>
+</dt>
+<dd>
+<p>
+  <strong>Loads a STL or OBJ data file</strong> as a <em>Vismach part</em>.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_usage_10">15.3. Usage</h3>
+<div class="paragraph"><div class="title">Import a simulation</div><p>Here is how one might import the XYZ_mill simulation in a QtVCP panel or screen handler file.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">import</span></span> mill_xyz as MILL</tt></pre></div></div>
+<div class="paragraph"><div class="title">Instantiate and use the simulation widget</div><p>Instantiate the simulation widget and add it to the screen&#8217;s main layout:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># Special Functions called from QtVCP</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##########################################</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># At this point:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   * the widgets are instantiated,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   * the HAL pins are built but HAL is not set ready.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">initialized__</span></span><span style="color: #990000">(</span>self<span style="color: #990000">):</span>
+    machine <span style="color: #990000">=</span> MILL<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Window</span></span><span style="color: #990000">()</span>
+    self<span style="color: #990000">.</span>w<span style="color: #990000">.</span>mainLayout<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addWidget</span></span><span style="color: #990000">(</span>machine<span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_more_information">15.4. More Information</h3>
+<div class="paragraph"><p>More information on how to build a custom machine simulation in the <a href="qtvcp-vismach.html#cha:qtvcp:vismach">Qt Vismach</a> chapter.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-06-18 10:43:37 CEST
+</div>
+</div>
+</body>
+</html>

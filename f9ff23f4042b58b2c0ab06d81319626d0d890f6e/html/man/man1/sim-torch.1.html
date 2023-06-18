@@ -1,0 +1,158 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu Feb 16 09:03:34 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SIM_TORCH</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">SIM_TORCH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sim-torch - A
+simulated plasma torch</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em"><b>loadusr Wn sim-torch
+sim-torch</b></p> </td>
+<td width="43%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A simulated
+plasma torch for arc-ok testing.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>VERSION:</i>
+<br>
+0.1</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sim-torch-rt.cut-noise-in</b>
+float in (default: <i>0.75</i>)</p>
+
+<p style="margin-left:22%;">the maximum amount of noise
+during cutting (volts)</p>
+
+<p style="margin-left:11%;"><b>sim-torch-rt.cycles-in</b>
+s32 in (default: <i>200</i>)</p>
+
+<p style="margin-left:22%;">the number of cycles that the
+arc voltage overshoots the cut voltage (cycles)</p>
+
+
+<p style="margin-left:11%;"><b>sim-torch-rt.on-delay-in</b>
+s32 in (default: <i>10</i>)</p>
+
+<p style="margin-left:22%;">the time from turn on until
+overshoot begins (cycles)</p>
+
+<p style="margin-left:11%;"><b>sim-torch-rt.offset-in</b>
+float in</p>
+
+<p style="margin-left:22%;">the cut voltage
+offset(volts)</p>
+
+
+<p style="margin-left:11%;"><b>sim-torch-rt.overshoot-in</b>
+s32 in (default: <i>50</i>)</p>
+
+<p style="margin-left:22%;">the percentage of the cut
+voltage that the arc voltage overshoots (percent)</p>
+
+
+<p style="margin-left:11%;"><b>sim-torch-rt.ramp-noise-in</b>
+float in (default: <i>5</i>)</p>
+
+<p style="margin-left:22%;">the maximum amount of noise
+during overshoot (volts)</p>
+
+<p style="margin-left:11%;"><b>sim-torch-rt.ramp-up-in</b>
+s32 in (default: <i>80</i>)</p>
+
+<p style="margin-left:22%;">percent of
+&rsquo;cycles_in&rsquo; that the arc voltage ramps up
+(percent)</p>
+
+<p style="margin-left:11%;"><b>sim-torch-rt.start</b> bit
+in</p>
+
+<p style="margin-left:22%;">start the arc</p>
+
+<p style="margin-left:11%;"><b>sim-torch-rt.voltage-in</b>
+float in (default: <i>100</i>)</p>
+
+<p style="margin-left:22%;">the cut voltage (volts)</p>
+
+
+<p style="margin-left:11%;"><b>sim-torch-rt.voltage-out</b>
+float out</p>
+
+<p style="margin-left:22%;">output voltage (volts)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Phillip A
+Carter</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GPLv2 or
+greater</p>
+<hr>
+</body>
+</html>

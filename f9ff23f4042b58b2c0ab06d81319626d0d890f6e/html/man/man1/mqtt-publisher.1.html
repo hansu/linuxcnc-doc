@@ -1,0 +1,251 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Jun 17 19:55:58 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MQTT-PUBLISHER</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">MQTT-PUBLISHER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mqtt-publisher
+- send HAL pin data to MQTT broker periodically</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadusr -W
+mqtt-publisher [options] keys</b>=pin1[,pin2...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mqtt-publisher</b>
+is a non-realtime program that reads HAL values periodically
+and passes the values to a MQTT broker.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When specifying
+the MQTT settings in the INI file, this is the recommended
+setup:</p>
+
+<p style="margin-left:11%; margin-top: 1em">HAL file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">loadusr -W
+mqtt-publisher [MQTT]DRYRUN --mqtt-broker=[MQTT]BROKER \
+<br>
+--mqtt-user=[MQTT]USERNAME --mqtt-password=[MQTT]PASSWORD
+keys=halui.estop.is-activated</p>
+
+<p style="margin-left:11%; margin-top: 1em">INI file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">[MQTT] <br>
+DRYRUN = --dryrun <br>
+BROKER = broker.local <br>
+USERNAME = username <br>
+PASSWORD = password</p>
+
+<p style="margin-left:11%; margin-top: 1em">This component
+need the Paho python library installed to function. On
+debian this is available from the python3-paho-mqtt
+package.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keys</b>=<i>pin1[,pin2,...]</i></p>
+
+<p style="margin-left:17%;">The name of HAL pins, signals
+and other values to publish using MQTT. The names are also
+used as the JSON keys in the MQTT message publised with the
+broker.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dryrun</b></p>
+
+<p style="margin-left:17%;">Do not set up MQTT connection,
+only print message to stdout. Useful for debugging and
+testing.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqtt-broker</b>=<i>FQDN</i></p>
+
+<p style="margin-left:17%;">The fully qualified DNS name of
+the MQTT broker. The default broker name is
+&quot;localhost&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqtt-port</b>=<i>PORTNUMBER</i></p>
+
+<p style="margin-left:17%;">The port to use of the MQTT
+broker. The default port is 1883.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqtt-user</b>=<i>USERNAME</i></p>
+
+<p style="margin-left:17%;">The user name to use when
+connecting to the MQTT broker.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqtt-password</b>=<i>PASSWORD</i></p>
+
+<p style="margin-left:17%;">The password to use when
+connecting to the MQTT broker.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqtt-prefix</b>=<i>PREFIX</i></p>
+
+<p style="margin-left:17%;">The MQTT prefix/topic to use
+when publishing to the MQTT broker. The default prefix is
+&quot;devices/linuxcnc/machine&quot;.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mqtt-publisher</b></p>
+
+<p style="margin-left:17%;">The loop reading HAL values and
+publishing MQTT messages.</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mqtt-publisher</b>.<b>enable</b>
+bit input</p>
+
+<p style="margin-left:17%;">When TRUE, publish messages to
+MQTT broker. When FALSE, do not publish messages. Default is
+TRUE.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mqtt-publisher</b>.<b>period</b>
+u32 input</p>
+
+<p style="margin-left:17%;">The number of seconds to sleep
+between publishing MQTT messages to the broker. Default is
+10 seconds.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mqtt-publisher</b>.<b>lastpublish</b>
+u32 output</p>
+
+<p style="margin-left:17%;">When the last MQTT publication
+was published in number of seconds since EPOC. If no
+publication has taken place, the value is zero.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Any set of HAL
+pins and signals can be published. This setup might be a
+useful starting point:</p>
+
+<p style="margin-left:17%; margin-top: 1em">loadusr -W
+mqtt-publisher [MQTT]DRYRUN --mqtt-broker=[MQTT]BROKER <br>
+--mqtt-user=[MQTT]USERNAME --mqtt-password=[MQTT]PASSWORD
+<br>
+keys=halui.axis.a.pos-feedback,halui.axis.b.pos-feedback,
+<br>
+halui.axis.c.pos-feedback,halui.axis.u.pos-feedback, <br>
+halui.axis.v.pos-feedback,halui.axis.w.pos-feedback, <br>
+halui.axis.x.pos-feedback,halui.axis.y.pos-feedback, <br>
+halui.axis.z.pos-feedback,halui.estop.is-activated, <br>
+
+halui.joint.0.is-homed,halui.joint.1.is-homed,halui.joint.2.is-homed,
+<br>
+
+halui.joint.3.is-homed,halui.joint.4.is-homed,halui.joint.5.is-homed,
+<br>
+
+halui.joint.6.is-homed,halui.joint.7.is-homed,halui.joint.8.is-homed,
+<br>
+
+halui.machine.is-on,halui.max-velocity.value,halui.mode.is-auto,
+<br>
+
+halui.mode.is-manual,halui.mode.is-mdi,halui.mode.is-teleop,
+<br>
+halui.program.is-running'</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note, the list
+of keys can not include space after comma. The lines are
+only broken here to avoid too long lines in the
+documentation.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hal</b>(3hal)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Component and
+documentation created by Petter Reinholdtsen, as part of the
+LinuxCNC project.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2023 Petter Reinholdtsen. This is free software; see
+the source for copying conditions. There is NO warranty; not
+even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.</p>
+<hr>
+</body>
+</html>

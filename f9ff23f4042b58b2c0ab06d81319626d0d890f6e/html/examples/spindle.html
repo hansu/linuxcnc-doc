@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>Spindle Control</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Spindle Control</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:spindle-control"><p>LinuxCNC can control up to 8 spindles. The number is set in the INI file.
+The examples below all refer to a single-spindle config with spindle
+control pins with names like <em>spindle.0..</em>.
+In the case of a multiple spindle machine all that changes is that
+additional pins exist with names such as <em>spindle.6..</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_0_10_volt_spindle_speed">1. 0-10 Volt Spindle Speed</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If your spindle speed is controlled by an analog signal,
+(for example, by a VFD with a 0 V to 10 V signal) and
+you&#8217;re using a DAC card like the m5i20 to output the control signal:</p></div>
+<div class="paragraph"><p>First you need to figure the scale of spindle speed to control signal, i.e. the voltage.
+For this example the spindle top speed of 5000 RPM is equal to 10 Volts.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/spindle-math.png" alt="images/spindle-math.png"/>
+</figure>
+</div>
+</div>
+<div class="paragraph"><p>We have to add a scale component to the HAL file to scale the
+<em>spindle.N.speed-out</em> to the 0 to 10 needed by the VFD if your DAC
+card does not do scaling.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">scale</span></span> <span style="font-weight: bold"><span style="color: #000000">count</span></span><span style="color: #990000">=</span><span style="color: #993399">1</span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">scale.0</span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">scale.0.gain</span> <span style="color: #993399">0.002</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-speed-scale</span></span> <span style="color: #009900">spindle.0.speed-out</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">scale.0.in</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-speed-DAC</span></span> <span style="color: #009900">scale.0.out</span> <span style="color: #990000">=&gt;</span> &lt;<span style="font-weight: bold"><span style="color: #000000">your</span></span> <span style="font-weight: bold"><span style="color: #000000">DAC</span></span> <span style="font-weight: bold"><span style="color: #000000">pin</span></span> <span style="font-weight: bold"><span style="color: #000000">name</span></span>&gt;</tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pwm_spindle_speed">2. PWM Spindle Speed</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If your spindle can be controlled by a PWM signal,
+use the <em>pwmgen</em> component to create the signal:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">pwmgen</span></span> <span style="font-weight: bold"><span style="color: #000000">output_type</span></span><span style="color: #990000">=</span><span style="color: #993399">0</span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">pwmgen.update</span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">pwmgen.make-pulses</span> <span style="font-weight: bold"><span style="color: #000000">base-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-speed-cmd</span></span> <span style="color: #009900">spindle.0.speed-out</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">pwmgen.0.value</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-on</span></span> <span style="color: #009900">spindle.0.on</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">pwmgen.0.enable</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-pwm</span></span> <span style="color: #009900">pwmgen.0.pwm</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-09-out</span>
+<span style="font-style: italic"><span style="color: #9A1900"># Set the spindle's top speed in RPM</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">pwmgen.0.scale</span> <span style="color: #993399">1800</span></tt></pre></div></div>
+<div class="paragraph"><p>This assumes that the spindle controller&#8217;s response to PWM is simple:
+0% PWM gives 0 RPM, 10% PWM gives 180 RPM, etc. If there is a minimum
+PWM required to get the spindle to turn, follow the example in the
+nist-lathe sample configuration to use a scale component.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spindle_enable">3. Spindle Enable</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If you need a spindle enable signal,
+link your output pin to <em>spindle.0.on</em>.
+To link these pins to a parallel port pin put something like
+the following in your .hal file, making sure you pick the
+pin that is connected to your control device.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-enable</span></span> <span style="color: #009900">spindle.0.on</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-14-out</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spindle_direction">4. Spindle Direction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If you have direction control of your spindle, then the HAL pins
+<em>spindle.<em>N</em>.forward</em> and <em>spindle.<em>N</em>.reverse</em> are controlled by the G-codes
+M3 and M4. Spindle speed S<em>n</em> must be set to a positive non-zero value for
+M3/M4 to turn on spindle motion.</p></div>
+<div class="paragraph"><p>To link these pins to a parallel port pin, put something like the
+following in your .hal file making sure you pick the pin that is
+connected to your control device.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-fwd</span></span> <span style="color: #009900">spindle.0.forward</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-16-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-rev</span></span> <span style="color: #009900">spindle.0.reverse</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-17-out</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spindle_soft_start">5. Spindle Soft Start</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If you need to ramp your spindle speed command and your control does
+not have that feature it can be done in HAL. Basically you need to
+hijack the output of <em>spindle.<em>N</em>.speed-out</em> and run it through a
+<em>limit2</em> component with the scale set so it will ramp the rpm from
+<em>spindle.<em>N</em>.speed-out</em> to your device that receives the rpm.
+The second part is to let LinuxCNC know when the spindle is at speed so
+motion can begin.</p></div>
+<div class="paragraph"><p>In the 0-10 Volt example the line</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-speed-scale</span></span> <span style="color: #009900">spindle.0.speed-out</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">scale.0.in</span></tt></pre></div></div>
+<div class="paragraph"><p>is changed as shown in the following example:</p></div>
+<div class="paragraph"><div class="title">Intro to HAL components limit2 and near</div><p>In case you have not run across them before, here&#8217;s a quick introduction
+to the two HAL components used in the following example.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+A <em>limit2</em> is a HAL component (floating point) that accepts an
+  input value and provides an output that has been limited to a
+  max/min range, and also limited to not exceed a specified
+  rate of change.
+</p>
+</li>
+<li>
+<p>
+A <em>near</em> is a HAL component (floating point) with a binary output
+  that says whether two inputs are approximately equal.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>More info is available in the documentation for HAL components, or from
+the man pages, just say <em>man limit2</em> or <em>man near</em> in a terminal.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># load the real time modules limit2 and near with names so it is easier to follow their connections</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">limit2</span></span> <span style="font-weight: bold"><span style="color: #000000">names</span></span><span style="color: #990000">=</span><span style="font-weight: bold"><span style="color: #000000">spindle-ramp</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">near</span></span> <span style="font-weight: bold"><span style="color: #000000">names</span></span><span style="color: #990000">=</span><span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># add the functions to a thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramp</span></span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># set the parameter for max rate-of-change</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># (max spindle accel/decel in units per second)</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramp</span></span>.<span style="font-weight: bold"><span style="color: #000000">maxv</span></span> <span style="color: #993399">60</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># hijack the spindle speed out and send it to spindle ramp in</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-cmd</span></span> <span style="color: #990000">&lt;=</span> <span style="color: #009900">spindle.0.speed-out</span> <span style="color: #990000">=&gt;</span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramp</span></span>.<span style="font-weight: bold"><span style="color: #000000">in</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># the output of spindle ramp is sent to the scale in</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramped</span></span> <span style="color: #990000">&lt;=</span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramp</span></span>.<span style="font-weight: bold"><span style="color: #000000">out</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">scale.0.in</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># to know when to start the motion we send the near component</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># (named spindle-at-speed) to the spindle commanded speed from</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># the signal spindle-cmd and the actual spindle speed</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># provided your spindle can accelerate at the maxv setting.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-cmd</span></span> <span style="color: #990000">=&gt;</span> <span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span>.<span style="font-weight: bold"><span style="color: #000000">in1</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-ramped</span></span> <span style="color: #990000">=&gt;</span> <span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span>.<span style="font-weight: bold"><span style="color: #000000">in2</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># the output from spindle-at-speed is sent to spindle.0.at-speed</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># and when this is true motion will start</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-ready</span></span> <span style="color: #990000">&lt;=</span> <span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span>.<span style="font-weight: bold"><span style="color: #000000">out</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">spindle.0.at-speed</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spindle_feedback">6. Spindle Feedback</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_spindle_synchronized_motion">6.1. Spindle Synchronized Motion</h3>
+<div class="paragraph"><p>Spindle feedback is needed by LinuxCNC to perform any spindle coordinated
+motions like threading and constant surface speed.
+LinuxCNC can perform synchronized motion and CSS with any of up to 8
+spindles. Which spindles are used is controlled from G-code. CSS is
+possible with several spindles simultaneously.</p></div>
+<div class="paragraph"><p>The StepConf Wizard can perform the connections for a single-spindle
+configuration for you if you select Encoder Phase A and Encoder Index as
+inputs.</p></div>
+<div class="paragraph"><p>Hardware assumptions for this example:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+An encoder is connected to the spindle and puts out 100 pulses per
+  revolution on phase A.
+</p>
+</li>
+<li>
+<p>
+The encoder A phase is connected to the parallel port pin 10.
+</p>
+</li>
+<li>
+<p>
+The encoder index pulse is connected to the parallel port pin 11.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Basic Steps to add the components and configure them:
+<span class="footnote"><br />[In this example, we will assume that some encoders have already
+been issued to axes/joints 0, 1, and 2. So the next encoder available
+for us to attach to the spindle would be number 3. Your situation may
+differ.]<br /></span>
+<span class="footnote"><br />[The HAL encoder index-enable is an exception to the rule in
+that it behaves as both an input and an output, see the
+<a href="../hal/rtcomps.html#sec:encoder">Encoder Section</a> for details]<br /></span>
+<span class="footnote"><br />[It is because we selected <em>non-quadrature simple counting&#8230;</em>
+above that we can get away with <em>quadrature</em> counting without having any
+B quadrature input.]<br /></span></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># Add the encoder to HAL and attach it to threads.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">encoder</span></span> <span style="font-weight: bold"><span style="color: #000000">num_chan</span></span><span style="color: #990000">=</span><span style="color: #993399">4</span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">encoder.update-counters</span> <span style="font-weight: bold"><span style="color: #000000">base-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">encoder.capture-position</span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Set the HAL encoder to 100 pulses per revolution.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">encoder.3.position-scale</span> <span style="color: #993399">100</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Set the HAL encoder to non-quadrature simple counting using A only.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">encoder.3.counter-mode</span> <span style="font-weight: bold"><span style="color: #000000">true</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Connect the HAL encoder outputs to LinuxCNC.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-position</span></span> <span style="color: #009900">encoder.3.position</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">spindle.0.revs</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-velocity</span></span> <span style="color: #009900">encoder.3.velocity</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">spindle.0.speed-in</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-index-enable</span></span> <span style="color: #009900">encoder.3.index-enable</span> <span style="color: #990000">&lt;=</span>&gt; <span style="color: #009900">spindle.0.index-enable</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Connect the HAL encoder inputs to the real encoder.</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-phase-a</span></span> <span style="color: #009900">encoder.3.phase-A</span> <span style="color: #990000">&lt;=</span> <span style="color: #009900">parport.0.pin-10-in</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-phase-b</span></span> <span style="color: #009900">encoder.3.phase-B</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-index</span></span> <span style="color: #009900">encoder.3.phase-Z</span> <span style="color: #990000">&lt;=</span> <span style="color: #009900">parport.0.pin-11-in</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="sec:spindle-at-speed">6.2. Spindle At Speed</h3>
+<div class="paragraph"><p>To enable LinuxCNC to wait for the spindle to be at speed before executing
+a series of moves, the spindle.<em>N</em>.at-speed needs to turn true at the moment
+the spindle is at the commanded speed. To achieve this you need spindle
+feedback from an encoder. Since the feedback and the commanded speed
+are not usually <em>exactly</em> the same you should to use the <em>near</em>
+component to determine that the two numbers are close enough.</p></div>
+<div class="paragraph"><p>The connections needed are from the spindle
+velocity command signal to near.n.in1 and from the spindle velocity
+from the encoder to near.n.in2. Then the near.n.out is connected to
+spindle.<em>N</em>.at-speed. The near.n.scale needs to be set to say how
+close the two numbers must be before turning on the output. Depending
+on your setup you may need to adjust the scale to work with your
+hardware.</p></div>
+<div class="paragraph"><p>The following is typical of the additions needed to your HAL
+file to enable Spindle At Speed. If you already have near in your HAL
+file then increase the count and adjust code to suit. Check to make
+sure the signal names are the same in your HAL file.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># load a near component and attach it to a thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">near</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">near.0</span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect one input to the commanded spindle speed</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-cmd</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">near.0.in1</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect one input to the encoder-measured spindle speed</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-velocity</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">near.0.in2</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect the output to the spindle-at-speed input</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-at-speed</span></span> <span style="color: #009900">spindle.0.at-speed</span> <span style="color: #990000">&lt;=</span> <span style="color: #009900">near.0.out</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># set the spindle speed inputs to agree if within 1%</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">near.0.scale</span> <span style="color: #993399">1.01</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-02-15 15:12:15 CET
+</div>
+</div>
+</body>
+</html>

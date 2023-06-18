@@ -1,0 +1,293 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu Feb 16 09:03:54 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MATRIXKINS</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">MATRIXKINS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">matrixkins -
+Calibrated kinematics for 3-axis machines</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>loadrt matrixkins
+[count=</b><i>N</i><b>|names=</b><i>name1</i><b>[,</b><i>name2...</i><b>]]</b></p> </td>
+<td width="12%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The matrixkins
+component implements custom kinematics for 3-axis Cartesian
+machines that allows compensating minor alignment
+inaccuracies in software.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>KINEMATICS
+MODEL:</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">By default
+identity matrix is used, which is equal to trivial
+kinematics:</p>
+
+<p style="margin-left:11%; margin-top: 1em">| X_joint | | 1
+0 0 | | X_axis | <br>
+| Y_joint | = | 0 1 0 | * | Y_axis | <br>
+| Z_joint | | 0 0 1 | | Z_axis |</p>
+
+<p style="margin-left:11%; margin-top: 1em">Adjusting the
+calibration matrix allows compensating out many mechanical
+issues, including:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1. Scale error
+of each axis. <br>
+2. Perpendicularity between each pair of axes. <br>
+3. Parallelism between spindle rotational axis and Z
+movement. <br>
+4. Perpendicularity between spindle rotational axis and X/Y
+movement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The matrix
+coefficients are set by parameters C_xx .. C_zz. For 3 axis
+machine, the equations become:</p>
+
+<p style="margin-left:11%; margin-top: 1em">X_joint = C_xx
+* X_axis + C_xy * Y_axis + C_xz * Z_axis <br>
+Y_joint = C_yx * X_axis + C_yy * Y_axis + C_yz * Z_axis <br>
+Z_joint = C_zx * X_axis + C_zy * Y_axis + C_zz * Z_axis</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the machine
+has more than 3 axes, the rest are passed through without
+adjustment.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CALIBRATION
+INSTRUCTIONS:</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">For a 3 axis
+milling machine, the following process can be used to
+accurately measure and compensate the mechanical
+alignment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tools
+required:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1. Dial
+indicator that can be mounted on spindle. <br>
+2. Straight rod that can be mounted on spindle. <br>
+3. Calipers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Process:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>1. Head
+tramming</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Mechanically
+tram the spindle to the table surface as well as you can.
+The perpendicularity of spindle vs. table cannot be
+compensated in software, and the spindle axis will act as
+the reference for all further steps.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can measure
+the perpendicularity by mounting the dial indicator on the
+spindle. Search for &quot;mill tramming&quot; online for
+detailed process.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>2. X and Y
+axis squaring</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Cut octagon out
+of some rigid material. It is best to cut a roughing path
+first and a thin finishing pass last, to get the best
+accuracy. Make the octagon as large as your calipers can
+measure. Before unmounting the workpiece, mark the X and Y
+directions on it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Measure width
+along X and Y axes. If your axis scales are set correctly,
+they should be identical. If they are not, you can adjust
+c[0] and c[4] to compensate. Note that endmill diameter will
+affect the actual dimensions of the test octagon, but not
+the ratio between sides.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Measure width
+along both diagonals. If the X and Y axes are square to each
+other, the readings should be identical.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To compensate,
+set C_xy = (B^2 - A^2) / (2 * A * B) where A is the diagonal
+in X+/Y+ direction and B is the diagonal in X+/Y-
+direction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This adjusts Y
+axis direction while keeping X axis as it was. Alternatively
+you can set C_yx to adjust X axis instead. The choice
+affects alignment with respect to e.g. table slots.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>3. X axis
+squaring to spindle</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Mount the dial
+indicator so that it rotates around the spindle axis, like
+in tramming measurement. Mark a spot on the table where the
+indicator touches when it is in positive X direction from
+spindle center. Zero the dial indicator.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Rotate dial
+indicator 180 degrees around the spindle. Move X axis in
+positive direction until the indicator touches the same
+spot. Ideally indicator reads 0 again.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To compensate,
+set C_zx = D / X where D is the new dial indicator reading,
+and X is the length moved along X axis.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4. Y axis
+squaring to spindle</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Same as step 3,
+except move the machine in positive Y direction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To compensate,
+set C_zy = D / Y where D is the new dial indicator reading,
+and Y is the length moved.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5. Z axis
+parallelism to spindle in X direction</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Mount straight
+rod to the spindle. Position dial indicator so that it
+measures horizontally against the positive X side of the
+rod, close to the spindle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Spin the
+spindle by hand to see if there is any runout. Zero the dial
+indicator at the midway position.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Raise Z axis
+until dial indicator measures close to the bottom end of the
+rod. Spin the spindle by hand and take note of the midway
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Set C_xz = - X
+/ Z where X is the dial indicator difference between bottom
+and top and Z is the amount you raised the Z axis.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6. Z axis
+parallelism to spindle in Y direction</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Same as step 5,
+except measure on the positive Y side of the rod.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Set C_yz = - Y
+/ Z where Z is the dial indicator difference and Z is the
+amount you raised the Z axis.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONFIGURATION
+FILES:</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Specify
+matrixkins in LinuxCNC INI file as:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>[KINS] <br>
+KINEMATICS=matrixkins</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">In your HAL
+configuration file, set the parameters C_xx .. C_zz:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>setp
+matrixkins.C_xx 1</b> # X axis scale <b><br>
+setp matrixkins.C_xy 0</b> # Skew Y axis towards X axis
+<b><br>
+setp matrixkins.C_xz 0</b> # Skew Z axis towards X axis
+<b><br>
+setp matrixkins.C_yx 0</b> # Skew X axis towards Y axis
+<b><br>
+setp matrixkins.C_yy 1</b> # Y axis scale <b><br>
+setp matrixkins.C_yz 0</b> # Skew Z axis towards Y axis
+<b><br>
+setp matrixkins.C_zx 0</b> # Skew X axis towards Z axis
+<b><br>
+setp matrixkins.C_zy 0</b> # Skew Y axis towards Z axis
+<b><br>
+setp matrixkins.C_zz 1</b> # Z axis scale</p>
+
+<p style="margin-left:11%; margin-top: 1em">The parameters
+can be modified during runtime using halcmd. To avoid sudden
+movements, it is better to turn off machine power before
+changes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+recalibration is performed with already existing calibration
+being in effect, the adjustment values should be added to
+the old values instead of replacing them.</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>matrixkins.</b><i>N</i><b>.dummy</b>
+bit out (default: <i>1</i>)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">kins(9)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

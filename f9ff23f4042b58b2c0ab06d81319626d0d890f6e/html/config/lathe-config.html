@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>Lathe Configuration</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Lathe Configuration</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="cha:lathe-configuration">1. Default Plane</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When LinuxCNC&#8217;s interpreter was first written, it was designed for mills.
+That is why the default plane is XY (G17). A normal lathe only uses the
+XZ plane (G18). To change the default plane place the following line in
+the INI file in the RS274NGC section.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">RS274NGC_STARTUP_CODE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> G18</span></tt></pre></div></div>
+<div class="paragraph"><p>The above can be overwritten in a G-code program so always set important things
+in the preamble of the G-code file.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ini_settings">2. INI Settings</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The following INI settings are needed for lathe mode in Axis in addition to
+or replacing normal settings in the INI file. These historical settings use
+identity kinematics (trivkins) and <em>three</em> joints (0,1,2) corresponding to
+coordinates x, y, z.  The joint 1 for the unused y axis is required but not used
+in these historical configurations.  Simulated lathe configs may use these
+historical settings.
+GMOCCAPY also uses the mentioned settings, but does offer additional settings,
+check the <a href="../gui/gmoccapy.html#cha:gmoccapy">GMOCCAPY</a> section for details.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[DISPLAY]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">DISPLAY </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> axis</span>
+<span style="font-weight: bold"><span style="color: #0000FF">LATHE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 1</span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+
+<span style="font-weight: bold"><span style="color: #000000">[KINS]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">KINEMATICS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> trivkins</span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINTS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 3</span>
+
+<span style="font-weight: bold"><span style="color: #000000">[TRAJ]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">COORDINATES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> X Z</span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+
+<span style="font-weight: bold"><span style="color: #000000">[JOINT_0]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[JOINT_2]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[AXIS_X]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[AXIS_Z]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span></tt></pre></div></div>
+<div class="paragraph"><p>With joints_axes incorporation, a simpler configuration can be made with just
+the two required joints by specifying trivkins with the <em>coordinates=</em>
+parameter:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[DISPLAY]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">DISPLAY </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> axis</span>
+<span style="font-weight: bold"><span style="color: #0000FF">LATHE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 1</span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+
+<span style="font-weight: bold"><span style="color: #000000">[KINS]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">KINEMATICS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> trivkins coordinates=xz</span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINTS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 2</span>
+
+<span style="font-weight: bold"><span style="color: #000000">[TRAJ]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">COORDINATES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> X Z</span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+
+<span style="font-weight: bold"><span style="color: #000000">[JOINT_0]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[JOINT_1]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[AXIS_X]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span>
+<span style="font-weight: bold"><span style="color: #000000">[AXIS_Z]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">...</span></span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-02-15 15:12:15 CET
+</div>
+</div>
+</body>
+</html>

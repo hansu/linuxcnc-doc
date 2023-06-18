@@ -1,0 +1,484 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Jun 17 19:56:06 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CAROUSEL</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">CAROUSEL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">carousel -
+Orient a toolchanger carousel using various encoding
+schemes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadrt
+carousel pockets=</b><i>N</i>[,<i>N</i>]
+<b>encoding=</b><i>ssss</i>[,<i>sss</i>]
+<b>num_sense=</b><i>N</i>[,<i>N</i>]
+<b>dir=</b><i>N</i>[,<i>N]</i></p>
+
+<p style="margin-left:17%;"><b>pockets</b> The number of
+pockets in each toolchanger.</p>
+
+<p style="margin-left:28%;">Use up to 8 numbers separated
+by commas to create multiple carousel components.</p>
+
+<p style="margin-left:17%;"><b>encoding</b> The position
+encoding.</p>
+
+<p style="margin-left:28%;">gray, binary, bcd, index, edge,
+counts or single. Default = &rsquo;gray&rsquo;</p>
+
+<p style="margin-left:17%;"><b>num_sense</b> The number of
+position sense pins.</p>
+
+<p style="margin-left:28%;">Default = 4.</p>
+
+<p style="margin-left:17%;"><b>dir</b> Set to 1 for
+unidirectional or 2 for bidirectional operation.</p>
+
+<p style="margin-left:28%;">Default = bidirectional</p>
+
+<p style="margin-left:17%;"><b>parity</b> Set to 1 for odd
+parity, 0 for even parity checking.</p>
+
+<p style="margin-left:28%;">Default = 0 (even)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This component
+is intended to help operate various types of carousel-type
+toolchangers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The component
+can be configured to operate with binary, binary-coded
+decimal (BCD) or gray-coded position feedback
+(&rsquo;binary;, &rsquo;bcd&rsquo; and &rsquo;gray&rsquo;
+modes) It can alternatively work with an individual sensor
+for each tool position (&rsquo;single&rsquo; mode) or with a
+sensor at each tool position and a separate index
+(&rsquo;index&rsquo; mode). Systems using a stepper motor or
+quadrature encoder are also supported (&rsquo;counts&rsquo;
+mode). <b>edge</b> is a special case of index mode for tool
+changers with pockets on both the rising and falling edges
+of the position sensor. (Seen on at least one Denford
+Orac.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both
+unidirectional and bidirectional systems are supported and
+those that reverse against a stop when in position.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The number of
+carousel component instances created depends on the number
+of entries in the &rsquo;pockets&rsquo; modparam. For
+example</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadrt
+carousel pockets=10,10,8</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Would create 3
+carousel instances with 10, 10 and 8 pockets. The other
+parameters are optional. If absent then defaults will be
+used. Any missing entry will assume the previous value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the enable
+pin is set to true the component will immediately set the
+&quot;active&quot; pin to true and then (for a bidirectional
+instance) calculate the shortest path to the requested
+pocket number. The appropriate motor direction output pins
+will then be set. Bit outputs for forward and reverse are
+provided as well as a three-state velocity output for
+driving a DC motor PWM or a velocity-mode stepgen.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The component
+will monitor the carousel position and, when the correct
+position is reached, set the motor-control pins to 0, set
+&quot;active&quot; to 0 and set &quot;ready&quot; to 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In
+&rsquo;index&rsquo;, &rsquo;edge&rsquo; or
+&rsquo;counts&rsquo;mode there is a need to find the initial
+home position of the carousel. The first time that the
+&quot;enable&quot; pin is set; the carousel will rotate
+forwards searching for a home signal. In &rsquo;index&rsquo;
+and &rsquo;edge&rsquo; mode this is when both the index and
+pulse inputs are true. In &rsquo;counts&rsquo; mode only the
+index input needs to be set to set home. Additionally in
+&rsquo;counts&rsquo; mode the usual index-enable logic of
+the encoder counters is supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With some
+carousel designs the carousel will not stop immediately. To
+allow for this set the <b>lign-dc</b> pin to a low velocity
+to be used for a final latching move, and set
+the<b>decel-time</b> to a suitable value. Once the
+decel-time has expired the carousel will, if it was moving
+forwards, reverse back on to the position marker, off of the
+arker and then bak on to the FWD edge. If moving in reverse
+it will continue off the marker and then reverse slowly on
+to the FWD edge. This algnment is only possible with a
+motor-vel controlled bidirectional carousel, Other
+combinations will be acepted but probably won&rsquo;t have
+the desired behaviour. Some tuning will be needed of
+align-dc and decel-time to achieve reliable operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the unusual
+case that the index and pulse signals do not align it is
+possible to use HAL logic to achieve the desired pin
+switching during homing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Setting
+&quot;enable&quot; low does not halt the homing move, so if
+homing on first tool change is not needed then the enable
+pin can be toggled by an axis homing pin or a script and the
+homing process will continue even if that driving signal
+resets during the carousel homing move.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To operate the
+component with an encoder or stepgen use mode &quot;C&quot;.
+The <b>scale</b> pin should be the number of steps or
+encoder counts between pocket centres. The <b>width</b> pin
+can be used to stop the motor some distance before the
+centre of the pocket to allow the motor time to decelerate.
+In mode &quot;C&quot; it is possible to use either the
+speed/direction control used in other modes or to use direct
+position mode using the counts-target pin. The internal
+scaling of the encoder or stepgen should be set to 1.0. A
+PID hal component will be needed for encoder applications
+whereas stepgen configurations can use a stepgen in position
+control mode or in velocity control mode with a PID.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For tool
+changers which lock the carousel against a stop the
+<b>rev-pulse</b> pin can be set to a non-zero value. The
+motor-rev pin will then be set for this many seconds at the
+completion of the tool search and at the same time the
+reverse duty/cycle velocity value will be sent to the
+motor-vel pin.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>carousel.</b><i>N</i>
+(requires a floating-point thread)</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>carousel.</b><i>N</i><b>.pocket-number</b>
+s32 in</p>
+
+<p style="margin-left:22%;">The pocket to move to when the
+.enable pin goes high. If the value passed is higher than
+the number of pockets specified in the &quot;pockets&quot;
+modparam then modulo arithmetic is used. This is intended to
+allow the use of multiple tools in the same holder, as is
+sometimes useful with lathes.</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.enable</b>
+bit in</p>
+
+<p style="margin-left:22%;">Set this pin high to start
+movement. Setting it low will stop movement</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.active</b>
+bit out</p>
+
+<p style="margin-left:22%;">indicates that the component is
+active</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.ready</b>
+bit out</p>
+
+<p style="margin-left:22%;">This pin goes high when the
+carousel is in-position</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.strobe</b>
+bit in (default: <i>1</i>)</p>
+
+<p style="margin-left:22%;">Use this pin to indicate that
+the position feedback is valid. Often provided by binary
+encoders</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.parity</b>
+bit in</p>
+
+<p style="margin-left:22%;">Some encoders supply a parity
+bit, if this is connected then the parity-error output bit
+will indicate parity errors</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.sense-</b><i>M</i>
+bit in (M=0..personality)</p>
+
+<p style="margin-left:22%;">Carousel position feedback
+pins. In &rsquo;index&rsquo; mode there will be only 2 pins.
+sense-0 is the index and sense-1 is the pocket sensor.</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.rev-pulse</b>
+float in</p>
+
+<p style="margin-left:22%;">The duration in seconds for
+which a ratchet changer (Boxford, Emco) should pulse the
+reverse pin to lock the holder</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.fwd-dc</b>
+float in</p>
+
+<p style="margin-left:22%;">Velocity or duty cycle when
+forwards rotation is desired</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.rev-dc</b>
+float in</p>
+
+<p style="margin-left:22%;">Velocity or duty cycle when
+reverse rotation is desired</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.hold-dc</b>
+float in</p>
+
+<p style="margin-left:22%;">Duty cycle when carousel is
+in-position (to hold against stop)</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.align-dc</b>
+float in</p>
+
+<p style="margin-left:22%;">Use this pin to set the speed
+of a slower alignment move once the changer is in position.
+Such a system almost certainly needs decel-time setting
+too</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.decel-time</b>
+float in</p>
+
+<p style="margin-left:22%;">Time to wait for carousel to
+stop before final alignment and position check</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.counts</b>
+s32 in</p>
+
+<p style="margin-left:22%;">Connect to the rawcounts of an
+encoder or a stepgen in &rsquo;counts&rsquo; mode</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.scale</b>
+s32 in (default: <i>100</i>)</p>
+
+<p style="margin-left:22%;">The number of stepgen or
+encoder counts between successive pockets</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.width</b>
+s32 in (default: <i>10</i>)</p>
+
+<p style="margin-left:22%;">How far each side of the exact
+scale to signal a new pocket</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.home-offset</b>
+s32 in (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">The offset (in counts) between
+the index and pocket 1</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.index-enable</b>
+bit io</p>
+
+<p style="margin-left:22%;">Used to home to an encoder
+index</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.jog-fwd</b>
+bit in</p>
+
+<p style="margin-left:22%;">Jog the carousel forwards one
+tool position</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.jog-rev</b>
+bit in</p>
+
+<p style="margin-left:22%;">Jog the carousel in reverse
+(only if dir = 2). It is very important that these pins
+should be debounced and should probably also be interlocked
+to only operate when the machine is idle.</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.motor-fwd</b>
+bit out</p>
+
+<p style="margin-left:22%;">Indicates the motor should run
+forwards (bigger numbers)</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.motor-rev</b>
+bit out</p>
+
+<p style="margin-left:22%;">Indicates the motor should run
+reverse.</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.parity-error</b>
+bit out</p>
+
+<p style="margin-left:22%;">Indicates a parity error</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.current-position</b>
+s32 out</p>
+
+<p style="margin-left:22%;">This pin indicates the current
+position feedback</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.motor-vel</b>
+float out</p>
+
+<p style="margin-left:22%;">The duty-cycle or velocity to
+drive a DC motor or stepgen</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.homed</b>
+bit out (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">Shows that homing is complete.
+Only used in index and edge modes</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.unhome</b>
+bit in (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">Should only really be necessary
+for testing</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.counts-target</b>
+float out</p>
+
+<p style="margin-left:22%;">Target position for a stepgen
+or external PID controller</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>carousel.</b><i>N</i><b>.state</b>
+s32 r (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">Current component state</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.homing</b>
+bit r (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">Shows that homing is in
+progress. Only used for index mode</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.timer</b>
+float r</p>
+
+<p style="margin-left:22%;">Shows the value of the internal
+timer</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.motor-dir</b>
+s32 r</p>
+
+<p style="margin-left:22%;">Internal tag for search
+direction</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.counts-offset</b>
+s32 r</p>
+
+<p style="margin-left:22%;">Internal offset of index
+pin</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.debounce</b>
+u32 rw</p>
+
+<p style="margin-left:22%;">How many thread cycles to wait
+for the position to stabilise</p>
+
+
+<p style="margin-left:11%;"><b>carousel.</b><i>N</i><b>.base-counts</b>
+s32 r (default: <i>0</i>)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Andy Pugh</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

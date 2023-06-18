@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>MDRO GUI</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>MDRO GUI</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="cha:mdro-gui">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>MDRO is a simple graphical front-end for LinuxCNC providing a display of data
+from Digital Read Out (DRO) scales. It provides functionality similar to
+a normal machinist&#8217;s DRO display, allowing the user to use the DRO scales
+on the machine when operating in a manual-only (hand-cranked) mode. It is
+most useful for manual machines such as DRO equipped Bridgeport style mills
+that have been converted to CNC but still have the manual controls.</p></div>
+<div class="paragraph"><p>MDRO is mouse and touch screen friendly.</p></div>
+<div class="imageblock" id="fig:mdro-window" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/mdro.png" alt="MDRO Window"/>
+<figcaption class="title"> Figure 1. MDRO Window</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">2. Getting Started</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If your configuration is not currently set up to use MDRO,
+you can change it by editing the INI file. In the
+<code>[DISPLAY]</code> section, change the <code>DISPLAY =</code> line to read
+<code>DISPLAY = mdro</code>. MDRO defaults to XYZ for the axes but that can
+be changed.
+Set <code>[DISPLAY]</code> section <code>GEOMETRY = XYZ</code> for a 3 axis mill. A lathe with
+with DRO scales on the X and Z axes might use <code>GEOMETRY = XZ</code>.</p></div>
+<div class="paragraph"><p>When MDRO starts, a window like the one in the figure
+<a href="mdro.html#fig:mdro-window">[fig:mdro-window]</a> above opens.</p></div>
+<div class="sect2">
+<h3 id="_ini_file_options">2.1. INI File Options</h3>
+<div class="paragraph"><p>Other options that can be included on the <code>[DISPLAY]</code> section include:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>MDRO_VAR_FILE = &lt;file.var&gt;</code> - preload G54 - G57 coordinate system data.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Preload a .var file. This is typically the .var file used by the
+   operational code.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<code>POINT_SIZE = &lt;n&gt;</code> - Set text point size.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+This option sets the size of the font used which sets the overall
+   size of the window. The default point size is 20, Typical sizes are
+   20 to 30.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<code>MM = 1</code> Set this if the DRO scales provide data scaled in millimeters.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_command_line_options">2.2. Command Line Options</h3>
+<div class="paragraph"><p>MDRO can be started by a <code>loadusr</code> command in a HAL file. Options equivalent
+to those in the INI file can be set on the command line:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>-l &lt;file.var&gt;</code> - preload G54 - G57 coordinate system data.
+</p>
+</li>
+<li>
+<p>
+<code>-p &lt;n&gt;</code> - Set text point size.
+</p>
+</li>
+<li>
+<p>
+<code>-m</code> - Set this if the DRO scales provide data scaled in millimeters.
+</p>
+</li>
+<li>
+<p>
+<code>&lt;axes&gt;</code> - axes to display. See <code>GEOMETRY</code> above.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_pins">2.3. Pins</h3>
+<div class="paragraph"><p>Using an example of "XYZA" for an AXES argument, these pins will be created
+when MDRO starts:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">0</span>
+mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">1</span>
+mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">2</span>
+mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">3</span>
+mdro<span style="color: #990000">.</span>index<span style="color: #990000">-</span>enable<span style="color: #990000">.</span><span style="color: #993399">0</span>
+mdro<span style="color: #990000">.</span>index<span style="color: #990000">-</span>enable<span style="color: #990000">.</span><span style="color: #993399">1</span>
+mdro<span style="color: #990000">.</span>index<span style="color: #990000">-</span>enable<span style="color: #990000">.</span><span style="color: #993399">2</span>
+mdro<span style="color: #990000">.</span>index<span style="color: #990000">-</span>enable<span style="color: #990000">.</span><span style="color: #993399">3</span></tt></pre></div></div>
+<div class="paragraph"><p>In this example, the first row of the display will be labeled <code>X</code> and will
+show the data from the DRO scale connected to pin <code>mdro.axis.0</code>. The
+<code>mdro.index-enable.n</code> pins should be connected to the index pins of the DRO
+if the DRO supports them.</p></div>
+<div class="paragraph"><p>The pins must be connected in the
+file specified in the <code>POSTGUI_HALFILE</code> entry of the INI file when the
+program is started from an INI file. They can be set directly after the
+loadusr command if the program is started in a HAL file.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mdro_window">3. MDRO Window</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The MDRO window contains the following elements:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+A row for each axis. Each row includes:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+the name of the axis,
+</p>
+</li>
+<li>
+<p>
+the current value,
+</p>
+</li>
+<li>
+<p>
+a "z" button that zeros the value,
+</p>
+</li>
+<li>
+<p>
+a "1/2" button that halves the value,
+</p>
+</li>
+<li>
+<p>
+a entry field that can be used to set a user-defined value. This
+   field can be set from the keyboard or from the on-screen keypad.
+</p>
+</li>
+<li>
+<p>
+A "I" button that starts an index operation (see below),
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+a keypad used to set values in the entry field via a mouse or
+  touchscreen,
+</p>
+</li>
+<li>
+<p>
+coordinate system selection buttons:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+The "mcs" button selects the machine coordinate system. These are
+   the raw values from the encoders connected to the <code>mdro.axis.n</code>
+   pins.
+</p>
+</li>
+<li>
+<p>
+The "cs1" - "cs4" buttons allow the user to select among one of
+   four user-defined coordinate systems. If the program is started
+   with the <code>MDRO_VAR_FILE =</code> option, the labels will be changed to
+   "g54" - "g57" and the values from the specified .var file will be
+   preloaded. Note that any changes to the values are not persistent:
+   the .var file is never changed.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Inch/Millimeter selection buttons.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_index_operations">4. Index operations</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><code>MDRO</code> supports DRO scales with index marks. Hit the "I" button on the
+axis row then crank the axis to the index position. The machine
+coordinate will be zeroed. This is easiest to see at startup or when the "mcs"
+coordinate system has been selected.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_simulation">5. Simulation</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The easiest way to see how <code>MDRO</code> works is to try it in a simulation
+environment.  Add this section to the end of your simulation HAL file,
+usually "hallib/core_sim.hal":</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>loadusr <span style="color: #990000">-</span>W mdro <span style="color: #990000">-</span>l sim<span style="color: #990000">.</span>var XYZ
+net x<span style="color: #990000">-</span>pos<span style="color: #990000">-</span>fb  <span style="color: #990000">=&gt;</span> mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">0</span>
+net y<span style="color: #990000">-</span>pos<span style="color: #990000">-</span>fb  <span style="color: #990000">=&gt;</span> mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">1</span>
+net z<span style="color: #990000">-</span>pos<span style="color: #990000">-</span>fb  <span style="color: #990000">=&gt;</span> mdro<span style="color: #990000">.</span>axis<span style="color: #990000">.</span><span style="color: #993399">2</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-02-15 15:12:15 CET
+</div>
+</div>
+</body>
+</html>

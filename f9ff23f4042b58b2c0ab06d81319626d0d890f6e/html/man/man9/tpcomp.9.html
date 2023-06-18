@@ -1,0 +1,135 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Feb 18 14:58:03 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TPCOMP</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">TPCOMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tpcomp -
+Trajectory Planning (tp) module skeleton</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em">Custom Trajectory Planning
+module loaded with <b>[TRAJ]TPMOD=tpcomp</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Example of a
+trajectory planning (tp) module buildable with
+halcompile.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The tpcomp.comp
+file (src/hal/components/tpcomp.comp) illustrates a method
+to use halcompile to build a trajectory planning module
+based on the files used for the default trajectory planner
+(<b>tpmod</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The example
+tpcomp.comp is not usable until modified for the user
+environment. To create a runnable tpcomp module, the
+tpcomp.comp file must be edited to supply 1) a valid
+&rsquo;#define TOPDIR&rsquo; and 2) references to valid
+source code file names for all files used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To avoid
+updates that overwrite tpcomp.comp, best practice is to
+rename the file and its component name (example:
+<b>user_tpcomp.comp</b> creates module:
+<b>user_tpcomp</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The (renamed)
+component can be built and installed with halcompile and
+then substituted for the default tp module (<b>tpmod</b>)
+using:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ linuxcnc
+<b>-t user_tpcomp</b> someconfig.ini</p>
+
+<p style="margin-left:11%; margin-top: 1em">or by inifile
+setting: <b>[TRAJ]TPMOD=user_tpcomp</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note:</b>If
+using a deb install:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1) halcompile
+is provided by the deb package linuxcnc-dev</p>
+
+<p style="margin-left:11%; margin-top: 1em">2) This source
+file for BRANCHNAME (master,2.9,etc) is downloadable from
+github:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">https://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/components/tpcomp.comp</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tpcomp.</b><i>N</i><b>.is-module</b>
+bit out (default: <i>1</i>)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dewey
+Garrett</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

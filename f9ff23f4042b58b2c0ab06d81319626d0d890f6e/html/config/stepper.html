@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>Stepper Configuration</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>Stepper Configuration</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="cha:stepper-config">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The preferred way to set up a standard stepper machine is with the Step Configuration Wizard.
+See the <a href="stepconf.html#cha:stepconf-wizard">Stepper Configuration Wizard</a> Chapter.</p></div>
+<div class="paragraph"><p>This chapter describes some of the more common settings for manually setting up a stepper based system.
+These systems are using stepper motors with drives that accept step &amp; direction signals.</p></div>
+<div class="paragraph"><p>It is one of the simpler setups, because the motors run open-loop (no feedback comes back from the motors),
+yet the system needs to be configured properly so the motors don&#8217;t stall or lose steps.</p></div>
+<div class="paragraph"><p>Most of this chapter is based on a sample config released along with LinuxCNC.
+The config is called stepper_inch, and can be found by running the <a href="../getting-started/running-linuxcnc.html#cha:running-emc">Configuration Picker</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_maximum_step_rate">2. Maximum step rate</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>With software step generation, the maximum step rate is one step per two BASE_PERIODs for step-and-direction output.
+The maximum requested step rate is the product of an axis' MAX_VELOCITY and its INPUT_SCALE.
+If the requested step rate is not attainable, following errors will occur, particularly during fast jogs and G0 moves.</p></div>
+<div class="paragraph"><p>If your stepper driver can accept quadrature input, use this mode.
+With a quadrature signal, one step is possible for each BASE_PERIOD, doubling the maximum step rate.</p></div>
+<div class="paragraph"><p>The other remedies are to decrease one or more of: the BASE_PERIOD (setting this too low will cause the machine to become unresponsive or even lock up),
+the INPUT_SCALE (if you can select different step sizes on your stepper driver, change pulley ratios, or leadscrew pitch), or the MAX_VELOCITY and STEPGEN_MAXVEL.</p></div>
+<div class="paragraph"><p>If no valid combination of BASE_PERIOD, INPUT_SCALE, and MAX_VELOCITY is acceptable,
+then consider using hardware step generation (such as with the LinuxCNC-supported Universal Stepper Controller, Mesa cards, and others).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pinout">3. Pinout</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>One of the major flaws in LinuxCNC was that you couldn&#8217;t specify the pinout without recompiling the source code.
+LinuxCNC is far more flexible, and now (thanks to the Hardware Abstraction Layer) you can easily specify which signal goes where.
+See the <a href="../hal/basic-hal.html#cha:basic-hal-reference">HAL Basics</a> for more information on HAL.</p></div>
+<div class="paragraph"><p>As it is described in the HAL Introduction and tutorial, we have signals, pins and parameters inside the HAL.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">We are presenting one axis to keep it short, all others are similar.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The ones relevant for our pinout are:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>signals: Xstep, Xdir &amp; Xen
+pins: parport.0.pin-XX-out &amp; parport.0.pin-XX-in</code></pre>
+</div></div>
+<div class="paragraph"><p>Depending on what you have chosen in your INI file you are using either standard_pinout.hal or xylotex_pinout.hal.
+These are two files that instruct the HAL how to link the various signals &amp; pins.
+Further on we&#8217;ll investigate the standard_pinout.hal.</p></div>
+<div class="sect2">
+<h3 id="_standard_pinout_hal">3.1. Standard Pinout HAL</h3>
+<div class="paragraph"><p>This file contains several HAL commands, and usually looks like this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># standard pinout config file for 3-axis steppers</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># using a parport for I/O</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># first load the parport driver</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">hal_parport</span></span> <span style="font-weight: bold"><span style="color: #000000">cfg</span></span><span style="color: #990000">=</span>"<span style="color: #993399">0x0378</span>"
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># next connect the parport functions to threads</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># read inputs first</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">parport.0.read</span> <span style="font-weight: bold"><span style="color: #000000">base-thread</span></span> <span style="color: #993399">1</span>
+<span style="font-style: italic"><span style="color: #9A1900"># write outputs last</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">parport.0.write</span> <span style="font-weight: bold"><span style="color: #000000">base-thread</span></span> -<span style="color: #993399">1</span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># finally connect physical pins to the signals</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xstep</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-03-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xdir</span></span>  <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-02-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Ystep</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-05-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Ydir</span></span>  <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-04-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Zstep</span></span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-07-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Zdir</span></span>  <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-06-out</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># create a signal for the estop loopback</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">estop-loop</span></span> <span style="color: #009900">iocontrol.0.user-enable-out</span> <span style="color: #009900">iocontrol.0.emc-enable-in</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># create signals for tool loading loopback</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">tool-prep-loop</span></span> <span style="color: #009900">iocontrol.0.tool-prepare</span> <span style="color: #009900">iocontrol.0.tool-prepared</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">tool-change-loop</span></span> <span style="color: #009900">iocontrol.0.tool-change</span> <span style="color: #009900">iocontrol.0.tool-changed</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect "spindle on" motion controller pin to a physical pin</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-on</span></span> <span style="color: #009900">spindle.0.on</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-09-out</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### You might use something like this to enable chopper drives when machine ON</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### the Xen signal is defined in core_stepper.hal</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># net Xen =&gt; parport.0.pin-01-out</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### If you want active low for this pin, invert it like this:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># setp parport.0.pin-01-out-invert 1</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### A sample home switch on the X axis (axis 0).  make a signal,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### link the incoming parport pin to the signal, then link the signal</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### to LinuxCNC's axis 0 home switch input pin.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># net Xhome parport.0.pin-10-in =&gt; joint.0.home-sw-in</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### Shared home switches all on one parallel port pin?</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### that's ok, hook the same signal to all the axes, but be sure to</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### set HOME_IS_SHARED and HOME_SEQUENCE in the INI file.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># net homeswitches &lt;= parport.0.pin-10-in</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># net homeswitches =&gt; joint.0.home-sw-in</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># net homeswitches =&gt; joint.1.home-sw-in</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># net homeswitches =&gt; joint.2.home-sw-in</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### Sample separate limit switches on the X axis (axis 0)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># net X-neg-limit parport.0.pin-11-in =&gt; joint.0.neg-lim-sw-in</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># net X-pos-limit parport.0.pin-12-in =&gt; joint.0.pos-lim-sw-in</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### Just like the shared home switches example, you can wire together</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### limit switches.  Beware if you hit one, LinuxCNC will stop but can't tell</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### you which switch/axis has faulted.  Use caution when recovering from this</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">### extreme position to avoid a hard stop.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># net Xlimits parport.0.pin-13-in =&gt; joint.0.neg-lim-sw-in joint.0.pos-lim-sw-in</span></span>
+</tt></pre></div></div>
+<div class="paragraph"><p>The lines starting with <em>#</em> are comments, and their only purpose is to guide the reader through the file.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_overview">3.2. Overview</h3>
+<div class="paragraph"><p>There are a couple of operations that get executed when the standard_pinout.hal gets executed/interpreted:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+The Parport driver gets loaded (see the <a href="../hal/parallel-port.html#cha:parport">Parport Chapter</a> for details).
+</p>
+</li>
+<li>
+<p>
+The read &amp; write functions of the parport driver get assigned to the
+  base thread <span class="footnote"><br />[The fastest thread in the LinuxCNC setup, usually the code gets executed every few tens of microseconds.]<br /></span>.
+</p>
+</li>
+<li>
+<p>
+The step &amp; direction signals for axes X, Y, Z get linked to pins on the parport.
+</p>
+</li>
+<li>
+<p>
+Further I/O signals get connected (estop loopback, toolchanger loopback).
+</p>
+</li>
+<li>
+<p>
+A spindle-on signal gets defined and linked to a parport pin.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_changing_the_standard_pinout_hal">3.3. Changing the standard_pinout.hal</h3>
+<div class="paragraph"><p>If you want to change the standard_pinout.hal file, all you need is a text editor.
+Open the file and locate the parts you want to change.</p></div>
+<div class="paragraph"><p>If you want for example to change the pin for the X-axis Step &amp; Directions signals, all you need to do is to change the number in the <em>parport.0.pin-XX-out</em> name:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xstep</span></span> <span style="color: #009900">parport.0.pin-03-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xdir</span></span>  <span style="color: #009900">parport.0.pin-02-out</span></tt></pre></div></div>
+<div class="paragraph"><p>can be changed to:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xstep</span></span> <span style="color: #009900">parport.0.pin-02-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xdir</span></span>  <span style="color: #009900">parport.0.pin-03-out</span></tt></pre></div></div>
+<div class="paragraph"><p>or basically any other <em>out</em> pin you like.</p></div>
+<div class="paragraph"><p>Hint: make sure you don&#8217;t have more than one signal connected to the same pin.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_changing_polarity_of_a_signal">3.4. Changing polarity of a signal</h3>
+<div class="paragraph"><p>If external hardware expects an "active low" signal, set the corresponding <em>-invert</em> parameter.
+For instance, to invert the spindle control signal:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">parport.0.pin-09-invert</span> <span style="font-weight: bold"><span style="color: #000000">TRUE</span></span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_adding_pwm_spindle_speed_control">3.5. Adding PWM Spindle Speed Control</h3>
+<div class="paragraph"><p>If your spindle can be controlled by a PWM signal, use the <em>pwmgen</em> component to create the signal:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">pwmgen</span></span> <span style="font-weight: bold"><span style="color: #000000">output_type</span></span><span style="color: #990000">=</span><span style="color: #993399">0</span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">pwmgen.update</span> <span style="font-weight: bold"><span style="color: #000000">servo-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">pwmgen.make-pulses</span> <span style="font-weight: bold"><span style="color: #000000">base-thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-speed-cmd</span></span> <span style="color: #009900">spindle.0.speed-out</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">pwmgen.0.value</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-on</span></span> <span style="color: #009900">spindle.0.on</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">pwmgen.0.enable</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-pwm</span></span> <span style="color: #009900">pwmgen.0.pwm</span> <span style="color: #990000">=&gt;</span> <span style="color: #009900">parport.0.pin-09-out</span>
+<span style="font-weight: bold"><span style="color: #0000FF">setp</span></span> <span style="color: #009900">pwmgen.0.scale</span> <span style="color: #993399">1800</span> <span style="font-style: italic"><span style="color: #9A1900"># Change to your spindle's top speed in RPM</span></span></tt></pre></div></div>
+<div class="paragraph"><p>This assumes that the spindle controller&#8217;s response to PWM is simple:
+0% PWM gives 0 RPM, 10% PWM gives 180 RPM, etc.
+If there is a minimum PWM required to get the spindle to turn, follow the example in the <em>nist-lathe</em> sample configuration to use a <em>scale</em> component.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_adding_an_enable_signal">3.6. Adding an enable signal</h3>
+<div class="paragraph"><p>Some amplifiers (drives) require an enable signal before they accept and command movement of the motors.
+For this reason there are already defined signals called <em>Xen</em>, <em>Yen</em>, <em>Zen</em>.</p></div>
+<div class="paragraph"><p>To connect them use the following example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">Xen</span></span> <span style="color: #009900">parport.0.pin-08-out</span></tt></pre></div></div>
+<div class="paragraph"><p>You can either have one single pin that enables all drives; or several, depending on the setup you have.
+Note, however, that usually when one axis faults, all the other drives will be disabled as well, so having only one enable signal / pin for all drives is a common practice.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_external_estop_button">3.7. External ESTOP button</h3>
+<div class="paragraph"><p>The standard_pinout.hal file assumes no external ESTOP button.
+For more information on an external E-Stop see the estop_latch man page.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-06-17 21:52:11 CEST
+</div>
+</div>
+</body>
+</html>

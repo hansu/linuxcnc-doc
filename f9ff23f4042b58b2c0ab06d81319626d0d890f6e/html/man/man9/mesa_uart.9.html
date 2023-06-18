@@ -1,0 +1,169 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Feb 18 14:58:01 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MESA_UART</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">MESA_UART</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mesa_uart - An
+example component demonstrating how to access the Hostmot2
+UART</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>loadrt mesa_uart
+[count=</b><i>N</i><b>|names=</b><i>name1</i><b>[,</b><i>name2...</i><b>]]</b></p> </td>
+<td width="14%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This component
+creates 16 input and 16 output pins. It transmits
+{name}.N.tx-bytes on the selected UART every thread cycle
+and reads up to 16 bytes each cycle out of the receive FIFO
+and writes the values to the associated output pins.
+{name}.rx-bytes indicates how many pins have been written
+to. (pins &gt; rx-bytes simply hold their previous
+value)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This module
+uses the names= mode of loadrt declaration to specify which
+UART instances to enable. A check is included to ensure that
+the count= option is not used instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The component
+takes parameters in the form of a comma-separated list of
+UART instance names, for example:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadrt
+mesa_uart names=hm2_5i23.0.uart.0,hm2_5i23.0.uart.7</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that no
+spaces are allowed in the string unless it is delimited by
+double quotes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The UART
+instance names are printed to the dmesg buffer during the
+Hostmot2 setup sequence, one for each UART instance included
+in the bitfile loaded to each installed card during the
+Hostmot2 setup sequence. Type &quot;dmesg&quot; at the
+terminal prompt to view the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The component
+exports two functions, send and receive, which need to be
+added to a realtime thread.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+example will output data on UART channels 0 and 7 and the
+pins will have the names of the individual UARTS. (they need
+not be on the same card, or even the same bus).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Read the
+documents on &quot;halcompile&quot; for help with writing
+realtime components:
+http://linuxcnc.org/docs/html/hal/comp.html</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mesa-uart.</b><i>N</i><b>.send</b>
+(requires a floating-point thread) <b><br>
+mesa-uart.</b><i>N</i><b>.receive</b> (requires a
+floating-point thread)</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mesa-uart.</b><i>N</i><b>.tx-data-</b><i>MM</i>
+u32 in (MM=00..15)</p>
+
+<p style="margin-left:22%;">Data to be transmitted</p>
+
+
+<p style="margin-left:11%;"><b>mesa-uart.</b><i>N</i><b>.rx-data-</b><i>MM</i>
+u32 out (MM=00..15)</p>
+
+<p style="margin-left:22%;">Data received</p>
+
+
+<p style="margin-left:11%;"><b>mesa-uart.</b><i>N</i><b>.tx-bytes</b>
+s32 in</p>
+
+<p style="margin-left:22%;">Number of bytes to transmit</p>
+
+
+<p style="margin-left:11%;"><b>mesa-uart.</b><i>N</i><b>.rx-bytes</b>
+s32 out</p>
+
+<p style="margin-left:22%;">Number of Bytes received</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Andy Pugh
+andy@bodgesoc.org</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>QtVCP Virtual Control Panels</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>QtVCP Virtual Control Panels</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:qtvcp:panels"><p>QtVCP can be used to <strong>create control panels</strong> that interface with <em>HAL</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:panels:builtin">1. Builtin Virtual Control Panels</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There are several <strong>builtin HAL panels</strong> available.</p></div>
+<div class="paragraph"><p>In a terminal type <code>qtvcp list</code> to see a list.</p></div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:copy">1.1. <code>copy</code></h3>
+<div class="paragraph"><p>Used for <strong>copying QtVCP&#8217;s builtin Screens/VCP Panels/QtVismach code to a folder</strong> so one can <em>customize</em> it.</p></div>
+<div class="paragraph"><p>In a terminal run:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">copy</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_copy_dialog.png" alt="QtVCP copy Dialog - Screen, Panel or Vismach Code Copy Panel"/>
+<figcaption class="title"> Figure 1. QtVCP <code>copy</code> Dialog - Screen, VCP Panel or QtVismach Code Copy Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:spindle-belts">1.2. spindle_belts</h3>
+<div class="paragraph"><p>This panel is designed to display additional RS485 VFD data and also to configure a 4 sheave, 2 belt spindle drive via a series of buttons.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_spindle_belts.png" alt="QtVCP spindle_belts Panel - Spindle Belts VCP"/>
+</figure>
+</div>
+</div>
+<div class="paragraph"><p>In addition, it is also a useful template to use for your custom panel because it includes:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Display of additional hal data
+</p>
+</li>
+<li>
+<p>
+Buttons and button groups
+</p>
+</li>
+<li>
+<p>
+Dynamic changes to button enabled/disabled state based on the state of other buttons
+</p>
+</li>
+<li>
+<p>
+Saving data to the qtdragon.prefs file
+</p>
+</li>
+<li>
+<p>
+Custom button to reset the VFD
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Modify this panel to suit your own requirements. Most common features are used.
+The advantage of using panels is that it separates your custom display code from the qtdragon core code so upgrading the system will not break your customization.</p></div>
+<div class="sect3">
+<h4 id="_additional_requirements">1.2.1. Additional Requirements</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+A spindle drive (for instance VFDMOD)
+</p>
+</li>
+<li>
+<p>
+A custom component that scales the VFD frequency to obtain the desired spindle speed.
+</p>
+</li>
+<li>
+<p>
+A belt driven spindle that uses two belts and an intermediate idler pulley much like a drill press.
+</p>
+</li>
+<li>
+<p>
+Connect the input pins qtdragon.belts.&lt;pin-name&gt; in your postgui hal file.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_function">1.2.2. Function</h4>
+<div class="paragraph"><p>The belts are broken into two button groups, the front belts and the rear belts. These are numbered as per the plate on the machine. Buttons in a group are mutually exclusive. Eg. Only one can be selected in the group.</p></div>
+<div class="paragraph"><p>Additionally, it&#8217;s not possible to have both belts on the same level with this kind of mechanism because you can’t fit two belts to the one idler pulley sheave.. So if a belt is selected, its opposite button is disabled. Eg. if belt 3 is selected, belt 7 is disabled.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_embedding_commands">1.2.3. Embedding commands</h4>
+<div class="paragraph"><p>Add these lines to the [DISPLAY] section in your .ini file<br />
+The example tab_location is for the QtDragon screen.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>EMBED_TAB_NAME=Spindle Extras
+EMBED_TAB_COMMAND=qtvcp spindle_belts
+EMBED_TAB_LOCATION=tabWidget_utilities</code></pre>
+</div></div>
+<div class="paragraph"><p>Here is how to load <code>spindle_belt</code> from a HAL script:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle_belts</span></span></tt></pre></div></div>
+</div>
+<div class="sect3">
+<h4 id="_customization_hints">1.2.4. Customization Hints</h4>
+<div class="paragraph"><p>Customizing the panel:<br /></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Copy the files located in /user/share/qtvcp/qtdragon/panels/belts to:
+~/linuxcnc/configs/&lt;my_configuration_folder&gt;/qtvcp/panels/belts (you can use the copy dialog panel to do this)
+</p>
+</li>
+<li>
+<p>
+Edit belts.ui with designer.
+</p>
+</li>
+<li>
+<p>
+Edit belts_handler.py with a text editor
+</p>
+</li>
+<li>
+<p>
+Connect the relevant pins in a postgui.hal file
+</p>
+</li>
+<li>
+<p>
+Make sure your postgui file is loaded by your .ini file.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>For information on the finer points, consult the qtvcp and qtdragon documentation
+The python handler file also provides a useful template for any custom panel.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:test-dial">1.3. <code>test_dial</code></h3>
+<div class="ulist"><ul>
+<li>
+<p>
+This panel has a <strong>dial that adjusts S32 and Float HAL output pins</strong>.
+</p>
+</li>
+<li>
+<p>
+The dial&#8217;s range can be adjusted from a drop down menu.
+</p>
+</li>
+<li>
+<p>
+The output can be scaled with the <code>spinbox</code>.
+</p>
+</li>
+<li>
+<p>
+A <code>combobox</code> can be used to automatically select and connect to a signal.
+</p>
+</li>
+</ul></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">test_dial</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_test_dial.png" alt="QtVCP test_dial Panel - Test Dial VCP"/>
+<figcaption class="title"> Figure 2. QtVCP <code>test_dial</code> Panel - Test Dial VCP</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_test_button">1.4. test_button</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+This panel has a <strong>button that will set a HAL pin</strong>.
+</p>
+</li>
+<li>
+<p>
+The button can be selected as a <em>momentary</em> or a <em>toggle</em> button.
+</p>
+</li>
+<li>
+<p>
+The button&#8217;s <em>indicator color</em> can be adjusted from a drop down menu.
+</p>
+</li>
+<li>
+<p>
+You can add more buttons from the drop down menu.
+</p>
+</li>
+<li>
+<p>
+You can load a Halmeter from the drop down menu.
+</p>
+</li>
+<li>
+<p>
+You can load a test LED from the drop down menu.
+</p>
+</li>
+<li>
+<p>
+The button can be detached from the main windows.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Here is how to load <code>test_button</code> from a HAL script:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">test_button</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> -<span style="font-weight: bold"><span style="color: #000000">o</span></span> <span style="color: #993399">4</span> <span style="font-weight: bold"><span style="color: #000000">test_button</span></span></tt></pre></div></div>
+<div class="paragraph"><p>The <code>-o</code> switch sets how many buttons the panel starts with.<br />
+If loading directly from a terminal omit the <code>loadusr</code>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_test_button.png" alt="QtVCP test_button - Test Button VCP"/>
+<figcaption class="title"> Figure 3. QtVCP <code>test_button</code> - Test Button VCP</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:test-led">1.5. <code>test_led</code></h3>
+<div class="ulist"><ul>
+<li>
+<p>
+This panel has an <strong>LED that can selected to watch HAL bit pins/signals</strong>.
+</p>
+</li>
+<li>
+<p>
+The LED&#8217;s color can be adjusted from a drop down menu.
+</p>
+</li>
+<li>
+<p>
+The text box and state can be output as speech if sound is selected.
+</p>
+</li>
+<li>
+<p>
+A <code>combobox</code> can be used to automatically select and connect to a pin/signal.
+</p>
+</li>
+<li>
+<p>
+You can add more LEDs from the drop down menu.
+</p>
+</li>
+<li>
+<p>
+The LED can be detached from the main windows.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Here is how to load <code>test_led</code> from a HAL script:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">test_led</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> -<span style="font-weight: bold"><span style="color: #000000">o</span></span> <span style="color: #993399">4</span> <span style="font-weight: bold"><span style="color: #000000">test_led</span></span></tt></pre></div></div>
+<div class="paragraph"><p>The <code>-o</code> switch sets how many LEDs the panel starts with.<br />
+If loading directly from a terminal omit the <em>loadusr</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_test_led.png" alt="QtVCP test_dial Panel - Test LED VCP"/>
+<figcaption class="title"> Figure 4. QtVCP <code>test_dial</code> Panel - Test LED VCP</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:test-panel">1.6. <code>test_panel</code></h3>
+<div class="paragraph"><p><strong>Collection of useful widgets for testing HAL component</strong>, including
+speech of LED state.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">test_panel</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/test_panel.png" alt="QtVCP test_panel - HAL Component Testing Panel"/>
+<figcaption class="title"> Figure 5. QtVCP <code>test_panel</code> - HAL Component Testing Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:cam-align">1.7. <code>cam_align</code></h3>
+<div class="paragraph"><p>A <strong>camera display widget for rotational alignment</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp-cam-align.png" alt="QtVCP cam_align Panel - Camera Based Alignment Panel"/>
+<figcaption class="title"> Figure 6. QtVCP <code>cam_align</code> Panel - Camera Based Alignment Panel</figcaption>
+</figure>
+</div>
+</div>
+<div class="paragraph"><div class="title">Usage</div><p>Add these lines to the INI file:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[DISPLAY]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_NAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> cam_align</span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_COMMAND </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> halcmd loadusr -Wn qtvcp_embed qtvcp -d -c qtvcp_embed -x {XID} cam_align</span>
+<span style="font-style: italic"><span style="color: #9A1900"># The following line is needed if embedding in GMOCCAPY</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_LOCATION </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> ntb_preview</span></tt></pre></div></div>
+<div class="paragraph"><p>You can add window width and height size, rotation increment, and camera number from the INI with -o options.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>EMBED_TAB_COMMAND = halcmd loadusr -Wn qtvcp_embed qtvcp -d -c qtvcp_embed -x {XID} -o size=400,400 -o rotincr=.2 -o camnumber=0 cam_align</code></pre>
+</div></div>
+<div class="paragraph"><p>Mouse controls:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+left mouse single click - increase cross hair rotation one increment
+</p>
+</li>
+<li>
+<p>
+right mouse single click - decrease cross hair rotation one increment
+</p>
+</li>
+<li>
+<p>
+middle mouse single click - cycle through rotation increments
+</p>
+</li>
+<li>
+<p>
+left mouse hold and scroll - scroll camera zoom
+</p>
+</li>
+<li>
+<p>
+right mouse hold and scroll - scroll cross hair rotation angle
+</p>
+</li>
+<li>
+<p>
+mouse scroll only - scroll circle diameter
+</p>
+</li>
+<li>
+<p>
+left mouse double click - reset zoom
+</p>
+</li>
+<li>
+<p>
+right mouse double click - reset rotation
+</p>
+</li>
+<li>
+<p>
+middle mouse double click - reset circle diameter
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>To use the top buttons you have to assign a command (or a sub-routine). This could look like this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[MDI_COMMAND_LIST]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">MDI_COMMAND</span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">G10 L20 P1 X0 Y0,Set XY\nOrigin</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MDI_COMMAND</span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">G0 X0 Y0,Go To\nOrigin</span></tt></pre></div></div>
+<div class="paragraph"><p>Where the first command is referring to the button "SET origin" and the second to the button "GOTO Origin".<br />
+Note the comma and text after is optional - it will override the default button text.<br />
+These buttons are QtVCP action buttons and follow those rules.</p></div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:sim-panel">1.8. <code>sim_panel</code></h3>
+<div class="paragraph"><p>Small control panel to <strong>simulate MPG jogging controls etc</strong>.<br />
+For simulated configurations</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">sim_panel</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_sim_panel.png" alt="QtVCP sim_panel - Simulated Controls Panel For Screen Testing"/>
+<figcaption class="title"> Figure 7. QtVCP <code>sim_panel</code> - Simulated Controls Panel For Screen Testing.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sub:qtvcp:panels:tool-dialog">1.9. <code>tool_dialog</code></h3>
+<div class="paragraph"><p><strong>Manual tool change dialog</strong> that gives tool description.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> -<span style="font-weight: bold"><span style="color: #000000">Wn</span></span> <span style="font-weight: bold"><span style="color: #000000">tool_dialog</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> -<span style="font-weight: bold"><span style="color: #000000">o</span></span> <span style="font-weight: bold"><span style="color: #000000">speak_on</span></span> -<span style="font-weight: bold"><span style="color: #000000">o</span></span> <span style="font-weight: bold"><span style="color: #000000">audio_on</span></span> <span style="font-weight: bold"><span style="color: #000000">tool_dialog</span></span></tt></pre></div></div>
+<div class="paragraph"><p>Options:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>-o notify_on</code> - <em>use desktop notify</em> dialogs instead of QtVCP native
+  ones.
+</p>
+</li>
+<li>
+<p>
+<code>-o audio_on</code> - <em>play sound on tool change</em>
+</p>
+</li>
+<li>
+<p>
+<code>-o speak_on</code> - <em>speak announcement of tool change</em>
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvcp_toolChange.png" alt="QtVCP tool_dialog - Manual Tool Change Dialog"/>
+<figcaption class="title"> Figure 8. QtVCP <code>tool_dialog</code> - Manual Tool Change Dialog</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sub:qtvcp:panels:vismach">2. <code>vismach</code> 3D Simulation Panels</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>These panels are prebuilt simulation of common machine types.</p></div>
+<div class="paragraph"><p>These are also embed-able in other screens such as AXIS or GMOCCAPY.</p></div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_mill_xyz_code">2.1. QtVCP <code>vismach_mill_xyz</code></h3>
+<div class="paragraph"><p>3D OpenGL view of a <em>3-Axis milling machine</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_mill_xyz</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach.png" alt="QtVCP vismach_mill_xyz - 3-Axis Mill 3D View Panel"/>
+<figcaption class="title"> Figure 9. QtVCP <code>vismach_mill_xyz</code> - 3-Axis Mill 3D View Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_router_atc_code">2.2. QtVCP <code>vismach_router_atc</code></h3>
+<div class="paragraph"><p>3D OpenGL view of a <em>3-Axis router style, gantry bed milling machine</em>.<br />
+This particular panel shows how to define and connect the model parts in the handler file, rather then importing the
+pre-built model from qtvcp&#8217;s vismach library.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_router_atc</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach_router_atc.png" alt="QtVCP vismach_router_atc - 3-Axis Gantry Bed Mill 3D View Panel"/>
+<figcaption class="title"> Figure 10. QtVCP <code>vismach_router_atc</code> - 3-Axis Gantry Bed Mil 3D View Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_scara_code">2.3. QtVCP <code>vismach_scara</code></h3>
+<div class="paragraph"><p>3D OpenGL view of a <em>SCARA based milling machine</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_scara</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach_scara.png" alt="QtVCP vismach_scara - SCARA Mill 3D View Panel"/>
+<figcaption class="title"> Figure 11. QtVCP <code>vismach_scara</code> - SCARA Mill 3D View Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_millturn_code">2.4. QtVCP <code>vismach_millturn</code></h3>
+<div class="paragraph"><p>3D OpenGL view of a <em>3-Axis milling machine with an A axis/spindle</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_millturn</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach_millturn.png" alt="QtVCP vismach_millturn - 4 Axis MillTurn 3D View Panel"/>
+<figcaption class="title"> Figure 12. QtVCP <code>vismach_millturn</code> - 4 Axis MillTurn 3D View Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_mill_5axis_gantry_code">2.5. QtVCP <code>vismach_mill_5axis_gantry</code></h3>
+<div class="paragraph"><p>3D OpenGL view of a <em>5-Axis gantry type milling machine</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_mill_5axis_gantry</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<figure>
+<img src="images/qtvismach_5axis_gantry.png" alt="QtVCP vismach_mill_5axis_gantry - 5-Axis Gantry Mill 3D View Panel"/>
+<figcaption class="title"> Figure 13. QtVCP <code>vismach_mill_5axis_gantry</code> - 5-AxIs Gantry Mill 3D View Panel</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_code_vismach_fanuc_200f_code">2.6. QtVCP <code>vismach_fanuc_200f</code></h3>
+<div class="paragraph"><p>3D openGL view of a <em>6 joint robotic arm</em>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="font-weight: bold"><span style="color: #000000">vismach_fanuc_200f</span></span></tt></pre></div></div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<figure>
+<img src="images/qtvismach_fanuc_200f.png" alt="QtVCP vismach_fanuc_200f - 6 Joint Robotic Arm"/>
+<figcaption class="title"> Figure 14. QtVCP <code>vismach_fanuc_200f</code> - 6 Joint Robotic Arm</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:qtvcp:panels:custom">3. Custom Virtual Control Panels</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You can of course <strong>make your own panel and load it</strong>.</p></div>
+<div class="paragraph"><p>If you made a UI file named <code>my_panel.ui</code> and a HAL file named <code>my_panel.hal</code>,
+you would then load this from a terminal with:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>halrun -I -f my_panel.hal</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Example HAL file loading a QtVCP panel</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># load realtime components</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">threads</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadrt</span></span> <span style="font-weight: bold"><span style="color: #000000">classicladder_rt</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># load non-realtime programs</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> <span style="font-weight: bold"><span style="color: #000000">classicladder</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> -<span style="font-weight: bold"><span style="color: #000000">Wn</span></span> <span style="font-weight: bold"><span style="color: #000000">my_panel</span></span> <span style="font-weight: bold"><span style="color: #000000">qtvcp</span></span> <span style="color: #009900">my_panel.ui</span>  <span style="font-style: italic"><span style="color: #9A1900"># <b>&lt;1&gt;</b></span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># add components to thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">addf</span></span> <span style="color: #009900">classicladder.0.refresh</span> <span style="font-weight: bold"><span style="color: #000000">thread1</span></span>
+
+
+<span style="font-style: italic"><span style="color: #9A1900"># connect pins</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-input1</span></span>     <span style="color: #009900">test_panel.checkbox_1</span>        <span style="color: #009900">classicladder.0.in-00</span>
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-hide</span></span>       <span style="color: #009900">test_panel.checkbox_4</span>        <span style="color: #009900">classicladder.0.hide_gui</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">bit-output1</span></span>    <span style="color: #009900">test_panel.led_1</span>             <span style="color: #009900">classicladder.0.out-00</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">net</span></span> <span style="font-weight: bold"><span style="color: #000000">s32-in1</span></span>        <span style="color: #009900">test_panel.doublescale_1-s</span>   <span style="color: #009900">classicladder.0.s32in-00</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># start thread</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">start</span></span></tt></pre></div></div>
+<div class="colist arabic"><ol>
+<li>
+<p>
+In this case we load <code>qtvcp</code> using <strong><code>-Wn</code></strong> which waits for the panel to finish loading before continuing to run the next HAL command.<br />
+    This is to <em>ensure that the panel created HAL pins are actually done</em> in case they are used in the rest of the file.
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_embedding_qtvcp_virtual_control_panels_into_qtvcp_screens">4. Embedding QtVCP Virtual Control Panels into QtVCP Screens</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Qtvcp panels can be embedded into most Qtvcp screens and avoids problems such as focus transferring that can be a problem in non-native embedding.</p></div>
+<div class="sect2">
+<h3 id="_embedding_commands_2">4.1. Embedding Commands</h3>
+<div class="paragraph"><p>A typical screen such as QtDragon will search the INI file under the heading [DISPLAY] for commands to embed a panel.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">[DISPLAY]</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_NAME</span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">Embedding demo</span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_COMMAND</span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">qtvcp simple_hal</span>
+<span style="font-weight: bold"><span style="color: #0000FF">EMBED_TAB_LOCATION</span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">tabWidget_utilities</span></tt></pre></div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><em>EMBED_TAB_NAME</em></strong>
+</dt>
+<dd>
+<p>
+will typically be the title of the tab.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><em>EMBED_TAB_LOCATION</em></strong>
+</dt>
+<dd>
+<p>
+will be specific to the screen and specifies the tabWidget or stackedWidget to embed into.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><em>EMBED_TAB_COMMAND</em></strong>
+</dt>
+<dd>
+<p>
+is the command used to invoke loading of the panel. For native embedded panels the first word will always be <em>qtvcp</em>, the second will be the panel to load. You cannot currently add any switches to the command line. The panel will follow the debugging mode setting of the main screen.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_location_of_builtin_panels">4.2. Location of builtin Panels</h3>
+<div class="paragraph"><p>There are panels available that are included with linuxcnc. To see a list open a terminal and type <em>qtvcp</em> and press return.<br />
+You will get a help printout and a list of builtin screen and panels.<br />
+Pick any of the names from the panel list and add that to the COMMAND entry after <em>qtvcp</em>.<br />
+The builtin panel search path is <em>share/qtvcp/panels/PANELNAME</em>.<br />
+Run-In-Place and installed versions of linuxcnc have these in different locations on the system.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_location_of_custom_panels">4.3. Location of Custom Panels</h3>
+<div class="paragraph"><p>Custom panels can be embedded too -either a modified builtin panel or a new user-built one.<br />
+When loading panels, QtVCP looks in the configuration folders path for <em>qtvcp/panels/PANELNAME/PANELNAME.ui</em>.<br />
+<em>PANNELNAME</em> being any valid string with no spaces. If no path is found there, then looks in the builtin file path.<br />
+QtVCP will do the same process for the optional handler file: <em>qtvcp/panels/PANELNAME/PANELNAME_handler.py</em></p></div>
+</div>
+<div class="sect2">
+<h3 id="_handler_programming_tips">4.4. Handler Programming Tips</h3>
+<div class="paragraph"><p>In a screen handler file, the reference used for the window is <em>self.w</em>.<br />
+In QtVCP panels, that reference will refers to the panel&#8217;s window.<br />
+To reference the main window use <em>self.w.MAIN</em>
+If your panel is to be able to run independently and embedded, you must trap errors from referencing objects not available.
+(ie main screen objects are not available in an independent panel.)</p></div>
+<div class="paragraph"><p>eg. This would use the panels preference file if there is one.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">try</span></span>:
+    <span style="font-weight: bold"><span style="color: #000000">belt_en</span></span> <span style="color: #990000">=</span> <span style="color: #009900">self.w.PREFS_.getpref</span>('<span style="font-weight: bold"><span style="color: #000000">Front_Belt_enabled</span></span>', <span style="color: #993399">1</span>, <span style="font-weight: bold"><span style="color: #000000">int</span></span>, '<span style="font-weight: bold"><span style="color: #000000">SPINDLE_EXTRAS</span></span>')
+<span style="font-weight: bold"><span style="color: #000000">exception</span></span>:
+    <span style="font-weight: bold"><span style="color: #000000">belt_en</span></span> <span style="color: #990000">=</span> <span style="color: #993399">1</span></tt></pre></div></div>
+<div class="paragraph"><p>This would use the main screen preference file if there is one.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">try</span></span>:
+    <span style="font-weight: bold"><span style="color: #000000">belt_en</span></span> <span style="color: #990000">=</span> <span style="color: #009900">self.w.MAIN.PREFS_.getpref</span>('<span style="font-weight: bold"><span style="color: #000000">Front_Belt_enabled</span></span>', <span style="color: #993399">1</span>, <span style="font-weight: bold"><span style="color: #000000">int</span></span>, '<span style="font-weight: bold"><span style="color: #000000">SPINDLE_EXTRAS</span></span>')
+<span style="font-weight: bold"><span style="color: #000000">exception</span></span>:
+    <span style="font-weight: bold"><span style="color: #000000">belt_en</span></span> <span style="color: #990000">=</span> <span style="color: #993399">1</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_designer_widget_tips">4.5. Designer Widget Tips</h3>
+<div class="paragraph"><p>When using python command option in Action Button widgets of an embedded panel:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>INSTANCE</code></strong>
+</dt>
+<dd>
+<p>
+  refers to the panel window
+  E.g., <code>INSTANCE.my_panel_handler_function_call(True)</code>
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><em>MAIN_INSTANCE</em></strong>
+</dt>
+<dd>
+<p>
+  refers to the main screen window.
+  E.g., <code>MAIN_INSTANCE.my_main_screen_handler_function_call(True)</code>
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>If the panel is not embedded, both refer to the panel window.<br /></p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-06-17 21:52:11 CEST
+</div>
+</div>
+</body>
+</html>

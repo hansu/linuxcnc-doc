@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>QtVCP Development</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>QtVCP Development</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="cha:qtvcp:devel">1. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The intention of QtVCP is to <strong>supply an infrastructure to support screen and VCP panel building for LinuxCNC</strong>.</p></div>
+<div class="paragraph"><p>By providing a <em>diverse widget</em> set and supporting <em>custom coding</em>,
+QtVCP hopes that development energy will be expended in <em>one toolkit</em>
+rather than continuous re-invention.</p></div>
+<div class="paragraph"><p>By using the same toolkit across many screens/panels,
+users should have an easier time customizing/creating these,
+and developers should find it easier to help trouble shoot with less effort.</p></div>
+<div class="paragraph"><p>QtVCP uses a <strong>Qt Designer built <code>.ui</code> file</strong> and a <strong>Python handler file</strong></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+to <strong>load and control a screen/panel that displays Qt widgets</strong> and
+</p>
+</li>
+<li>
+<p>
+to <strong>control LinuxCNC&#8217;s motion controller or HAL pins</strong>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>There are <em>builtin screens and panels</em>, easily loaded by a user, or users can build/modify one of their own.</p></div>
+<div class="paragraph"><p>QtVCP uses <strong>libraries and custom widgets</strong> to hide some of the complexity of interfacing to LinuxCNC.
+By using QtVCP&#8217;s library rather than LinuxCNC&#8217;s, we can mitigate minor LinuxCNC code changes.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_builtin_locations">2. Builtin Locations</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Builtin screens and panels are stored in separate folders:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Screens</em> in <code>share/qtvcp/screens</code>
+</p>
+</li>
+<li>
+<p>
+<em>Panels</em> in <code>share/qtvcp/panels</code>
+</p>
+</li>
+<li>
+<p>
+<em>Stock images</em> in <code>share/qtvcp/images</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Screens and panels are sorted by their folder name, which is also the name used to load them.</p></div>
+<div class="paragraph"><p>Inside the folder would be:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the <code>.ui</code> <em>file</em>,
+</p>
+</li>
+<li>
+<p>
+the <em>handler file</em>, and
+</p>
+</li>
+<li>
+<p>
+possibly the <code>.qss</code> <em>theme file</em>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_qtvcp_startup_to_shutdown">3. QtVCP Startup To Shutdown</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><strong>QtVCP source</strong> is located in <code>+src/emc/usr_intf/qtvcp+</code> folder of LinuxCNC source tree.</p></div>
+<div class="sect2">
+<h3 id="_qtvcp_startup">3.1. QtVCP Startup</h3>
+<div class="paragraph"><p>When QtVCP first starts:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+It must decide if this object is a screen or a panel.
+</p>
+</li>
+<li>
+<p>
+It searches for and collects information about paths of required files
+  and useful folders.
+</p>
+</li>
+<li>
+<p>
+It then:
+</p>
+<div class="olist loweralpha"><ol class="loweralpha">
+<li>
+<p>
+Builds the HAL component,
+</p>
+</li>
+<li>
+<p>
+Loads the window instance,
+</p>
+</li>
+<li>
+<p>
+Adds handler extensions,
+</p>
+</li>
+<li>
+<p>
+Installs an event filter.
+</p>
+</li>
+</ol></div>
+</li>
+</ol></div>
+<div class="paragraph"><p>Now the window/widgets are instantiated, the HAL pins are built.
+This also initiates the <code>+_init_hal()+</code> function of the widgets.
+. The <code>+initialized__()+</code> handler function is called
+. The <code>STATUS</code> library is forced to update.
+. HAL component is set ready at this point.
+. A variety of optional switch arguments are set, including calling a
+  <code>POSTGUI</code> HAL file (if a screen).
+. Terminate signals are trapped and QtVCP now polls for events.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_qtvcp_shutdown">3.2. QtVCP Shutdown</h3>
+<div class="paragraph"><p>Finally when QtVCP is asked to shutdown:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+It calls shutdown functions in the handler file,
+</p>
+</li>
+<li>
+<p>
+<code>STATUS</code> monitoring is shut down
+</p>
+</li>
+<li>
+<p>
+HAL component gets killed
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_path_information">4. Path Information</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When QtVCP loads it collects paths information.</p></div>
+<div class="paragraph"><p>This is available in the handler file&#8217;s <code>+__init__()+</code> function as <strong><code>path</code></strong>:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>IMAGEDIR</code></strong>
+</dt>
+<dd>
+<p>
+Path of builtin images
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>SCREENDIR</code></strong>
+</dt>
+<dd>
+<p>
+Path of builtin motion controller screens
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>PANELDIR</code></strong>
+</dt>
+<dd>
+<p>
+Path of builtin accessory panels
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>WORKINGDIR</code></strong>
+</dt>
+<dd>
+<p>
+Path of where QtVCP was launched from
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>CONFIGPATH</code></strong>
+</dt>
+<dd>
+<p>
+Path of the launched configuration
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>BASEDIR</code></strong>
+</dt>
+<dd>
+<p>
+General path, used to derive all paths
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>BASENAME</code></strong>
+</dt>
+<dd>
+<p>
+Generic name used to derive all paths
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>LIBDIR</code></strong>
+</dt>
+<dd>
+<p>
+Path of QtVCP&#8217;s Python library
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>HANDLER</code></strong>
+</dt>
+<dd>
+<p>
+Path of handler file
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>XML</code></strong>
+</dt>
+<dd>
+<p>
+Path of .ui file
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>DOMAIN</code></strong>
+</dt>
+<dd>
+<p>
+Path of translation
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>IS_SCREEN</code></strong>
+</dt>
+<dd>
+<p>
+Screen/panel switch
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_idiosyncrasies">5. Idiosyncrasies</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>These try to cover non-obvious situations.</p></div>
+<div class="sect2">
+<h3 id="_error_code_collecting">5.1. Error Code Collecting</h3>
+<div class="paragraph"><p><strong>LinuxCNC&#8217;s error code collecting can only be read from one place</strong>.</p></div>
+<div class="paragraph"><p>When read, it is <strong><em>consumed</em></strong>, i.e. <em>no other object can read it</em>.</p></div>
+<div class="paragraph"><p>In QtVCP screens, it is recommended to <em>use the</em> <code>ScreenOptions</code> <em>widget to set up error reading</em>.</p></div>
+<div class="paragraph"><p><em>Errors are then <strong>sent to other objects</strong> via</em> <strong><code>STATUS</code></strong> <em>signals</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_jog_rate">5.2. Jog Rate</h3>
+<div class="paragraph"><p><strong>LinuxCNC has no internal record of jog rate</strong>: <em>you must specify it at
+the time of jogging</em>.</p></div>
+<div class="paragraph"><p>QtVCP uses the <code>STATUS</code> library to <em>keep track of the latest linear and
+angular jog rates</em>.</p></div>
+<div class="paragraph"><p>It is <strong>always specified in machine units per minute</strong> and <em>must be
+converted when in non-machine units mode</em>.<br />
+So, if your machine is imperial based but you are in metric mode, changes
+to jog rate sent to <code>ACTION</code> functions must be converted to imperial.<br />
+In the same manner, if the machine is metric based and you are in
+imperial mode, changes to jog rate must be sent to <code>ACTION</code> functions in
+metric units.<br />
+<em>For angular jog rates the units don&#8217;t change in metric/imperial mode</em>
+so you can send them to <code>ACTION</code> functions without conversion.</p></div>
+<div class="paragraph"><p>While you are free to ignore this jogging record while building screens,
+anyone modifying your screen and using the builtin jog rate widgets
+would not get the desired results as the <code>ACTION</code> library&#8217;s <strong><code>DO_JOG</code></strong>
+function gets it&#8217;s jog rate from the <code>STATUS</code> library.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_keybinding">5.3. Keybinding</h3>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">Keybinding is always a <em>difficult-to-get-right-in-all-cases</em>
+  affair.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Custom keybinding functions are to be <em>defined in the handler file</em>.</p></div>
+<div class="paragraph"><p>Most importantly widgets that require regular key input and not jogging,
+should be checked for in the <code>processed_key_event__</code> function.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_preference_file">5.4. Preference File</h3>
+<div class="paragraph"><p>Some QtVCP widgets use the preference file to record important
+information.</p></div>
+<div class="paragraph"><p>This <em>requires the preference file to be set up early</em> in the widget
+initialization process.<br />
+The easiest way to do this is to <strong>use the <code>ScreenOptions</code> widget</strong>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_widget_special_setup_functions">5.5. Widget Special Setup Functions</h3>
+<div class="paragraph"><p>QtVCP looks for and calls the <code>+_hal_init()+</code> function <em>when the widget
+is first loaded</em>.</p></div>
+<div class="paragraph"><p>It is not called when using Qt Designer editor.</p></div>
+<div class="paragraph"><p>After this function is called the widget has access to some special
+variables:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>self.HAL_GCOMP</code></strong>
+</dt>
+<dd>
+<p>
+The <em>HAL component</em> instance
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.HAL_NAME</code></strong>
+</dt>
+<dd>
+<p>
+This <em>widget&#8217;s name</em> as a string
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.QT_OBJECT_</code></strong>
+</dt>
+<dd>
+<p>
+This <em>widget&#8217;s PyQt object instance</em>
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.QTVCP_INSTANCE_</code></strong>
+</dt>
+<dd>
+<p>
+The <em>very top level parent</em> of the screen
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.PATHS_</code></strong>
+</dt>
+<dd>
+<p>
+The <em>instance of QtVCP&#8217;s path</em> library
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.PREFS_</code></strong>
+</dt>
+<dd>
+<p>
+The <em>instance of an optional preference file</em>
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>self.SETTINGS_</code></strong>
+</dt>
+<dd>
+<p>
+The <code>Qsettings</code> <em>object</em>
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>When making a custom widget, _import and sub class _the
+<strong><code>+_HalWidgetBase+</code></strong> class for this behavior.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dialogs">5.6. Dialogs</h3>
+<div class="paragraph"><p>Dialogs (AKA "pop up windows") are <em>best loaded with the</em> <code>ScreenOptions</code>
+<em>widget</em>, but they can be placed on the screen in Qt Designer.</p></div>
+<div class="paragraph"><p>It doesn&#8217;t matter where on the layout but <em>to make them hidden</em>, cycle
+the <code>state</code> property to true then false.</p></div>
+<div class="paragraph"><p>By default, if there is a preference file, the dialogs will remember
+their last size/placement.<br />
+It is possible to override this so they open in the same location each
+time.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_styles_themes">5.7. Styles (Themes)</h3>
+<div class="paragraph"><p>While it is possible to set styles <em>in Qt Designer</em>, it is more
+convenient to change them later if they are all set in a
+<strong><em>separate</em> <code>.qss</code> <em>file</em></strong>.</p></div>
+<div class="paragraph"><p>The file should be put in the <em>same location as the handler file</em>.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-02-18 15:53:54 CET
+</div>
+</div>
+</body>
+</html>

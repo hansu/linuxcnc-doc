@@ -1,0 +1,201 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu Feb 16 09:03:53 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LASERPOWER</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">LASERPOWER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">laserpower -
+Scales laser power output based upon velocity input power
+and distance to go</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>loadrt laserpower
+[count=</b><i>N</i><b>|names=</b><i>name1</i><b>[,</b><i>name2...</i><b>]]</b></p> </td>
+<td width="12%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">During
+operation laserpower must be scaled proportionally to actual
+velocity vs commanded velocity. <br>
+This prevents uneven laser power when rounding tight
+corners.</p>
+
+<p style="margin-left:11%; margin-top: 1em">laserpower
+operates in 2 modes. <br>
+Raster mode (when raster_mode = 1). <br>
+During raster mode raster_power is scaled between min_power
+and max_power proportionally to req_velocity and
+cur_velocity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Velocity mode
+(when raster_mode = 0). <br>
+During velocity mode vector_power corresponds to the power
+level desired when reaching the next control point. <br>
+This allows vector power to be scaled along moves.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>laserpower.</b><i>N</i>
+(requires a floating-point thread)</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>laserpower.</b><i>N</i><b>.min-power</b>
+float in</p>
+
+<p style="margin-left:22%;">Minimum allowed power
+level.</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.max-power</b>
+float in</p>
+
+<p style="margin-left:22%;">Maximum allowed power level</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.req-velocity</b>
+float in</p>
+
+<p style="margin-left:22%;">Requested motion velocity</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.cur-velocity</b>
+float in</p>
+
+<p style="margin-left:22%;">Current motion velocity</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.enabled</b>
+bit in</p>
+
+<p style="margin-left:22%;">True when laser output
+enabled</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.raster-mode</b>
+bit in</p>
+
+<p style="margin-left:22%;">false for vector mode, true for
+raster mode</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.raster-power</b>
+float in</p>
+
+<p style="margin-left:22%;">Requested power level during
+raster operations</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.vector-power</b>
+float in</p>
+
+<p style="margin-left:22%;">Requested power level during
+vector operatons</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.distance-to-go</b>
+float in</p>
+
+<p style="margin-left:22%;">Distance to go of current
+move</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.power</b>
+float out</p>
+
+<p style="margin-left:22%;">Current power level command</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.command-power</b>
+float out</p>
+
+<p style="margin-left:22%;">Commanded power before
+normalization and velocity scaling</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.start-power</b>
+float out</p>
+
+<p style="margin-left:22%;">Power level when reqPower last
+changed</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.start-distance</b>
+float out</p>
+
+<p style="margin-left:22%;">Distance amount when reqPower
+last changed</p>
+
+
+<p style="margin-left:11%;"><b>laserpower.</b><i>N</i><b>.vel-scale</b>
+float out</p>
+
+<p style="margin-left:22%;">Velocity related scaling
+component.</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>GladeVCP Library modules</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>GladeVCP Library modules</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:gladevcp-libraries"><p>Libraries are prebuilt Python modules that give added features to GladeVCP.
+In this way you can select what features you want - yet don&#8217;t have to build common ones yourself.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_info">1. Info</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Info is a library to collect and filters data from the INI file.</p></div>
+<div class="paragraph"><p>The available data and defaults:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">LINUXCNC_IS_RUNNING</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">LINUXCNC_VERSION</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">INIPATH</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">INI </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> linuxcnc.ini(INIPATH)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MDI_HISTORY_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> '~/.axis_mdi_history'</span>
+<span style="font-weight: bold"><span style="color: #0000FF">QTVCP_LOG_HISTORY_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> '~/qtvcp.log'</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACHINE_LOG_HISTORY_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> '~/.machine_log_history'</span>
+<span style="font-weight: bold"><span style="color: #0000FF">PREFERENCE_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> '~/.Preferences'</span>
+<span style="font-weight: bold"><span style="color: #0000FF">SUB_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">SUB_PATH_LIST </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> []</span>
+<span style="font-weight: bold"><span style="color: #0000FF">self.MACRO_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACRO_PATH_LIST </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> []</span>
+<span style="font-weight: bold"><span style="color: #0000FF">INI_MACROS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MACRO")</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">IMAGE_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> IMAGEDIR</span>
+<span style="font-weight: bold"><span style="color: #0000FF">LIB_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> os.path.join(HOME, "share","qtvcp")</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">PROGRAM_FILTERS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">PARAMETER_FILE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACHINE_IS_LATHE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> False</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACHINE_IS_METRIC </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> False</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACHINE_UNIT_CONVERSION </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 1</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MACHINE_UNIT_CONVERSION_9 </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> [1]*9</span>
+<span style="font-weight: bold"><span style="color: #0000FF">TRAJ_COORDINATES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINT_COUNT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> int(self.INI.find("KINS","JOINTS")or 0)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">AVAILABLE_AXES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> ['X','Y','Z']</span>
+<span style="font-weight: bold"><span style="color: #0000FF">AVAILABLE_JOINTS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> [0,1,2]</span>
+<span style="font-weight: bold"><span style="color: #0000FF">GET_NAME_FROM_JOINT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> {0:'X',1:'Y',2:'Z'}</span>
+<span style="font-weight: bold"><span style="color: #0000FF">GET_JOG_FROM_NAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> {'X':0,'Y':1,'Z':2}</span>
+<span style="font-weight: bold"><span style="color: #0000FF">NO_HOME_REQUIRED </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> False</span>
+<span style="font-weight: bold"><span style="color: #0000FF">HOME_ALL_FLAG</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINT_TYPE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.find(section, "TYPE") or "LINEAR"</span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINT_SEQUENCE_LIST</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">JOINT_SYNC_LIST</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">JOG_INCREMENTS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">ANGULAR_INCREMENTS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">GRID_INCREMENTS</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">DEFAULT_LINEAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 15 units per minute</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MIN_LINEAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 60 units per minute</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_LINEAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 300 units per minute</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">DEFAULT_ANGULAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">MIN_ANGULAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_ANGULAR_JOG_VEL </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_FEED_OVERRIDE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_TRAJ_VELOCITY </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">AVAILABLE_SPINDLES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> int(self.INI.find("TRAJ", "SPINDLES") or 1)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">DEFAULT_SPINDLE_0_SPEED </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 200</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_SPINDLE_0_SPEED </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 2500</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_SPINDLE_0_OVERRIDE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 100</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MIN_SPINDLE_0_OVERRIDE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 50</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_FEED_OVERRIDE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> 1.5</span>
+<span style="font-weight: bold"><span style="color: #0000FF">MAX_TRAJ_VELOCITY</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># user message dialog info</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_BOLDTEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_BOLDTEXT")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_TEXT </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_TEXT")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_TYPE </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_TYPE")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_PINNAME </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_PINNAME")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_DETAILS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_DETAILS")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">USRMESS_ICON </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> self.INI.findall("DISPLAY", "MESSAGE_ICON")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">ZIPPED_USRMESS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">self.GLADEVCP </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> (self.INI.find("DISPLAY", "GLADEVCP")) or None</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># embedded program info</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">TAB_NAMES </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> (self.INI.findall("DISPLAY", "EMBED_TAB_NAME")) or None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">TAB_LOCATION </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> (self.INI.findall("DISPLAY", "EMBED_TAB_LOCATION")) or []</span>
+<span style="font-weight: bold"><span style="color: #0000FF">TAB_CMD </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900"> (self.INI.findall("DISPLAY", "EMBED_TAB_COMMAND")) or None</span>
+<span style="font-weight: bold"><span style="color: #0000FF">ZIPPED_TABS </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">MDI_COMMAND_LIST </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">      (heading: [MDI_COMMAND_LIST], title: MDI_COMMAND")</span>
+<span style="font-weight: bold"><span style="color: #0000FF">TOOL_FILE_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">        (heading: [EMCIO], title:TOOL_TABLE)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">POSTGUI_HALFILE_PATH </span></span><span style="font-weight: bold"><span style="color: #000000">=</span></span><span style="color: #009900">  (heading: [HAL], title: POSTGUI_HALFILE)</span></tt></pre></div></div>
+<div class="paragraph"><p>There are some <em>helper functions</em> - mostly used for widget support</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>get_error_safe_setting(self, heading, detail, default=None)
+convert_metric_to_machine(data)
+convert_imperial_to_machine(data)
+convert_9_metric_to_machine(data)
+convert_9_imperial_to_machine(data)
+convert_units(data)
+convert_units_9(data)
+get_filter_program(fname)</code></pre>
+</div></div>
+<div class="paragraph"><p>To import this modules add this Python code to your import section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> gladevcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Info</tt></pre></div></div>
+<div class="paragraph"><p>To instantiate the module so you can use it in a handler file add this Python code to your instantiate section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+INFO <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Info</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>To access INFO data use this general syntax:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>home_state <span style="color: #990000">=</span> INFO<span style="color: #990000">.</span>NO_HOME_REQUIRED
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> INFO<span style="color: #990000">.</span>MACHINE_IS_METRIC <span style="font-weight: bold"><span style="color: #0000FF">is</span></span> True<span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'Metric based'</span><span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_action">2. Action</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This library is used to command LinuxCNC&#8217;s motion controller.
+It tries to hide incidental details and add convenience methods for developers.</p></div>
+<div class="paragraph"><p>To import this modules add this Python code to your import section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** IMPORT SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">############################</span></span>
+
+<span style="font-weight: bold"><span style="color: #000080">from</span></span> gladevcp<span style="color: #990000">.</span>core <span style="font-weight: bold"><span style="color: #000080">import</span></span> Action</tt></pre></div></div>
+<div class="paragraph"><p>To instantiate the module so you can use it add this Python code to your instantiate section:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># **** INSTANTIATE LIBRARIES SECTION **** #</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">###########################################</span></span>
+
+ACTION <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">Action</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>To access Action commands use general syntax such as these:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_ESTOP_STATE</span></span><span style="color: #990000">(</span>state<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_STATE</span></span><span style="color: #990000">(</span>state<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_HOMING</span></span><span style="color: #990000">(</span>joint<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MACHINE_UNHOMED</span></span><span style="color: #990000">(</span>joint<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_LIMITS_OVERRIDE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MDI_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MANUAL_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_AUTO_MODE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_LIMITS_OVERRIDE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_MDI</span></span><span style="color: #990000">(</span>code<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_MDI_WAIT</span></span><span style="color: #990000">(</span>code<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_INI_MDI</span></span><span style="color: #990000">(</span>number<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CALL_OWORD</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">OPEN_PROGRAM</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SAVE_PROGRAM</span></span><span style="color: #990000">(</span>text_source<span style="color: #990000">,</span> fname<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_AXIS_ORIGIN</span></span><span style="color: #990000">(</span>axis<span style="color: #990000">,</span>value<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_TOOL_OFFSET</span></span><span style="color: #990000">(</span>axis<span style="color: #990000">,</span>value<span style="color: #990000">,</span>fixture <span style="color: #990000">=</span> False<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RUN</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ABORT</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">PAUSE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MAX_VELOCITY_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_RAPID_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FEED_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_RATE</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_INCR</span></span><span style="color: #990000">(</span>incr<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_RATE_ANGULAR</span></span><span style="color: #990000">(</span>rate<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_JOG_INCR_ANGULAR</span></span><span style="color: #990000">(</span>incr<span style="color: #990000">,</span> text<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_ROTATION</span></span><span style="color: #990000">(</span>direction <span style="color: #990000">=</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> rpm <span style="color: #990000">=</span> <span style="color: #993399">100</span><span style="color: #990000">,</span> number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_FASTER</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_SLOWER</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SPINDLE_STOP</span></span><span style="color: #990000">(</span>number <span style="color: #990000">=</span> <span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_USER_SYSTEM</span></span><span style="color: #990000">(</span>system<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_G92_OFFSET</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_ROTATIONAL_OFFSET</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">ZERO_G5X_OFFSET</span></span><span style="color: #990000">(</span>num<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RECORD_CURRENT_MODE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RESTORE_RECORDED_MODE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_SELECTED_AXIS</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">DO_JOG</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">,</span> direction<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">JOG</span></span><span style="color: #990000">(</span>jointnum<span style="color: #990000">,</span> direction<span style="color: #990000">,</span> rate<span style="color: #990000">,</span> distance<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_FLOOD</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FLOOD_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_FLOOD_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_MIST</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MIST_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_MIST_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RELOAD_TOOLTABLE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">UPDATE_VAR_FILE</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_OPTIONAL_STOP</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_OPTIONAL_STOP_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_OPTIONAL_STOP_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">TOGGLE_BLOCK_DELETE</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_BLOCK_DELETE_ON</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_BLOCK_DELETE_OFF</span></span><span style="color: #990000">()</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">RELOAD_DISPLAY</span></span><span style="color: #990000">()</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_GRAPHICS_VIEW</span></span><span style="color: #990000">(</span>view<span style="color: #990000">)</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">UPDATE_MACHINE_LOG</span></span><span style="color: #990000">(</span>text<span style="color: #990000">,</span> option<span style="color: #990000">=</span>None<span style="color: #990000">):</span>
+
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_DISPLAY_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span>
+ACTION<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">SET_ERROR_MESSAGE</span></span><span style="color: #990000">(</span>string<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>There are some <em>helper functions</em> - mostly used for this library&#8217;s support</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">get_jog_info</span></span> <span style="color: #990000">(</span>num<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">jnum_check</span></span><span style="color: #990000">(</span>num<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">ensure_mode</span></span><span style="color: #990000">(</span>modes<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">open_filter_program</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">,</span> filter<span style="color: #990000">)</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-02-15 15:40:19 CET
+</div>
+</div>
+</body>
+</html>

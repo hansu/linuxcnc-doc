@@ -1,0 +1,272 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu Feb 16 09:03:31 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MDRO</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">MDRO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SCREEN CONFIGURATION">SCREEN CONFIGURATION</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mdro - manual
+only Digital Read Out (DRO)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdro</b>
+[<b>-v</b>] [<b>-p</b> <i>point_size</i>] [<b>-m</b>]
+[<b>-l</b> <i>file.var</i>] [<i>axes</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdro</b> is
+a manual only DRO providing functionality similar to a
+traditional manual DRO. It is most useful for manual
+machines converted to CNC. It allows the user to manually
+control the machine while continuing to use the DRO scales
+on the axes. The GUI can be sized to match the user&rsquo;s
+screen. It is mouse-only and touchscreen friendly.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These command
+line options are normally used when <b>mdro</b> is started
+in a HAL file. See below for the corresponding .ini file
+options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>v</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Turn on verbose debug prints. <b>-vv</b> is even more
+verbose.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>p</b> <i>point_size</i></p>
+
+<p style="margin-left:22%;">Set the point size for the text
+in the application. This option controls the overall size of
+the window on the screen. Default is 20. Typical values
+range from 20 to 30.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>m</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Set this if the DRO scales provide data scaled in
+millimeters.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>l</b> <i>file.var</i></p>
+
+<p style="margin-left:22%;">Load G54 through G57
+coordinates from <i>file.var</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>axes</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option is used to specify the names of the axes
+handled by the program. The default is &quot;XYZ&quot;. A
+four axis mill would use &quot;XYZA&quot;, and a lathe with
+a two axis DRO might use &quot;XZ&quot;.</p></td></tr>
+</table>
+
+<h2>SCREEN CONFIGURATION
+<a name="SCREEN CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The top of the
+screen includes a row for each axis specified in
+<i>axes</i>. Data in these rows are derived from signals on
+the <i>mdro.axis.n</i> pins that are instantiated when
+<b>mdro</b> is started. Each row includes buttons that allow
+the value to be be zeroed, to be halved or a new value to be
+entered. There is also a button that enables the index zero
+process for that axis.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The screen
+includes buttons that allow the selection of one of four
+different coordinate systems. The machine coordinate system
+can also be selected though it cannot be changed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The screen
+includes a keypad that can be used with a mouse or a touch
+screen to enter coordinate data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally,
+buttons on the screen allow the selection of inch or mm data
+display.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdro</b> is
+normally started from the <i>[DISPLAY]</i> entry in a
+dedicated <b>mdro.ini</b> file. The INI file and the
+associated HAL files should include the pins and signals
+that support the DRO scales. The HAL connections to
+<b>mdro</b> must be done in the <i>POSTGUI_HALFILE</i>
+referenced in the INI file. <br>
+Other <i>[DISPLAY]</i> section options: <i><br>
+GEOMETRY</i> = <i>axes</i></p>
+
+<p style="margin-left:22%;">Names the coordinate axes used
+in the program. For example, &quot;XYZ&quot; for a 3 axis
+mill or &quot;XZ&quot; for a lathe, Default is
+&quot;XYZ&quot;.</p>
+
+<p style="margin-left:11%;"><i>MDRO_VAR_FILE</i> =
+<i>file.var</i></p>
+
+<p style="margin-left:22%;">Preload a VAR file. This is
+typically the VAR file used by the operational code.</p>
+
+<p style="margin-left:11%;"><i>POINT_SIZE</i> =
+<i>n</i></p>
+
+<p style="margin-left:22%;">This option sets the size of
+the font used which sets the overall size of the window. The
+default point size is 20, Typical sizes are 20 to 30.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>MM</i> = <i>1</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set this if the DRO scales provide data scaled in
+millimeters.</p> </td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Using an
+example of &quot;XYZA&quot; for an <i>axes</i> argument,
+these pins will be created when <b>mdro</b> starts:</p>
+
+<p style="margin-left:11%; margin-top: 1em">mdro.axis.0
+<br>
+mdro.axis.1 <br>
+mdro.axis.2 <br>
+mdro.axis.3 <br>
+mdro.index-enable.0 <br>
+mdro.index-enable.1 <br>
+mdro.index-enable.2 <br>
+mdro.index-enable.3</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this
+example, the first row will be labeled &quot;X&quot; and
+will show the data associated with pin mdro.axis.0. In many
+configurations, mdro.axis.0 can be connected directly to
+x-pos-fb in the POSTGUI-HAL file. The index pins should be
+connected to the corresponding index-enable pins from the
+DRO.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdro</b> can
+also be started via a &quot;loadusr&quot; command in a HAL
+file for a trial. Here&rsquo;s an example of a sim
+setup:</p>
+
+<p style="margin-left:11%; margin-top: 1em">loadusr -W mdro
+-l sim.var XYZ <br>
+net x-pos-fb =&gt; mdro.axis.0 <br>
+net y-pos-fb =&gt; mdro.axis.1 <br>
+net z-pos-fb =&gt; mdro.axis.2</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Robert Bond</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Robert Bond <br>
+This is free software; see the source for copying
+conditions. There is NO warranty; not even for
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<hr>
+</body>
+</html>

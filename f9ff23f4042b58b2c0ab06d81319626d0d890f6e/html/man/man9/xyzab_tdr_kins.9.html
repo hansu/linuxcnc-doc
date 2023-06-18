@@ -1,0 +1,134 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Feb 18 14:58:04 2023 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>XYZAB_TDR_KINS</title>
+
+ <link rel="stylesheet" href="../../asciidoc.css" type="text/css" /> <link rel="stylesheet" href="../../linuxcnc.css" type="text/css" /> <style type="text/css"> h2 {font-size: 1.2em;} </style>
+</head>
+<body>
+
+<h1 align="center">XYZAB_TDR_KINS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PINS">PINS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xyzab_tdr_kins
+- Switchable kinematics for 5 axis machine with rotary table
+A and B</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>loadrt xyzab_tdr_kins
+[count=</b><i>N</i><b>|names=</b><i>name1</i><b>[,</b><i>name2...</i><b>]]</b></p> </td>
+<td width="6%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is a
+switchable kinematics module for a 5-axis milling
+configuration using 3 cartesian linear joints (XYZ) and 2
+rotary table joints (AB).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The module
+contains two kinematic models:</p>
+
+<p style="margin-left:11%; margin-top: 1em">type0 (default)
+is a trivial XYZAB configuration with joints 0..4 mapped to
+axes XYZAB respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">type1 is a
+XYZAB configuration with tool center point (TCP)
+compensation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For an example
+configuration, run the sim config:
+&rsquo;/configs/sim/axis/vismach/5axis/table-dual-rotary/xyzab-tdr.ini&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Further
+explanations can be found in the README in
+&rsquo;/configs/sim/axis/vismach/5axis/table-dual-rotary/&rsquo;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">xyzab_tdr_kins.comp
+was constructed by modifying the template file:
+userkins.comp.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information on how to modify userkins.comp run: $ man
+userkins. Also, see additional information inside:
+&rsquo;userkins.comp&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on kinematics in general see the kinematics document chapter
+(docs/src/motion/kinematics.txt) and for switchable
+kinematics in particular see the switchkins document chapter
+(docs/src/motion/switchkins.txt)</p>
+
+<h2>PINS
+<a name="PINS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xyzab-tdr-kins.</b><i>N</i><b>.dummy</b>
+s32 out (default: <i>0</i>)</p>
+
+<p style="margin-left:22%;">one pin needed to satisfy
+halcompile requirement</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">David
+Mueller</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">GPL</p>
+<hr>
+</body>
+</html>

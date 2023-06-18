@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<title>GS2 VFD Driver</title>
+<link rel="stylesheet" href="..//asciidoc.css" type="text/css" />
+
+
+<link rel="stylesheet" href="..//linuxcnc.css" type="text/css" />
+<script type="text/javascript" src="..//asciidoc.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="book">
+<div id="header">
+<h1>GS2 VFD Driver</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="cha:gs2-vfd-driver"><p>This is a non-realtime HAL program for the GS2 series of VFD&#8217;s at Automation Direct. <span class="footnote"><br />[In Europe the equivalent can be found under the brand name Omron.]<br /></span></p></div>
+<div class="paragraph"><p>This component is loaded using the halcmd "loadusr" command:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.9
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">loadusr</span></span> -<span style="font-weight: bold"><span style="color: #000000">Wn</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-vfd</span></span> <span style="font-weight: bold"><span style="color: #000000">gs2_vfd</span></span> -<span style="font-weight: bold"><span style="color: #000000">n</span></span> <span style="font-weight: bold"><span style="color: #000000">spindle-vfd</span></span></tt></pre></div></div>
+<div class="paragraph"><p>The above command says: loadusr, wait for named to load,
+component gs2_vfd, named spindle-vfd.
+The HAL <code>loadusr</code> command is described in the <a href="../hal/basic-hal.html#sub:hal-loadusr">loadusr</a> chapter.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_line_options">1. Command Line Options</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<em>-b</em> or <em>--bits <em>&lt;n&gt;</em></em> (default: 8) Set number of data bits to <em>n</em>, where <em>n</em>
+  must be from 5 to 8 inclusive.
+</p>
+</li>
+<li>
+<p>
+<em>-d</em> or <em>--device &lt;path&gt;</em> (default: /dev/ttyS0) Set the file path to the serial
+  device node to use.
+</p>
+</li>
+<li>
+<p>
+<em>-g</em> or <em>--debug</em> Turn on debugging messages. This will also set the
+  verbose flag. Debug mode will cause all modbus messages to be printed
+  in hex on the terminal.
+</p>
+</li>
+<li>
+<p>
+<em>-n</em> or <em>--name &lt;string&gt;</em> (default: gs2_vfd) Set the name of the HAL
+  module. The HAL comp name will be set to &lt;string&gt;, and all pin and
+  parameter names will begin with &lt;string&gt;.
+</p>
+</li>
+<li>
+<p>
+<em>-p</em> or <em>--parity {even,odd,none}</em> (default: odd) Set serial parity to
+  even, odd, or none.
+</p>
+</li>
+<li>
+<p>
+<em>-r</em> or <em>--rate <em>&lt;n&gt;</em></em> (default: 38400) Set baud rate to <em>n</em>. It is an error
+  if the rate is not one of the following: 110, 300, 600, 1200, 2400,
+  4800, 9600, 19200, 38400, 57600, 115200.
+</p>
+</li>
+<li>
+<p>
+<em>-s</em> or <em>--stopbits {1,2}</em> (default: 1) Set serial stop bits to 1 or 2
+</p>
+</li>
+<li>
+<p>
+<em>-t</em> or <em>--target <em>&lt;n&gt;</em></em> (default: 1) Set MODBUS target (slave) number. This
+  must match the device number you set on the GS2.
+</p>
+</li>
+<li>
+<p>
+<em>-v</em> or <em>--verbose</em> Turn on debug messages.
+</p>
+</li>
+<li>
+<p>
+<em>-A</em> or <em>--accel-seconds</em> <em>&lt;n&gt;</em> (default: 10.0) Seconds to accelerate the
+  spindle from 0 to max. RPM.
+</p>
+</li>
+<li>
+<p>
+<em>-D</em> or <em>--decel-seconds</em> <em>&lt;n&gt;</em> (default: 0.0) Seconds to decelerate the spindle
+  from max. RPM to 0. If set to 0.0 the spindle will be allowed to coast to a
+  stop without controlled deceleration.
+</p>
+</li>
+<li>
+<p>
+<em>-R</em> or <em>--braking-resistor</em> This argument should be used when a braking
+  resistor is installed on the GS2 VFD (see Appendix A of the GS2 manual).
+  It disables deceleration over-voltage stall prevention (see GS2 modbus
+  Parameter 6.05), allowing the VFD to keep braking even in situations where
+  the motor is regenerating high voltage. The regenerated voltage gets safely
+  dumped into the braking resistor.
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">That if there are serial configuration errors, turning on verbose
+may result in a flood of timeout errors.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pins">2. Pins</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>With <em>&lt;name&gt;</em> being "gs2_vfd" or the name given during loading with the <code>-n</code> option:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.DC-bus-volts</em> (float, out) DC bus voltage of the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.at-speed</em> (bit, out) when drive is at commanded speed
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.err-reset</em> (bit, in) reset errors sent to VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.firmware-revision</em> (s32, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.frequency-command</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.frequency-out</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.is-stopped</em> (bit, out) when the VFD reports 0 Hz output
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.load-percentage</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.motor-RPM</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.output-current</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.output-voltage</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.power-factor</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.scale-frequency</em> (float, out) from the VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.speed-command</em> (float, in) speed sent to VFD in RPM
+  It is an error to send a speed faster than the Motor Max RPM as set in
+  the VFD.
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.spindle-fwd</em> (bit, in) 1 for FWD and 0 for REV sent to VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.spindle-rev</em> (bit, in) 1 for REV and 0 if off
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.spindle-on</em> (bit, in) 1 for ON and 0 for OFF sent to VFD
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.status-1</em> (s32, out) Drive Status of the VFD (see the GS2 manual)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.status-2</em> (s32, out) Drive Status of the VFD (see the GS2 manual)
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">The status value is a sum of all the bits that are on. So a 163
+which means the drive is in the run mode is the sum of 3 (run) + 32
+(freq set by serial) + 128 (operation set by serial).</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameters">3. Parameters</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>With <em>&lt;name&gt;</em> being gs2_vfd or the name given during loading with the <code>-n</code> option:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.error-count</em> (s32, RW)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.loop-time</em> (float, RW) how often the modbus is polled (default: 0.1)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.nameplate-HZ</em> (float, RW) Nameplate Hz of motor (default: 60)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.nameplate-RPM</em> (float, RW) Nameplate RPM of motor (default: 1730)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.retval</em> (s32, RW) the return value of an error in HAL
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.tolerance</em> (s32, RW) speed tolerance (default: 0.01)
+</p>
+</li>
+<li>
+<p>
+<em><em>&lt;name&gt;</em>.ack-delay</em> (s32, RW) number of read/write cycles before checking at-speed
+  (default 2)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>For an example of using this component to drive a spindle see the
+<a href="../examples/gs2-example.html#cha:gs2-spindle">GS2 Spindle</a> example.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2023-06-17 21:52:11 CEST
+</div>
+</div>
+</body>
+</html>
